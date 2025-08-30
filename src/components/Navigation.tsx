@@ -1,25 +1,62 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { useState } from "react";
 
 const Navigation = () => {
-  const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const isActive = (path: string) => location.pathname === path;
+  const [activeSection, setActiveSection] = useState("home");
 
   const navItems = [
-    { path: "/", label: "Inicio" },
-    { path: "/about", label: "Acerca de" },
-    { path: "/projects", label: "Portafolio" },
-    { path: "/skills", label: "Habilidades" },
-    { path: "/contact", label: "Contacto" },
+    { id: "home", label: "Inicio" },
+    { id: "projects", label: "Portafolio" },
+    { id: "about", label: "Acerca de" },
+    { id: "skills", label: "Habilidades" },
+    { id: "contact", label: "Contacto" },
   ];
+
+  // Scroll spy functionality
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems.map(item => item.id);
+      const scrollPosition = window.scrollY + 100;
+
+      for (const sectionId of sections) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(sectionId);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial active section
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const isActive = (sectionId: string) => activeSection === sectionId;
 
   return (
     <header className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 bg-background/80 backdrop-blur-sm border-b border-white/10">
-      <Link to="/" className="flex items-center gap-3 text-foreground">
+      <button 
+        onClick={() => scrollToSection('home')}
+        className="flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+      >
         <svg 
           className="size-6 text-primary" 
           fill="none" 
@@ -39,22 +76,22 @@ const Navigation = () => {
           </defs>
         </svg>
         <h2 className="text-xl font-bold tracking-tighter">Elena Ramirez</h2>
-      </Link>
+      </button>
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-8">
         {navItems.map((item) => (
-          <Link
-            key={item.path}
-            to={item.path}
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
             className={`text-sm font-medium transition-colors ${
-              isActive(item.path)
+              isActive(item.id)
                 ? "text-primary"
                 : "text-muted-foreground hover:text-primary"
             }`}
           >
             {item.label}
-          </Link>
+          </button>
         ))}
         <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
           Descargar CV
@@ -76,18 +113,17 @@ const Navigation = () => {
         <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-white/10 md:hidden">
           <nav className="flex flex-col p-6 gap-4">
             {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(item.path)
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                className={`text-sm font-medium transition-colors text-left ${
+                  isActive(item.id)
                     ? "text-primary"
                     : "text-muted-foreground hover:text-primary"
                 }`}
-                onClick={() => setIsMobileMenuOpen(false)}
               >
                 {item.label}
-              </Link>
+              </button>
             ))}
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold mt-2">
               Descargar CV

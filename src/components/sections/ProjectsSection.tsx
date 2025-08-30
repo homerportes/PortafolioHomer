@@ -3,7 +3,7 @@ import wellnessApp from "@/assets/project-wellness-app.jpg";
 import techWebsite from "@/assets/project-tech-website.jpg";
 import analyticsDashboard from "@/assets/project-analytics-dashboard.jpg";
 
-const Projects = () => {
+const ProjectsSection = () => {
   const projects = [
     {
       id: 1,
@@ -30,33 +30,33 @@ const Projects = () => {
       id: 4,
       title: "E-commerce de productos sostenibles",
       description: "Plataforma de comercio electrónico especializada en productos ecológicos. El diseño refleja los valores de sostenibilidad de la marca mientras optimiza la experiencia de compra online.",
-      image: wellnessApp, // Reusing image for demo
+      image: wellnessApp,
       tags: ["E-commerce", "Sustainable", "Branding"],
     },
     {
       id: 5,
       title: "App educativa para niños",
       description: "Aplicación educativa interactiva que hace el aprendizaje divertido para niños de 6-12 años. Diseñé personajes atractivos y mecánicas de juego que refuerzan el aprendizaje a través del juego.",
-      image: techWebsite, // Reusing image for demo
+      image: techWebsite,
       tags: ["Education", "Kids", "Gamification"],
     },
     {
       id: 6,
       title: "Sistema de gestión hospitalaria",
       description: "Interfaz compleja para la gestión de pacientes y recursos hospitalarios. Prioricé la usabilidad y la accesibilidad para permitir a los profesionales médicos trabajar de manera más eficiente.",
-      image: analyticsDashboard, // Reusing image for demo
+      image: analyticsDashboard,
       tags: ["Healthcare", "Enterprise", "Accessibility"],
     },
   ];
 
   return (
-    <main className="flex-1 px-6 md:px-40 py-16">
-      <div className="mx-auto max-w-7xl">
+    <section id="projects" className="py-16 md:py-24 px-6 md:px-10 bg-background">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-12 text-center animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tighter text-foreground">
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight tracking-tighter text-foreground">
             Proyectos Destacados
-          </h1>
+          </h2>
           <p className="mx-auto mt-4 max-w-3xl text-lg text-muted-foreground">
             Una selección de mi trabajo más impactante e innovador, mostrando mis habilidades y experiencia en diseño y desarrollo.
           </p>
@@ -96,8 +96,8 @@ const Projects = () => {
           ))}
         </div>
       </div>
-    </main>
+    </section>
   );
 };
 
-export default Projects;
+export default ProjectsSection;
