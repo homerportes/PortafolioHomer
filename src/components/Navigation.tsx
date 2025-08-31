@@ -52,10 +52,28 @@ const Navigation = () => {
   const isActive = (sectionId: string) => activeSection === sectionId;
 
   return (
-    <header className="sticky top-0 z-50 flex items-center justify-between px-6 md:px-10 py-4 bg-background/80 backdrop-blur-sm border-b border-white/10">
+    <header className="sticky top-0 z-50 flex items-center justify-center px-6 md:px-10 py-6 border-b border-white/10">
+      {/* Desktop Navigation - Centered */}
+      <nav className="hidden md:flex items-center justify-center gap-12">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            className={`text-base font-medium transition-all duration-300 hover:scale-105 ${
+              isActive(item.id)
+                ? "text-purple-300 font-semibold"
+                : "text-gray-300 hover:text-purple-300"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+      </nav>
+
+      {/* Mobile Logo - Only visible on mobile */}
       <button 
         onClick={() => scrollToSection('home')}
-        className="flex items-center gap-3 text-foreground hover:text-primary transition-colors"
+        className="flex md:hidden items-center gap-3 text-white hover:text-purple-300 transition-colors absolute left-6"
       >
         <svg 
           className="size-6 text-primary" 
@@ -75,34 +93,14 @@ const Navigation = () => {
             </clipPath>
           </defs>
         </svg>
-        <h2 className="text-xl font-bold tracking-tighter">Elena Ramirez</h2>
+        <h2 className="text-xl font-bold tracking-tighter text-white">HP</h2>
       </button>
-
-      {/* Desktop Navigation */}
-      <nav className="hidden md:flex items-center gap-8">
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            onClick={() => scrollToSection(item.id)}
-            className={`text-sm font-medium transition-colors ${
-              isActive(item.id)
-                ? "text-primary"
-                : "text-muted-foreground hover:text-primary"
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
-        <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold">
-          Descargar CV
-        </Button>
-      </nav>
 
       {/* Mobile Menu Button */}
       <Button
         variant="ghost"
         size="icon"
-        className="md:hidden text-foreground"
+        className="md:hidden text-white hover:text-purple-300 absolute right-6"
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       >
         <Menu className="h-6 w-6" />
@@ -110,24 +108,21 @@ const Navigation = () => {
 
       {/* Mobile Navigation */}
       {isMobileMenuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-white/10 md:hidden">
-          <nav className="flex flex-col p-6 gap-4">
+        <div className="absolute top-full left-0 right-0 border-b border-white/10 md:hidden bg-slate-900/95">
+          <nav className="flex flex-col p-6 gap-6">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className={`text-sm font-medium transition-colors text-left ${
+                className={`text-base font-medium transition-colors text-center ${
                   isActive(item.id)
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-primary"
+                    ? "text-purple-300 font-semibold"
+                    : "text-gray-300 hover:text-purple-300"
                 }`}
               >
                 {item.label}
               </button>
             ))}
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold mt-2">
-              Descargar CV
-            </Button>
           </nav>
         </div>
       )}
