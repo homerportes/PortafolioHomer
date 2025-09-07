@@ -1,5 +1,21 @@
 import { useState, useEffect } from "react";
-import { useTranslation } from "react-i18next";
+import { useTr      <nav className="hidden md:flex items-center justify-center gap-12">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={() => scrollToSection(item.id)}
+            className={`text-base font-medium transition-all duration-300 hover:scale-105 ${
+              isActive(item.id)
+                ? "text-purple-300 font-semibold"
+                : "text-gray-300 hover:text-purple-300"
+            }`}
+          >
+            {item.label}
+          </button>
+        ))}
+        <div className="h-5 w-px bg-gray-300/20"></div>
+        <LanguageSwitcher />
+      </nav>m "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
@@ -20,17 +36,14 @@ const Navigation = () => {
   // Scroll spy functionality
   useEffect(() => {
     const handleScroll = () => {
-      const sections = navItems.map((item) => item.id);
+      const sections = navItems.map(item => item.id);
       const scrollPosition = window.scrollY + 100;
 
       for (const sectionId of sections) {
         const element = document.getElementById(sectionId);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
             setActiveSection(sectionId);
             break;
           }
@@ -38,18 +51,18 @@ const Navigation = () => {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     handleScroll(); // Call once to set initial active section
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
       });
     }
     setIsMobileMenuOpen(false);
@@ -74,24 +87,23 @@ const Navigation = () => {
             {item.label}
           </button>
         ))}
-        <div className="h-5 w-px bg-gray-300/20"></div>
         <LanguageSwitcher />
       </nav>
 
       {/* Mobile Logo - Only visible on mobile */}
-      <button
-        onClick={() => scrollToSection("home")}
+      <button 
+        onClick={() => scrollToSection('home')}
         className="flex md:hidden items-center gap-3 text-white hover:text-purple-300 transition-colors absolute left-6"
       >
-        <svg
-          className="size-6 text-primary"
-          fill="none"
-          viewBox="0 0 48 48"
+        <svg 
+          className="size-6 text-primary" 
+          fill="none" 
+          viewBox="0 0 48 48" 
           xmlns="http://www.w3.org/2000/svg"
         >
           <g clipPath="url(#clip0_6_319)">
-            <path
-              d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z"
+            <path 
+              d="M8.57829 8.57829C5.52816 11.6284 3.451 15.5145 2.60947 19.7452C1.76794 23.9758 2.19984 28.361 3.85056 32.3462C5.50128 36.3314 8.29667 39.7376 11.8832 42.134C15.4698 44.5305 19.6865 45.8096 24 45.8096C28.3135 45.8096 32.5302 44.5305 36.1168 42.134C39.7033 39.7375 42.4987 36.3314 44.1494 32.3462C45.8002 28.361 46.2321 23.9758 45.3905 19.7452C44.549 15.5145 42.4718 11.6284 39.4217 8.57829L24 24L8.57829 8.57829Z" 
               fill="currentColor"
             />
           </g>

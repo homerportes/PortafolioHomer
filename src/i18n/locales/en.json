@@ -1,0 +1,107 @@
+{
+  "nav": {
+    "home": "Home",
+    "projects": "Projects",
+    "about": "About",
+    "skills": "Skills",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "Homer Portes",
+    "subtitle": "Full Stack Developer",
+    "description": "Junior full-stack developer with experience in ASP.NET Core, C#, React and databases. I'm passionate about creating practical and scalable web applications.",
+    "downloadCV": "Download CV"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "Developer passionate about creating innovative technological solutions and exceptional digital experiences.",
+    "education": "Education",
+    "courses": "Courses and Certifications"
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "Some of my recent work and personal projects",
+    "project1": {
+      "title": "RealStateRD – Web Platform for Appointment Management (Full-Stack)",
+      "description": "A fullstack web page about a real estate company, allows managing appointments, admin and user login"
+    },
+    "project2": {
+      "title": "Fullstack web application for managing Movies",
+      "description": "Fullstack web application for managing Movies, allows managing Movies, admin and user login"
+    },
+    "project3": {
+      "title": "Task Management System - RESTful API",
+      "description": "RESTful API for task management. With JWT for authentication, SignalR for real-time notifications and Rx.net for data flow management."
+    },
+    "project4": {
+      "title": "Landing pages with Html, CSS and JavaScript",
+      "description": "Landing pages with Html, CSS and JavaScript"
+    }
+  },
+  "skills": {
+    "title": "Skills",
+    "description": "Technologies and tools I work with",
+    "backend": {
+      "title": "Backend",
+      "description": "Server-side development"
+    },
+    "frontend": {
+      "title": "Frontend",
+      "description": "Client-side development"
+    },
+    "tools": {
+      "title": "Tools",
+      "description": "Development tools"
+    },
+    "learning": {
+      "title": "Always Learning",
+      "description": "Ability to quickly integrate into new stacks, frameworks and development processes."
+    }
+  },
+  "education": {
+    "degree1": {
+      "title": "Software Development Technologist",
+      "institution": "Instituto Tecnológico de las Américas",
+      "period": "2024 - Present",
+      "description": "Comprehensive training in software development with focus on modern technologies and agile development methodologies.",
+      "highlights": "Full Stack Development,Agile Methodologies,Databases"
+    },
+    "degree2": {
+      "title": "Web Page Programming Technician",
+      "institution": "INFOTEP-Centenaria",
+      "period": "2025",
+      "description": "Specialization in frontend and backend web development, with emphasis on modern web technologies and responsive design.",
+      "highlights": "Web Development,Responsive Design,Frontend Technologies"
+    }
+  },
+  "courses": {
+    "course1": {
+      "title": "Advanced C#",
+      "institution": "ITLA",
+      "description": "Advanced programming in C# with design patterns and best practices."
+    },
+    "course2": {
+      "title": "JavaScript",
+      "institution": "ITLA",
+      "description": "Development with modern JavaScript, ES6+ and asynchronous programming."
+    },
+    "course3": {
+      "title": "ASP.NET Core and REST APIs",
+      "institution": "Udemy",
+      "description": "REST API development with ASP.NET Core and microservices architecture."
+    },
+    "course4": {
+      "title": "Introduction to Cybersecurity",
+      "institution": "ITLA",
+      "description": "Fundamentals of computer security and system protection."
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "description": "Let's work together! Get in touch with me.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  }
+}

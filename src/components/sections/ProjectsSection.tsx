@@ -1,88 +1,88 @@
-import React, { useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight, Github, ExternalLink } from 'lucide-react';
-import { useScrollAnimation } from '../../hooks/useScrollAnimation';
+import React, { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight, Github, ExternalLink } from "lucide-react";
+import { useScrollAnimation } from "../../hooks/useScrollAnimation";
+import { useTranslation } from "react-i18next";
 import wellnessApp from "@/assets/Home.jpg";
 import Home from "@/assets/Home.jpg";
 import PeliculaFoto from "@/assets/PeliculaFotoFrontend.png";
 import WebApi from "@/assets/descarga.jpg";
 
 const ProjectsSection = () => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const { ref: headerRef, isVisible: headerVisible } = useScrollAnimation();
   const { ref: projectsRef, isVisible: projectsVisible } = useScrollAnimation();
-  
+
   const projects = [
     {
       id: 1,
-      title: "RealStateRD – Plataforma Web de Gestión de Reservas de Citas (Full-Stack)",
-      description: "Una pagina web fullstack sobre una empresa de bienesraices, permite gestionar reservas, login de admin y usuarios",
+      title: t("projects.project1.title"),
+      description: t("projects.project1.description"),
       image: Home,
       tags: ["Asp.Net Core", "React", "SQL Server", "Tailwind"],
-      githubUrl: "https://github.com/homerportes/RealStateRD"
+      githubUrl: "https://github.com/homerportes/RealStateRD",
     },
     {
       id: 2,
-      title: "Aplicacion web fullstack para gestionar Peliculas",
-      description: "Aplicacion web fullstack para gestionar Peliculas, permite gestionar Peliculas, login de admin y usuarios",
+      title: t("projects.project2.title"),
+      description: t("projects.project2.description"),
       image: PeliculaFoto,
       tags: ["Asp.Net Core", "Html", "CSS", "JavaScript"],
-      githubUrl: "https://github.com/homerportes/ApiPelicula"
+      githubUrl: "https://github.com/homerportes/ApiPelicula",
     },
     {
       id: 3,
-      title: "Sistema de Gestión de Tareas - API RESTful",
-      description: "API RESTful para gestionar tareas. Con JWT para autenticacion, SignalR para notificaciones en tiempo real y Rx.net para manejo de flujos de datos.",
+      title: t("projects.project3.title"),
+      description: t("projects.project3.description"),
       image: WebApi,
       tags: ["Asp.Net Core", "SignalR", "JWT", "Rx.net"],
-      githubUrl: "https://github.com/tu-usuario/analytics-dashboard",
+      githubUrl: "https://github.com/homerportes/WebApiTask",
     },
     {
       id: 4,
-      title: "Landing pages con Html, CSS y JavaScript",
-      description: "Landing pages con Html, CSS y JavaScript",
+      title: t("projects.project4.title"),
+      description: t("projects.project4.description"),
       image: wellnessApp,
       tags: ["Html", "CSS", "JavaScript"],
-      liveUrl: "https://analytics-dashboard.netlify.app"
-    }
+      liveUrl: "https://analytics-dashboard.netlify.app",
+    },
   ];
 
-  // Función para ir al siguiente conjunto de proyectos
   const nextProjects = () => {
-    setCurrentIndex((prev) => 
-      prev + 3 >= projects.length ? 0 : prev + 3
-    );
+    setCurrentIndex((prev) => (prev + 3 >= projects.length ? 0 : prev + 3));
   };
 
-  // Función para ir al conjunto anterior de proyectos
   const prevProjects = () => {
-    setCurrentIndex((prev) => 
+    setCurrentIndex((prev) =>
       prev - 3 < 0 ? Math.max(0, projects.length - 3) : prev - 3
     );
   };
-
-  // Obtener los 3 proyectos actuales para mostrar
   const currentProjects = projects.slice(currentIndex, currentIndex + 3);
 
   return (
-    <section id="projects" className="py-16 md:py-24 px-6 md:px-10 relative overflow-hidden">
-      
+    <section
+      id="projects"
+      className="py-16 md:py-24 px-6 md:px-10 relative overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div 
+        <div
           ref={headerRef}
           className={`text-center mb-12 transition-all duration-1000 ${
-            headerVisible ? 'animate-fade-in-up opacity-100' : 'opacity-0 translate-y-8'
+            headerVisible
+              ? "animate-fade-in-up opacity-100"
+              : "opacity-0 translate-y-8"
           }`}
         >
           <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-white stagger-1">
-            Mis Proyectos
+            {t("projects.title")}
           </h2>
           <div className="w-24 h-1 bg-purple-800 mx-auto my-6 stagger-2"></div>
           <p className="mt-4 text-lg text-gray-300 stagger-3">
-            Una selección de mis trabajos más destacados y proyectos personales.
+            {t("projects.description")}
           </p>
         </div>
 
@@ -95,20 +95,22 @@ const ProjectsSection = () => {
           >
             <ChevronLeft className="w-6 h-6 text-white" />
           </button>
-          
+
           <div className="flex gap-2">
-            {Array.from({ length: Math.ceil(projects.length / 3) }).map((_, index) => (
-              <div
-                key={index}
-                className={`h-2 rounded-full transition-all duration-500 transform hover:scale-125 ${
-                  Math.floor(currentIndex / 3) === index 
-                    ? 'bg-purple-800 w-6 animate-pulse' 
-                    : 'bg-white/30 w-2'
-                }`}
-              />
-            ))}
+            {Array.from({ length: Math.ceil(projects.length / 3) }).map(
+              (_, index) => (
+                <div
+                  key={index}
+                  className={`h-2 rounded-full transition-all duration-500 transform hover:scale-125 ${
+                    Math.floor(currentIndex / 3) === index
+                      ? "bg-purple-800 w-6 animate-pulse"
+                      : "bg-white/30 w-2"
+                  }`}
+                />
+              )
+            )}
           </div>
-          
+
           <button
             onClick={nextProjects}
             className="p-3 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 transition-all duration-300 hover:scale-110 hover:-rotate-12 transform"
@@ -119,30 +121,32 @@ const ProjectsSection = () => {
         </div>
 
         {/* Projects Grid */}
-        <div 
+        <div
           ref={projectsRef}
           className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-1000 ${
-            projectsVisible ? 'opacity-100' : 'opacity-0 translate-y-8'
+            projectsVisible ? "opacity-100" : "opacity-0 translate-y-8"
           }`}
         >
           {currentProjects.map((project, index) => (
             <Card
               key={project.id}
               className="group relative overflow-hidden rounded-2xl bg-slate-800/80 border border-slate-700/40 transition-all duration-500 hover:border-purple-800/50 hover:shadow-2xl hover:bg-slate-800/90 animate-fade-in-up hover:scale-105 hover:-translate-y-2"
-              style={{ animationDelay: `${projectsVisible ? (index * 0.15) : 0}s` }}
+              style={{
+                animationDelay: `${projectsVisible ? index * 0.15 : 0}s`,
+              }}
             >
               {/* Gradient overlay for better visual appeal */}
               <div className="absolute inset-0 bg-purple-800/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
+
               {/* Image container with overlay */}
               <div className="relative overflow-hidden">
-                <div 
+                <div
                   className="w-full bg-center bg-no-repeat aspect-video bg-cover transition-transform duration-500 group-hover:scale-110"
                   style={{ backgroundImage: `url(${project.image})` }}
                 />
                 {/* Dark overlay on image */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                
+
                 {/* Project Action Buttons */}
                 <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                   {/* GitHub Link */}
@@ -155,7 +159,7 @@ const ProjectsSection = () => {
                   >
                     <Github className="w-5 h-5 text-white" />
                   </a>
-                  
+
                   {/* Live Demo Link (solo si existe liveUrl) */}
                   {project.liveUrl && (
                     <a
@@ -170,7 +174,7 @@ const ProjectsSection = () => {
                   )}
                 </div>
               </div>
-              
+
               <div className="relative p-6 flex-1 flex flex-col">
                 <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors duration-300">
                   {project.title}
@@ -178,11 +182,11 @@ const ProjectsSection = () => {
                 <p className="text-gray-300 text-sm mb-6 leading-relaxed flex-1">
                   {project.description}
                 </p>
-                
+
                 {/* Enhanced tags */}
                 <div className="flex flex-wrap gap-2">
                   {project.tags.map((tag, tagIndex) => (
-                    <span 
+                    <span
                       key={tagIndex}
                       className="px-3 py-1.5 bg-purple-800/20 text-purple-200 text-xs font-medium rounded-full border border-purple-800/30 hover:bg-purple-800/30 transition-all duration-300"
                     >
@@ -190,7 +194,7 @@ const ProjectsSection = () => {
                     </span>
                   ))}
                 </div>
-                
+
                 {/* Subtle glow effect */}
                 <div className="absolute inset-0 rounded-3xl bg-purple-800/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </div>

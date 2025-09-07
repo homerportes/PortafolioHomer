@@ -23,7 +23,6 @@ const App = () => (
             <Navigation />
             <Routes>
               <Route path="/" element={<SinglePageApp />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

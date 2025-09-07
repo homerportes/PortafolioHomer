@@ -1,0 +1,107 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "projects": "Proyectos",
+    "about": "Acerca de",
+    "skills": "Habilidades",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Homer Portes",
+    "subtitle": "Desarrollador Full Stack",
+    "description": "Full-stack junior con experiencia en ASP.NET Core, C#, React y bases de datos. Me apasiona crear aplicaciones web prácticas y escalables.",
+    "downloadCV": "Descargar CV"
+  },
+  "about": {
+    "title": "Sobre Mí",
+    "description": "Desarrollador apasionado por crear soluciones tecnológicas innovadoras y experiencias digitales excepcionales.",
+    "education": "Educación",
+    "courses": "Cursos y Certificaciones"
+  },
+  "projects": {
+    "title": "Proyectos",
+    "description": "Algunos de mis trabajos recientes y proyectos personales",
+    "project1": {
+      "title": "RealStateRD – Plataforma Web de Gestión de Reservas de Citas (Full-Stack)",
+      "description": "Una pagina web fullstack sobre una empresa de bienesraices, permite gestionar reservas, login de admin y usuarios"
+    },
+    "project2": {
+      "title": "Aplicacion web fullstack para gestionar Peliculas",
+      "description": "Aplicacion web fullstack para gestionar Peliculas, permite gestionar Peliculas, login de admin y usuarios"
+    },
+    "project3": {
+      "title": "Sistema de Gestión de Tareas - API RESTful",
+      "description": "API RESTful para gestionar tareas. Con JWT para autenticacion, SignalR para notificaciones en tiempo real y Rx.net para manejo de flujos de datos."
+    },
+    "project4": {
+      "title": "Landing pages con Html, CSS y JavaScript",
+      "description": "Landing pages con Html, CSS y JavaScript"
+    }
+  },
+  "skills": {
+    "title": "Habilidades",
+    "description": "Tecnologías y herramientas con las que trabajo",
+    "backend": {
+      "title": "Backend",
+      "description": "Desarrollo del lado del servidor"
+    },
+    "frontend": {
+      "title": "Frontend",
+      "description": "Desarrollo del lado del cliente"
+    },
+    "tools": {
+      "title": "Herramientas",
+      "description": "Herramientas de desarrollo"
+    },
+    "learning": {
+      "title": "Siempre Aprendiendo",
+      "description": "Habilidad para integrarme rápidamente a nuevos stacks, frameworks y procesos de desarrollo."
+    }
+  },
+  "education": {
+    "degree1": {
+      "title": "Tecnólogo en Desarrollo de Software",
+      "institution": "Instituto Tecnológico de las Américas",
+      "period": "2024 - Actualidad",
+      "description": "Formación integral en desarrollo de software con enfoque en tecnologías modernas y metodologías ágiles de desarrollo.",
+      "highlights": "Desarrollo Full Stack,Metodologías Ágiles,Bases de Datos"
+    },
+    "degree2": {
+      "title": "Técnico en Programación de Páginas Web",
+      "institution": "INFOTEP-Centenaria",
+      "period": "2025",
+      "description": "Especialización en desarrollo web frontend y backend, con énfasis en tecnologías web modernas y diseño responsivo.",
+      "highlights": "Desarrollo Web,Diseño Responsivo,Tecnologías Frontend"
+    }
+  },
+  "courses": {
+    "course1": {
+      "title": "C# Avanzado",
+      "institution": "ITLA",
+      "description": "Programación avanzada en C# con patrones de diseño y mejores prácticas."
+    },
+    "course2": {
+      "title": "JavaScript",
+      "institution": "ITLA",
+      "description": "Desarrollo con JavaScript moderno, ES6+ y programación asíncrona."
+    },
+    "course3": {
+      "title": "ASP.NET Core y APIs REST",
+      "institution": "Udemy",
+      "description": "Desarrollo de APIs REST con ASP.NET Core y arquitectura de microservicios."
+    },
+    "course4": {
+      "title": "Introducción a la Ciberseguridad",
+      "institution": "ITLA",
+      "description": "Fundamentos de seguridad informática y protección de sistemas."
+    }
+  },
+  "contact": {
+    "title": "Contacto",
+    "description": "¡Trabajemos juntos! Ponte en contacto conmigo.",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje"
+  }
+}
