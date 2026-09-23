@@ -97,12 +97,20 @@
   z-index: 50;
   pointer-events: none;
   content: '';
-  opacity: 0.07;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.035;
+  background-image: url('/textures/grain.png');
+  /* its own compositor layer: painted once, never repainted under the scene */
+  will-change: transform;
 }
 
 @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  /* chapters far from the viewport skip style, layout and paint entirely; the
+     track height is explicit, so the reserved size is exact */
+  .chapter {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto calc(var(--len) * 100svh);
+  }
+
   .track {
     height: calc(var(--len) * 100svh);
   }
@@ -120,6 +128,11 @@
     --gutter: clamp(1.1rem, 5vw, 2.4rem);
     --head: 4.5rem;
     --beat: 650ms;
+  }
+
+  .chapter {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto calc(var(--len-handheld) * 100svh);
   }
 
   .track {
@@ -371,3 +384,4 @@
     transform: none;
   }
 }
+

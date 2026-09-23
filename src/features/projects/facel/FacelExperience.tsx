@@ -99,9 +99,9 @@ function Copy({ i }: { i: number }) {
   return (
     <div className={x.copy} data-slot={i}>
       <p className={x.kicker}>{scene.kicker}</p>
-      <h4 className={x.title}>
+      <h3 className={x.title}>
         <Lines text={scene.title} lineClassName={x.line} />
-      </h4>
+      </h3>
       <p className={x.body}>{scene.body}</p>
     </div>
   );

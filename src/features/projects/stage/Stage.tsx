@@ -26,7 +26,7 @@ export function Chapter({
   surfaces?: readonly string[];
   children: ReactNode;
 }) {
-  const ref = useStage(weights);
+  const ref = useStage(weights, project.name, true);
   const tiers = tierWeights(weights);
   const desktopLen = tiers.desktop.reduce((a, b) => a + b, 0) + 1;
   const handheldLen = tiers.handheld.reduce((a, b) => a + b, 0) + 1;

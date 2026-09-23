@@ -8,7 +8,7 @@ describe('Hero', () => {
 
     expect(screen.getByRole('heading', { level: 1, name: /homer portes/i })).toBeInTheDocument();
     expect(screen.getByText(/portfolio 2026/i)).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /view projects/i })).toHaveAttribute('href', '#projects');
+    expect(screen.getByRole('link', { name: /view experience/i })).toHaveAttribute('href', '#experience');
     expect(screen.getByRole('link', { name: /get in touch/i })).toHaveAttribute(
       'href',
       'mailto:homerportes@gmail.com',

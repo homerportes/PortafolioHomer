@@ -5,6 +5,9 @@
  */
 
 .section {
+  /* off-screen until the reader gets here: skip its rendering work */
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 900px;
   --paper: #f3eee4;
   --ink: #16120d;
   --soft: rgb(243 238 228 / 0.62);
@@ -38,9 +41,10 @@
   inset: 0;
   pointer-events: none;
   content: '';
-  opacity: 0.06;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  background-image: url('/textures/grain.png');
+  /* its own compositor layer: painted once, never repainted under the scene */
+  will-change: transform;
 }
 
 .meta {
@@ -392,3 +396,4 @@
     transition-delay: 0ms;
   }
 }
+

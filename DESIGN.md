@@ -82,7 +82,16 @@ Each world has its own motion character: Finevo soft rises and a lit plane,
 FacEl typed wipes, RealStateApp plates developing upward, Artemis horizontal
 wipes across ledger columns, LinkUp a loose social cluster, then night.
 
-Scroll is never hijacked: no smooth-scroll library, no snapping.
+**One gesture, one scene.** `stage/stepper.ts` holds every registered stage.
+Inside a stage (or within reach of one) a wheel notch, a swipe or an arrow /
+Page / Space key glides the page to the next scene's resting point (82% into
+the scene; scene 0 rests at its top), and adjacent stages chain through their
+hand-off seam. Inertia tails are swallowed; nested scrollers, an open menu,
+zoom and horizontal gestures are left alone. Outside the stages (Skills,
+Education, footer) scroll is native, and the scrollbar and anchors always move
+freely. `SceneRail` shows the chapter and its scenes (right rail on desktop,
+count inside the cue on handhelds) plus a "Scroll / Swipe up" cue.
+
 
 ## Rhythm
 
@@ -102,6 +111,28 @@ hero uses the same stage contract: its five tiles are the project index, and the
 Finevo tile opens (a scroll-linked `clip-path`) until it is Finevo's ground, so
 the portfolio enters its first project without a cut. Between worlds a
 short hand-off seam blends the grounds (oklab) and names the next project.
+
+## Performance rules
+
+Fluid on modest phones and GPU-less laptops, with the same animations for all:
+
+- **One frame for everything scroll-linked** (`lib/frame.ts`): scrollY is read
+  once; readers (header tone hit test, scene rail) run first, writers (stage
+  CSS variables, `data-state`) after. Never read layout inside a writer.
+- **Geometry is cached.** Stages measure themselves only when layout changes
+  (ResizeObserver on the track and the document, resize, mode change); a scroll
+  frame is arithmetic on scrollY. Chapters are measured through their
+  `<article>` and a shared `100svh` probe, never through skipped content.
+- **The glide is native smooth scroll** (`scrollTo({behavior:'smooth'})` +
+  `scrollend`), which runs on the compositor thread.
+- **Off-screen work is skipped:** chapters (in pinned mode), Skills and
+  Education use `content-visibility: auto` with an exact or remembered
+  intrinsic size.
+- **No full-screen blending or live blur.** Grain is a static PNG tile
+  (`public/textures/grain.png`) on its own layer, normal blend; the header is
+  near-opaque instead of `backdrop-filter`.
+- **No animation runtime.** Motion is CSS transitions and keyframes only; the
+  `motion` package was removed.
 
 ## Reduced motion
 

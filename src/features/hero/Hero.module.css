@@ -47,8 +47,9 @@
   pointer-events: none;
   content: '';
   opacity: 0.07;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url('/textures/grain.png');
+  /* its own compositor layer: painted once, never repainted under the scene */
+  will-change: transform;
 }
 
 /* ---------- document mode (default) ---------- */
@@ -399,32 +400,172 @@
   background: var(--orange);
 }
 
-.worlds ol {
+.worlds {
+  display: grid;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+/* the carousel must not widen the room to its full scroll width */
+.worlds > * {
+  min-width: 0;
+}
+
+.worldsHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem 1.5rem;
+}
+
+.worldsHint {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: clamp(1.1rem, 1.55vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.worldsHint em {
+  color: rgb(243 238 228 / 0.62);
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* a round orange marker so the instruction reads as one, not as a caption */
+.hintIcon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  color: #fff;
+  background: var(--orange);
+  border-radius: 999px;
+  font-size: 1rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 0 rgb(255 77 43 / 0.55);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hintIcon {
+    animation: hint-pulse 2.2s ease-out infinite;
+  }
+}
+
+@keyframes hint-pulse {
+  0% { box-shadow: 0 0 0 0 rgb(255 77 43 / 0.55); }
+  70%, 100% { box-shadow: 0 0 0 0.75rem rgb(255 77 43 / 0); }
+}
+
+.skip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 3rem;
+  padding: 0 1.4rem;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid var(--paper);
+  border-radius: 999px;
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 10px 30px -12px rgb(0 0 0 / 0.8);
+  transition: color 250ms var(--ease), background-color 250ms var(--ease), border-color 250ms var(--ease), transform 300ms var(--ease);
+}
+
+.skip:hover,
+.skip:focus-visible {
+  color: #fff;
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: translateY(-2px);
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--paper);
+  outline-offset: 3px;
+}
+
+.cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.6rem 1.2rem;
+  gap: 0.9rem;
   padding: 0;
   list-style: none;
 }
 
-.worlds a {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: baseline;
-  column-gap: 0.6rem;
-  row-gap: 0.3rem;
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
   color: var(--paper);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--ground) 38%, #221c16), #1d1813 70%);
+  border: 1px solid rgb(243 238 228 / 0.12);
+  border-radius: 1.1rem;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 18px 40px -24px rgb(0 0 0 / 0.8);
+  transition: transform 450ms var(--ease), border-color 300ms var(--ease), box-shadow 450ms var(--ease);
 }
 
-.swatch {
-  grid-column: 1 / -1;
-  height: 0.4rem;
-  margin-bottom: 0.7rem;
-  border-radius: 999px;
+.cardMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  margin: 0.45rem 0.45rem 0;
+  overflow: hidden;
+  border-radius: 0.75rem;
   background: var(--ground);
-  box-shadow: inset 0 0 0 1px rgb(243 238 228 / 0.28);
-  transform-origin: left;
-  transition: scale 400ms var(--ease);
+}
+
+.cardMedia img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  transition: transform 700ms var(--ease);
+}
+
+/* a soft fade so the capture settles into the card */
+.cardMedia::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(180deg, transparent 55%, rgb(22 18 13 / 0.35));
+}
+
+.cardBody {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.8rem 0.95rem 1rem;
+}
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cardGo {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  color: var(--paper);
+  border: 1px solid rgb(243 238 228 / 0.22);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  transition: color 300ms var(--ease), background-color 300ms var(--ease), transform 400ms var(--ease);
 }
 
 .worldNum {
@@ -435,32 +576,59 @@
 
 .worldName {
   font-family: var(--sans);
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  transition: color 300ms var(--ease);
+  font-size: clamp(1.05rem, 1.3vw, 1.4rem);
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
 }
 
 .worldField {
-  grid-column: 2;
   color: rgb(243 238 228 / 0.6);
   font-size: 0.78rem;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
-.worlds a:hover .swatch,
-.worlds a:focus-visible .swatch {
-  scale: 1 1.75;
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
 }
 
-.worlds a:hover .worldName,
-.worlds a:focus-visible .worldName {
-  color: var(--orange);
+.chips span {
+  padding: 0.22rem 0.55rem;
+  color: rgb(243 238 228 / 0.82);
+  background: rgb(243 238 228 / 0.07);
+  border: 1px solid rgb(243 238 228 / 0.1);
+  border-radius: 999px;
+  font-family: var(--mono);
+  font-size: 0.64rem;
+  white-space: nowrap;
 }
 
-.worlds a:focus-visible {
+.card:hover,
+.card:focus-visible {
+  border-color: rgb(243 238 228 / 0.32);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.08) inset, 0 26px 50px -22px rgb(0 0 0 / 0.9);
+  transform: translateY(-6px);
+}
+
+.card:hover .cardMedia img,
+.card:focus-visible .cardMedia img {
+  transform: scale(1.05);
+}
+
+.card:hover .cardGo,
+.card:focus-visible .cardGo {
+  color: #fff;
+  background: var(--orange);
+  border-color: var(--orange);
+  transform: rotate(45deg);
+}
+
+.card:focus-visible {
   outline: 2px solid var(--orange);
-  outline-offset: 6px;
+  outline-offset: 4px;
 }
 
 @media (min-width: 700px) {
@@ -468,7 +636,7 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
-  .worlds ol {
+  .cards {
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
@@ -620,7 +788,7 @@
 
   .room {
     width: 100%;
-    gap: 4.5rem;
+    gap: clamp(1.5rem, 4svh, 3rem);
     transform: translate3d(0, calc(var(--s3, 0) * -16svh), 0)
       scale(calc(1.22 - var(--s1, 0) * 0.22 + var(--s2, 0) * 0.03));
     opacity: calc(1 - var(--s3, 0) * 1.7);
@@ -633,39 +801,35 @@
   }
 
   .roomLine:first-child {
-    font-size: min(10.5vw, 21svh);
+    font-size: min(8.5vw, 15svh);
   }
 
   .roomLine:last-child {
-    font-size: min(9vw, 18svh);
+    font-size: min(7.4vw, 13svh);
     padding-bottom: 0.14em;
   }
 
-  /* the five worlds arrive one by one, each carrying its own ground */
-  .worlds li {
+  /* keep clear of the scene rail on the right edge */
+  .worlds {
+    padding-right: 2.6rem;
+  }
+
+  /* the five cards arrive one by one */
+  .worldsHead,
+  .cards li {
     opacity: 0;
     transform: translate3d(0, 1.6rem, 0);
     transition: opacity 700ms var(--ease), transform 900ms var(--ease);
   }
 
-  .worlds .swatch {
-    transform: scaleX(0);
-    transition: transform 1000ms var(--ease), scale 400ms var(--ease);
-  }
-
-  .worlds[data-state='active'] li {
+  .worlds[data-state='active'] .worldsHead,
+  .worlds[data-state='active'] .cards li {
     opacity: 1;
     transform: none;
-    transition-delay: calc(var(--i) * 90ms);
   }
 
-  .worlds[data-state='active'] .swatch {
-    transform: none;
-    transition-delay: calc(120ms + var(--i) * 90ms), 0ms;
-  }
-
-  .worldName {
-    font-size: clamp(1.1rem, 1.35vw, 1.6rem);
+  .worlds[data-state='active'] .cards li {
+    transition-delay: calc(120ms + var(--i) * 80ms);
   }
 
   /* --- the room becomes Finevo's forest --- */
@@ -771,24 +935,36 @@
   .roomTitle { gap: 0.3rem; }
   .roomLine:first-child { font-size: clamp(3.1rem, 14vw, 7rem); }
   .roomLine:last-child { font-size: clamp(2.8rem, 12vw, 6rem); }
-  .worlds ol { grid-template-columns: 1fr; gap: 0; }
-  .worlds li {
+  .worlds { gap: 0.8rem; margin-inline: calc(var(--gutter) * -1); }
+  .worldsHead { padding-inline: var(--gutter); gap: 0.6rem 1rem; }
+  .worldsHint { gap: 0.6rem; font-size: 0.98rem; }
+  .hintIcon { width: 1.9rem; height: 1.9rem; font-size: 0.85rem; }
+  .skip { min-height: 2.5rem; padding: 0 1.05rem; font-size: 0.7rem; }
+  /* a thumb-sized carousel: swipe sideways through the five, tap to open */
+  .cards {
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    grid-auto-columns: min(72vw, 19rem);
+    gap: 0.75rem;
+    padding: 0.25rem var(--gutter) 0.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .cards::-webkit-scrollbar { display: none; }
+  .cards li {
+    scroll-snap-align: start;
     opacity: 0;
-    transform: translate3d(0, 1rem, 0);
+    transform: translate3d(1.5rem, 0, 0);
     transition: opacity 500ms var(--ease), transform 700ms var(--ease);
   }
-  .worlds[data-state='active'] li { opacity: 1; transform: none; transition-delay: calc(var(--i) * 70ms); }
-  .worlds a {
-    grid-template-columns: 0.6rem 2rem minmax(0, 1fr);
-    align-items: center;
-    min-height: clamp(2.7rem, 6.3svh, 4rem);
-    column-gap: 0.65rem;
-    border-top: 1px solid rgb(243 238 228 / 0.18);
-  }
-  .swatch { grid-column: 1; width: 0.55rem; height: 0.55rem; margin: 0; }
-  .worldNum { grid-column: 2; font-size: 0.7rem; }
-  .worldName { grid-column: 3; font-size: clamp(0.95rem, 2.7vw, 1.3rem); }
-  .worldField { display: none; }
+  .worlds[data-state='active'] .cards li { opacity: 1; transform: none; transition-delay: calc(var(--i) * 70ms); }
+  .cardMedia { aspect-ratio: 16 / 9; }
+  .cardBody { padding: 0.65rem 0.85rem 0.85rem; gap: 0.2rem; }
+  .worldName { font-size: 1.1rem; }
+  .card:hover, .card:focus-visible { transform: none; }
   .enter {
     position: absolute;
     inset: 0;
@@ -822,3 +998,4 @@
     transform: translate3d(0, 1.2rem, 0);
   }
 }
+

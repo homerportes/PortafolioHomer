@@ -1,6 +1,7 @@
 import './styles/global.css';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { SceneRail } from './components/layout/SceneRail';
 import { Hero } from './features/hero/Hero';
 import { Projects } from './features/projects/Projects';
 import { Experience } from './features/experience/Experience';
@@ -22,6 +23,7 @@ export default function App() {
         <Education />
       </main>
       <Footer />
+      <SceneRail />
     </>
   );
 }
