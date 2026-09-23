@@ -18,4 +18,12 @@ class EmptyIntersectionObserver implements IntersectionObserver {
 
 globalThis.IntersectionObserver = EmptyIntersectionObserver;
 
+class EmptyResizeObserver implements ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+}
+
+globalThis.ResizeObserver = EmptyResizeObserver;
+
 afterEach(cleanup);

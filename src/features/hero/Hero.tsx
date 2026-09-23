@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState, type CSSProperties, type RefObject } from 'react';
 import { profile } from '@/content/profile';
 import { experience } from '@/content/experience';
-import { projects } from '@/features/projects/content';
+import { media, projects, type Media, type ProjectMeta } from '@/features/projects/content';
+import { Shot } from '@/features/projects/stage/Stage';
+import { skipProjects } from '@/features/projects/stage/stepper';
 import { at, useStage } from '@/features/projects/stage/useStage';
 import styles from './Hero.module.css';
 
@@ -13,6 +15,15 @@ const WEIGHTS = [0.5, 1, 0.9, 0.7] as const;
 const HANDHELD_WEIGHTS = [0.8, 0.65, 0.8, 0.6] as const;
 
 const LINES = ['Homer', 'Portes'];
+
+/** the capture each project card opens on */
+const COVERS: Record<ProjectMeta['id'], Media> = {
+  finevo: media.finevo.marketing,
+  facel: media.facel.ecf31,
+  realstate: media.realstate.search,
+  artemis: media.artemis.accounts,
+  linkup: media.linkup.feed,
+};
 const current = experience.find((role) => role.current);
 
 const FACTS = [
@@ -125,25 +136,14 @@ function useDotAnchor(frame: RefObject<HTMLDivElement | null>, dot: RefObject<HT
     f.style.setProperty('--dr', `${Math.round(d.offsetWidth / 2)}px`);
   });
 
+  // Offsets are read only when the layout really changed: on mount, once the
+  // fonts land, on resize, and when the name settles after a hover (see
+  // useElasticName). Reading them on scroll forced a reflow on every frame.
   useEffect(() => {
-    let frame = 0;
-    // letters may still be settling from a hover when the scroll begins
-    const onScroll = () => {
-      if (frame || window.scrollY > window.innerHeight * 1.5) return;
-      frame = requestAnimationFrame(() => {
-        frame = 0;
-        measure();
-      });
-    };
     measure();
     document.fonts?.ready.then(measure);
     window.addEventListener('resize', measure, { passive: true });
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => {
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener('resize', measure);
-      window.removeEventListener('scroll', onScroll);
-    };
+    return () => window.removeEventListener('resize', measure);
   }, [measure]);
 
   return measure;
@@ -156,7 +156,7 @@ function useDotAnchor(frame: RefObject<HTMLDivElement | null>, dot: RefObject<HT
  * Finevo's ground.
  */
 export function Hero() {
-  const ref = useStage({ desktop: WEIGHTS, handheld: HANDHELD_WEIGHTS });
+  const ref = useStage({ desktop: WEIGHTS, handheld: HANDHELD_WEIGHTS }, 'Intro');
   const frameRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLSpanElement>(null);
   const remeasure = useDotAnchor(frameRef, dotRef);
@@ -217,8 +217,8 @@ export function Hero() {
                 into AI and data science.
               </p>
               <div className={styles.actions}>
-                <a className={styles.primary} href="#projects">
-                  View projects <span aria-hidden="true">→</span>
+                <a className={styles.primary} href="#experience" onClick={skipProjects}>
+                  View experience <span aria-hidden="true">→</span>
                 </a>
                 <a className={styles.secondary} href={`mailto:${profile.email}`}>
                   Get in touch <span aria-hidden="true">↗</span>
@@ -267,23 +267,48 @@ export function Hero() {
                 </span>
               </p>
 
-              <nav className={styles.worlds} {...at(2, 3)} aria-label="Project chapters">
-                <ol>
-                  {projects.map((project, i) => (
-                    <li
-                      key={project.id}
-                      style={{ '--i': i, '--ground': project.surface } as CSSProperties}
-                    >
-                      <a href={`#project-${project.id}`}>
-                        <span className={styles.swatch} aria-hidden="true" />
-                        <span className={styles.worldNum}>{project.number}</span>
-                        <span className={styles.worldName}>{project.name}</span>
-                        <span className={styles.worldField}>{project.field}</span>
-                      </a>
-                    </li>
-                  ))}
-                </ol>
-              </nav>
+              <div className={styles.worlds} {...at(2, 3)}>
+                <div className={styles.worldsHead}>
+                  <p className={styles.worldsHint}>
+                    <span className={styles.hintIcon} aria-hidden="true">↓</span>
+                    <span>
+                      Click the project you want to see, <em>or scroll to see them all.</em>
+                    </span>
+                  </p>
+                  <a className={styles.skip} href="#experience" onClick={skipProjects}>
+                    Skip projects <span aria-hidden="true">↓</span>
+                  </a>
+                </div>
+                <nav aria-label="Project chapters">
+                  <ol className={styles.cards}>
+                    {projects.map((project, i) => (
+                      <li
+                        key={project.id}
+                        style={{ '--i': i, '--ground': project.surface } as CSSProperties}
+                      >
+                        <a className={styles.card} href={`#project-${project.id}`}>
+                          <span className={styles.cardMedia}>
+                            <Shot m={COVERS[project.id]} alt="" sizes="(min-width: 1024px) 20vw, 72vw" />
+                          </span>
+                          <span className={styles.cardBody}>
+                            <span className={styles.cardTop}>
+                              <span className={styles.worldNum}>{project.number}</span>
+                              <span className={styles.cardGo} aria-hidden="true">↗</span>
+                            </span>
+                            <span className={styles.worldName}>{project.name}</span>
+                            <span className={styles.worldField}>{project.field}</span>
+                            <span className={styles.chips}>
+                              {project.stack.slice(0, 3).map((tech) => (
+                                <span key={tech}>{tech}</span>
+                              ))}
+                            </span>
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              </div>
             </div>
 
             <p className={styles.enter} aria-hidden="true">

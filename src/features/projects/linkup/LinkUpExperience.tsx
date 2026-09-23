@@ -50,9 +50,9 @@ function Copy({ i }: { i: number }) {
         <span>{String(i + 1).padStart(2, '0')}</span>
         {scene.kicker}
       </p>
-      <h4 className={l.title}>
+      <h3 className={l.title}>
         <Lines text={scene.title} lineClassName={l.line} />
-      </h4>
+      </h3>
       <p className={l.body}>{scene.body}</p>
     </div>
   );

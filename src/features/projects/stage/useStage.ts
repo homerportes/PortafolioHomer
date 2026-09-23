@@ -1,4 +1,6 @@
 import { useEffect, useRef } from 'react';
+import { registerStage } from './stepper';
+import { onFrame, requestTick } from '@/lib/frame';
 
 /** Keep these media conditions byte-identical to the CSS module media blocks. */
 export const DESKTOP_QUERY =
@@ -17,6 +19,21 @@ export const tierWeights = (weights: StageWeights) => Array.isArray(weights)
   : weights as { desktop: readonly number[]; handheld: readonly number[] };
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+
+/**
+ * The pinned frame is 100svh tall. One shared, fixed probe reports that height
+ * without touching any stage's layout.
+ */
+let probe: HTMLDivElement | null = null;
+function viewportHeight() {
+  if (!probe) {
+    probe = document.createElement('div');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100svh;visibility:hidden;pointer-events:none';
+    document.body.appendChild(probe);
+  }
+  return probe.offsetHeight || window.innerHeight;
+}
 
 /**
  * Marks an element as belonging to one or more scenes of a stage. The stage
@@ -48,9 +65,14 @@ export function at(...scenes: number[]) {
  * In document mode (short landscape screens, reduced motion) `[data-reveal]` elements
  * receive `data-seen` once, when they enter the viewport.
  *
+ * The stage also registers with the stepper, so one wheel notch, swipe or
+ * arrow key moves exactly one scene.
+ *
  * @param weights relative scroll length of each scene
+ * @param label     the stage's name on the scene rail
+ * @param skippable a project chapter, which offers "Skip projects"
  */
-export function useStage(weights: StageWeights) {
+export function useStage(weights: StageWeights, label = '', skippable = false) {
   const ref = useRef<HTMLDivElement>(null);
   const tiers = tierWeights(weights);
   const weightsKey = `${tiers.desktop.join(',')}|${tiers.handheld.join(',')}`;
@@ -85,21 +107,35 @@ export function useStage(weights: StageWeights) {
     const last = new Array<number>(Math.max(desktopBounds.length, handheldBounds.length)).fill(-1);
     let current = -1;
     let near = false;
-    let frame = 0;
+    let lastP = '';
 
     // a world may change its base colour per scene; the header follows it
     const surfaces = track.dataset.surfaces?.split(',');
     const host = track.closest<HTMLElement>('[data-surface]');
-    const scrollSpan = (trackHeight: number) => {
-      const frame = track.firstElementChild as HTMLElement | null;
-      return trackHeight - (frame?.getBoundingClientRect().height ?? trackHeight);
+
+    // Geometry is cached and re-read only when layout actually changes, so a
+    // scroll frame is pure arithmetic on scrollY: no layout read after the
+    // style writes, no forced reflow.
+    const metrics = { top: 0, span: 0 };
+    // a chapter's track fills its <article>, which content-visibility never
+    // skips: measuring the article keeps skipped chapters unlaid-out
+    const box = track.parentElement?.tagName === 'ARTICLE' ? track.parentElement : track;
+    const measure = () => {
+      const rect = box.getBoundingClientRect();
+      metrics.top = rect.top + window.scrollY;
+      metrics.span = rect.height - viewportHeight();
     };
+    measure();
 
     const setScene = (scene: number) => {
       if (scene === current) return;
       current = scene;
       track.dataset.scene = String(scene);
-      if (surfaces?.[scene] && host) host.dataset.surface = surfaces[scene];
+      if (surfaces?.[scene] && host) {
+        host.dataset.surface = surfaces[scene];
+        // the header reads the new ground on the next frame
+        requestTick();
+      }
       for (const { el, scenes } of nodes) {
         el.dataset.state = scenes.includes(scene)
           ? 'active'
@@ -109,13 +145,16 @@ export function useStage(weights: StageWeights) {
       }
     };
 
-    const apply = () => {
-      frame = 0;
-      if (!mq?.matches) return;
-      const rect = track.getBoundingClientRect();
-      const span = scrollSpan(rect.height);
-      const p = span > 0 ? clamp01(-rect.top / span) : 0;
-      track.style.setProperty('--p', p.toFixed(4));
+    // a writer on the shared frame: it gets scrollY and never reads layout
+    const apply = (scrollY: number) => {
+      if (!near || !mq?.matches) return;
+      const { top, span } = metrics;
+      const p = span > 0 ? clamp01((scrollY - top) / span) : 0;
+      const pText = p.toFixed(4);
+      if (pText !== lastP) {
+        lastP = pText;
+        track.style.setProperty('--p', pText);
+      }
 
       let scene = 0;
       bounds().forEach(([start, end], i) => {
@@ -127,13 +166,9 @@ export function useStage(weights: StageWeights) {
         if (p >= start) scene = i;
       });
       setScene(scene);
-      // tone can change inside a scene (a growing clip-path); keep the header in step
-      window.dispatchEvent(new Event('stage:surface'));
     };
 
-    const schedule = () => {
-      if (near && !frame) frame = requestAnimationFrame(apply);
-    };
+    const schedule = requestTick;
 
     const proximity = new IntersectionObserver(
       ([entry]) => {
@@ -142,7 +177,18 @@ export function useStage(weights: StageWeights) {
       },
       { rootMargin: '50% 0px 50% 0px' },
     );
-    proximity.observe(track);
+    // observe the chapter itself: it stays measurable while its contents are
+    // skipped by content-visibility
+    proximity.observe(track.closest('article, section') ?? track);
+
+    // anything above the stage (images, fonts, a chapter rendering for the
+    // first time) can move it, so the whole document is watched
+    const layout = new ResizeObserver(() => {
+      measure();
+      schedule();
+    });
+    layout.observe(track);
+    layout.observe(document.documentElement);
 
     const reveal = new IntersectionObserver(
       (entries) => {
@@ -164,36 +210,43 @@ export function useStage(weights: StageWeights) {
       if (!host) return;
       const scene = Number((host.dataset.at ?? '0').split(' ')[0]);
       if (scene === current) return;
-      const rect = track.getBoundingClientRect();
-      const span = scrollSpan(rect.height);
       const [start, end] = bounds()[scene] ?? [0, 0];
-      window.scrollTo({ top: window.scrollY + rect.top + span * (start + (end - start) * 0.5) });
+      window.scrollTo({ top: metrics.top + metrics.span * (start + (end - start) * 0.5) });
     };
     track.addEventListener('focusin', onFocus);
 
+    const onResize = () => {
+      measure();
+      schedule();
+    };
+
     const onModeChange = () => {
+      measure();
+      lastP = '';
       last.fill(-1);
       current = -1;
       near = true;
       schedule();
     };
 
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule, { passive: true });
+    const offFrame = onFrame(apply);
+    window.addEventListener('resize', onResize, { passive: true });
     mq?.addEventListener?.('change', onModeChange);
     desktopMq?.addEventListener?.('change', onModeChange);
+    const unregister = registerStage({ track, label, skippable, bounds, metrics: () => metrics });
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
+      unregister();
+      offFrame();
       track.removeEventListener('focusin', onFocus);
       proximity.disconnect();
+      layout.disconnect();
       reveal.disconnect();
-      window.removeEventListener('scroll', schedule);
-      window.removeEventListener('resize', schedule);
+      window.removeEventListener('resize', onResize);
       mq?.removeEventListener?.('change', onModeChange);
       desktopMq?.removeEventListener?.('change', onModeChange);
     };
-  }, [weightsKey]);
+  }, [weightsKey, label, skippable]);
 
   return ref;
 }

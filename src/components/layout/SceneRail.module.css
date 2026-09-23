@@ -1,0 +1,290 @@
+/*
+ * The scene rail and the scroll cue. A neutral smoked pill keeps them legible
+ * on every world (paper, forest, cobalt, night) without blending or blur.
+ */
+
+.rail,
+.cue,
+.skip {
+  --pill: rgb(14 13 12 / 0.84);
+  --pill-fg: #f6f2ea;
+  --pill-muted: rgb(246 242 234 / 0.55);
+  position: fixed;
+  z-index: 25;
+  color: var(--pill-fg);
+  font-family: var(--font-body, 'Archivo', sans-serif);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 320ms var(--ease-out, ease), visibility 0s linear 320ms, transform 320ms var(--ease-out, ease);
+}
+
+.rail[data-visible],
+.cue[data-visible],
+.skip[data-visible] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 320ms var(--ease-out, ease), visibility 0s, transform 320ms var(--ease-out, ease);
+}
+
+/* ---------- rail ---------- */
+
+.rail {
+  top: 50%;
+  right: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 0.3rem;
+  background: var(--pill);
+  border-radius: 999px;
+  transform: translate(0.5rem, -50%);
+}
+
+.rail[data-visible] {
+  transform: translate(0, -50%);
+}
+
+.label {
+  max-height: 9rem;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.62rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.dots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 1.4rem;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+.dot::before {
+  width: 0.4rem;
+  height: 0.4rem;
+  content: '';
+  background: var(--pill-muted);
+  border-radius: 999px;
+  transition: height 300ms var(--ease-out, ease), background-color 300ms ease;
+}
+
+.dot:hover::before {
+  background: var(--pill-fg);
+}
+
+.dot[aria-current]::before {
+  height: 1.1rem;
+  background: var(--pill-fg);
+}
+
+.dot:focus-visible {
+  outline: 2px solid var(--pill-fg);
+  outline-offset: 1px;
+  border-radius: 999px;
+}
+
+.count {
+  margin: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.count span {
+  color: var(--pill-muted);
+}
+
+/* ---------- skip projects ---------- */
+
+.skip {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: clamp(1rem, 2.4vw, 2rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.6rem;
+  padding: 0 1.1rem;
+  color: var(--pill-fg);
+  background: var(--pill);
+  border: 1px solid rgb(246 242 234 / 0.18);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transform: translateY(0.5rem);
+}
+
+.skip[data-visible] {
+  transform: none;
+}
+
+.skip:hover {
+  color: #16120d;
+  background: var(--pill-fg);
+}
+
+.skip:focus-visible {
+  outline: 2px solid var(--pill-fg);
+  outline-offset: 3px;
+}
+
+/* ---------- cue ---------- */
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.cue {
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  left: 50%;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 2.6rem;
+  padding: 0 1.1rem 0 1.2rem;
+  cursor: pointer;
+  background: var(--pill);
+  border: 0;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transform: translate(-50%, 0.5rem);
+}
+
+.cue[data-visible] {
+  transform: translate(-50%, 0);
+}
+
+.cue[data-first] {
+  min-height: 3rem;
+  padding-inline: 1.4rem 1.25rem;
+  font-size: 0.78rem;
+}
+
+.cue:focus-visible {
+  outline: 2px solid var(--pill-fg);
+  outline-offset: 3px;
+}
+
+/* the page is already moving: the cue steps aside */
+:global(html[data-gliding]) .cue {
+  opacity: 0;
+}
+
+.chevron {
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .chevron {
+    animation: nudge 1.6s ease-in-out infinite;
+  }
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0) rotate(45deg); }
+  50% { transform: translateY(0.3rem) rotate(45deg); }
+}
+
+.cueCount {
+  display: none;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.66rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+}
+
+.cueCount span {
+  color: var(--pill-muted);
+}
+
+/* handhelds: the rail would sit on the artwork, so the count rides in the cue */
+@media (max-width: 1023px) {
+  .rail {
+    display: none;
+  }
+
+  .cue {
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    min-height: 2.3rem;
+    padding: 0 0.95rem 0 1rem;
+    font-size: 0.66rem;
+  }
+
+  .skip {
+    bottom: auto;
+    top: calc(4.5rem + 0.6rem);
+    left: auto;
+    right: 0.75rem;
+    min-height: 2.1rem;
+    padding: 0 0.85rem;
+    font-size: 0.62rem;
+  }
+
+  .cueCount {
+    display: inline;
+    padding-right: 0.55rem;
+    border-right: 1px solid var(--pill-muted);
+  }
+}
+
+/* short laptop screens: the cue sits lower and slimmer so it clears the
+   hero's bottom row of facts */
+@media (min-width: 1024px) and (max-height: 820px) {
+  .cue,
+  .cue[data-first] {
+    bottom: 0.5rem;
+    min-height: 2.1rem;
+    padding-inline: 1rem 0.9rem;
+    font-size: 0.66rem;
+  }
+
+  .skip {
+    bottom: 0.5rem;
+    min-height: 2.1rem;
+    font-size: 0.66rem;
+  }
+}
+
+@media print {
+  .rail,
+  .cue,
+  .skip {
+    display: none;
+  }
+}

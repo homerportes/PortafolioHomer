@@ -48,7 +48,7 @@ const MARKS = [
  * and the timeline runs from joining to now.
  */
 export function Experience() {
-  const ref = useStage(WEIGHTS);
+  const ref = useStage(WEIGHTS, 'Experience');
   const desktopLength = WEIGHTS.desktop.reduce<number>((sum, weight) => sum + weight, 1);
   const handheldLength = WEIGHTS.handheld.reduce<number>((sum, weight) => sum + weight, 1);
 

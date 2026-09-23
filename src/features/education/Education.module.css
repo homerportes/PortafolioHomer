@@ -5,6 +5,9 @@
  */
 
 .section {
+  /* off-screen until the reader gets here: skip its rendering work */
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 900px;
   --paper: #f3eee4;
   --ink: #16120d;
   --muted: #6a6258;
@@ -51,7 +54,8 @@
 }
 
 .kicker {
-  color: var(--orange);
+  /* #ff4d2b is 3:1 on the paper; this ink keeps the hue at 5:1 for small caps */
+  color: #c2361a;
   font-family: var(--sans);
   font-size: 0.7rem;
   font-weight: 700;

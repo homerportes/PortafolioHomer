@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { onFrame } from '@/lib/frame';
 
 type SceneTone = { dark: boolean; surface: string | null };
 
@@ -12,10 +13,10 @@ export function useSceneTone(probeY = 64): SceneTone {
   const [tone, setTone] = useState<SceneTone>({ dark: false, surface: null });
 
   useEffect(() => {
-    let frame = 0;
-
+    // A reader on the shared frame: the hit test runs before any stage writes
+    // its styles, so it sees the previous frame's clean layout instead of
+    // forcing a fresh one.
     const measure = () => {
-      frame = 0;
       // the header itself sits on top of the probe point, so look beneath it
       const stack = document.elementsFromPoint?.(window.innerWidth / 2, probeY) ?? [];
       const host = stack
@@ -26,21 +27,7 @@ export function useSceneTone(probeY = 64): SceneTone {
       setTone((prev) => (prev.dark === dark && prev.surface === surface ? prev : { dark, surface }));
     };
 
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(measure);
-    };
-
-    measure();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    // a project stage can change its ground without the page moving
-    window.addEventListener('stage:surface', onScroll);
-    return () => {
-      window.removeEventListener('stage:surface', onScroll);
-      if (frame) cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-    };
+    return onFrame(measure, 'read');
   }, [probeY]);
 
   return tone;

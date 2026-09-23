@@ -1,7 +1,5 @@
 import { useState, type CSSProperties } from 'react';
-import { motion, useReducedMotion } from 'motion/react';
 import { profile } from '@/content/profile';
-import { EASE_OUT } from '@/components/motion/easing';
 import { useSceneTone } from '@/hooks/useSceneTone';
 import styles from './Header.module.css';
 
@@ -21,20 +19,16 @@ const CONTACT_ITEM = { href: 'mailto:', label: 'Get in touch' };
  */
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const reduced = useReducedMotion();
   const { dark: onDarkScene, surface } = useSceneTone();
 
   return (
-    <motion.header
+    <header
       className={styles.header}
-      initial={reduced ? false : { opacity: 0, y: -12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.42, ease: EASE_OUT }}
       data-dark={onDarkScene || undefined}
       style={surface ? ({ '--header-surface': surface } as CSSProperties) : undefined}
     >
       <nav className={styles.nav} aria-label="Sections">
-        <a href="#top" className={styles.wordmark} aria-label="Homer Portes, back to top">
+        <a href="#top" className={styles.wordmark} aria-label="HP — Homer Portes, back to top">
           <span>HP</span><i aria-hidden="true" />
         </a>
         <ul className={styles.links}>
@@ -72,6 +66,6 @@ export function Header() {
           <span aria-hidden="true">↗</span>
         </a>
       </div>
-    </motion.header>
+    </header>
   );
 }

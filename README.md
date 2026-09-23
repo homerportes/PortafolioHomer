@@ -1,7 +1,7 @@
 # Homer Portes — Portfolio
 
 Portfolio personal de Homer Portes. **Vite + React 19 + TypeScript**, con
-animación de scroll vía [`motion`](https://motion.dev).
+animación de scroll hecha con CSS y un único frame compartido (sin librerías de animación).
 
 La dirección de arte, el sistema de color, la tipografía y las reglas de motion
 están documentadas en [DESIGN.md](DESIGN.md). Léelo antes de cambiar algo visual.
@@ -20,13 +20,32 @@ npm run build
 npm run lint
 ```
 
+## Publicar
+
+Sitio estático: `npm run build` genera `dist/`.
+
+1. **Vercel (recomendado).** Importa el repo; `vercel.json` ya define build,
+   carpeta de salida, caché de assets y cabeceras de seguridad. El dominio de
+   producción se toma solo (`VERCEL_PROJECT_PRODUCTION_URL`).
+2. **Otro hosting (Netlify, Cloudflare Pages, GitHub Pages…).** Build
+   `npm run build`, carpeta `dist`, y define la variable de entorno
+   `SITE_URL` con la dirección final, por ejemplo `SITE_URL=https://homerportes.dev`.
+
+`SITE_URL` completa las URLs absolutas de `index.html` (canonical, Open Graph,
+Twitter, datos estructurados) y genera `robots.txt` y `sitemap.xml`. Sin ella el
+build avisa, usa URLs relativas y omite el sitemap.
+
+Tras publicar, comprueba la vista previa del enlace en
+[opengraph.xyz](https://www.opengraph.xyz) o en el Post Inspector de LinkedIn.
+La imagen es `public/og-image.jpg` (1200×630).
+
 ## Estructura
 
 ```
 src/
 ├── components/
 │   ├── layout/       Header (running head), Footer (colofón)
-│   └── motion/       Reveal + tokens de easing
+│   └── motion/       useReveal (IntersectionObserver)
 ├── features/
 │   ├── hero/         Masthead, diagrama Onion, índice, handoff a Project 01
 │   ├── projects/     stage/ (useStage, Chapter, Crop) + un *Experience por proyecto
