@@ -62,9 +62,10 @@ export function Experience() {
       <div ref={ref} className={styles.track} data-tone="light" data-surface="#f3eee4" style={{ '--len-desktop': desktopLength, '--len-handheld': handheldLength } as CSSProperties}>
         <div className={styles.frame}>
           <div className={styles.meta}>
-            <p className={styles.kicker}>Oct 2025 – now</p>
+            {/* the whole tenure at the company, not the junior role's dates */}
+            <p className={styles.kicker}>{junior.company} · Oct 2025 – present</p>
             <p className={styles.company}>
-              {junior.company}, {junior.location}
+              {junior.location}
             </p>
           </div>
 

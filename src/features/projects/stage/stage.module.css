@@ -401,7 +401,7 @@
   position: relative;
   padding-left: 1.15rem;
   color: var(--fg);
-  font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+  font-size: clamp(0.86rem, 0.95vw, 1rem);
   line-height: 1.4;
 }
 
@@ -453,7 +453,7 @@
 
   .points li {
     padding-left: 0.95rem;
-    font-size: 0.74rem;
+    font-size: 0.8rem;
     line-height: 1.32;
   }
 

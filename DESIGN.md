@@ -78,6 +78,12 @@ track; when the active scene changes it sets `data-scene` on the track and flips
   follows via the `stage:surface` event.
 - Tabbing into a hidden scene scrolls the stage to it.
 
+**Text is never left half-cut.** A transition may hide text, but no state of
+the scroll may show broken letters: scene titles, the FacEl XML and the Artemis
+ledger cross-fade (opacity + 16px) instead of wiping with `clip-path` or rising
+out of a clipping box, and image plates fade in place. Crops are done with
+`overflow: clip`, never with an animated mask.
+
 Each world has its own motion character: Finevo soft rises and a lit plane,
 FacEl typed wipes, RealStateApp plates developing upward, Artemis horizontal
 wipes across ledger columns, LinkUp a loose social cluster, then night.

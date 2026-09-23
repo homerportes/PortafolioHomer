@@ -130,7 +130,11 @@
   border-color: var(--hero-accent);
 }
 
-.links li:first-child .navLink::after { transform: scaleX(1); }
+/* the section the reader is in (useActiveSection), not a fixed first link */
+.navLink[aria-current='location']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
 
 @media (max-width: 820px), (max-width: 1023px) and (orientation: portrait) {
   .header,

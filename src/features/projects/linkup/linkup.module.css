@@ -372,10 +372,11 @@
 
   .name {
     position: absolute;
-    bottom: -3.4vw;
+    bottom: -1.6vw;
     left: var(--gutter);
     z-index: 1;
-    font-size: 18.5vw;
+    font-size: 16vw;
+    line-height: 0.82;
     transition: opacity 800ms var(--ease), transform 1100ms var(--ease);
   }
 
@@ -544,4 +545,35 @@
 @media (max-width: 360px) and (orientation: portrait) {
   .masthead { gap: 1.1rem; }
   .name { font-size: clamp(3.5rem, 19vw, 4.5rem); line-height: 1; margin-left: 0; }
+}
+
+/* ---------- QA: no broken text ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
+  (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  /* a transition may hide text but never leave it half-cut: lines cross-fade
+     instead of wiping or rising out of a clipping box */
+  .line.line {
+    overflow: visible;
+  }
+
+  .line.line > span {
+    clip-path: none;
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 380ms var(--ease), transform 520ms var(--ease);
+  }
+
+  .scene.scene[data-state='active'] .line > span {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(140ms + var(--i, 0) * 60ms);
+  }
+
+  .scene.scene[data-state='past'] .line > span {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+    transition-duration: 240ms, 320ms;
+    transition-delay: 0ms;
+  }
 }

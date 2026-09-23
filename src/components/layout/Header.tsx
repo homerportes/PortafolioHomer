@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from 'react';
 import { profile } from '@/content/profile';
 import { useSceneTone } from '@/hooks/useSceneTone';
+import { useActiveSection } from '@/hooks/useActiveSection';
 import styles from './Header.module.css';
 import { Arrow } from '@/components/Arrow';
 
@@ -12,6 +13,8 @@ const NAV_ITEMS = [
   { href: '#education', label: 'Education' },
 ];
 
+const SECTION_IDS = NAV_ITEMS.map((item) => item.href.slice(1));
+
 const CONTACT_ITEM = { href: 'mailto:', label: 'Get in touch' };
 
 /**
@@ -21,6 +24,7 @@ const CONTACT_ITEM = { href: 'mailto:', label: 'Get in touch' };
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { dark: onDarkScene, surface } = useSceneTone();
+  const active = useActiveSection(SECTION_IDS);
 
   return (
     <header
@@ -35,7 +39,11 @@ export function Header() {
         <ul className={styles.links}>
           {NAV_ITEMS.map((item) => (
             <li key={item.href}>
-              <a href={item.href} className={styles.navLink}>
+              <a
+                href={item.href}
+                className={styles.navLink}
+                aria-current={item.href === `#${active}` ? 'location' : undefined}
+              >
                 {item.label}
               </a>
             </li>
@@ -57,7 +65,12 @@ export function Header() {
       </nav>
       <div className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ''}`}>
         {NAV_ITEMS.map((item) => (
-          <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+          <a
+            key={item.href}
+            href={item.href}
+            aria-current={item.href === `#${active}` ? 'location' : undefined}
+            onClick={() => setMenuOpen(false)}
+          >
             {item.label}
             <Arrow dir="up-right" />
           </a>

@@ -298,11 +298,6 @@ export function Hero() {
                             </span>
                             <span className={styles.worldName}>{project.name}</span>
                             <span className={styles.worldField}>{project.field}</span>
-                            <span className={styles.chips}>
-                              {project.stack.slice(0, 3).map((tech) => (
-                                <span key={tech}>{tech}</span>
-                              ))}
-                            </span>
                           </span>
                         </a>
                       </li>

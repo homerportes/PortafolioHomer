@@ -207,6 +207,14 @@
   outline-offset: 3px;
 }
 
+/* desktop: once the reader has started, the rail shows progress and the cue
+   is no longer needed; phones keep it, since it carries the scene count */
+@media (min-width: 1024px) {
+  .cue:not([data-first]) {
+    display: none;
+  }
+}
+
 /* the page is already moving: the cue steps aside */
 :global(html[data-gliding]) .cue {
   opacity: 0;

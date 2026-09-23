@@ -231,14 +231,16 @@
   display: inline-grid;
   align-self: center;
   place-items: center;
-  width: 1.15em;
-  height: 1.15em;
+  width: 0.95em;
+  height: 0.95em;
   margin-right: 0.15em;
   flex: none;
-  border-radius: 0.28em;
+  border-radius: 0.24em;
   background: var(--paper);
-  font-size: clamp(1.25rem, 4.6vw, 2.3rem);
-  transition: transform 400ms var(--ease);
+  font-size: clamp(1.1rem, 3.8vw, 1.9rem);
+  opacity: 0.72;
+  filter: grayscale(1);
+  transition: transform 400ms var(--ease), opacity 300ms var(--ease), filter 300ms var(--ease);
 }
 
 .logo img {
@@ -247,7 +249,10 @@
   object-fit: contain;
 }
 
-.skill:hover .logo {
+.skill:hover .logo,
+.skill:focus-within .logo {
+  opacity: 1;
+  filter: none;
   transform: translateY(-0.08em);
 }
 
@@ -259,7 +264,7 @@
 }
 
 .row[data-learning] .skillName {
-  color: var(--soft);
+  color: rgb(243 238 228 / 0.86);
   font-family: var(--display);
   font-style: italic;
   font-weight: 340;
