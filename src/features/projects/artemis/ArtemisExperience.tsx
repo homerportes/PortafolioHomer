@@ -39,6 +39,9 @@ const SCENES = [
   },
 ];
 
+/** The transfer in the capture: Cuenta de origen, Cuenta de destino, Monto. */
+const TRANSFER = { from: '283769843', to: '704263641', amount: 'RD$ 10,000' };
+
 /** The withdrawal confirmation, as the ledger line it represents. */
 const LEDGER = [
   { label: 'Saldo actual', value: '73,500.00' },
@@ -96,6 +99,19 @@ export function ArtemisExperience() {
       {/* 02 — transaction */}
       <section className={a.scene} {...at(1)} data-reveal="">
         <Copy i={1} />
+        {/* the transfer drawn as the movement it is, with the capture's own
+            origin, destination and amount */}
+        <div className={a.flow} aria-hidden="true">
+          <p className={a.flowFrom}>
+            <span>From · origin account</span>
+            {TRANSFER.from}
+          </p>
+          <p className={a.flowTo}>
+            <span>To · destination account</span>
+            {TRANSFER.to}
+          </p>
+          <p className={a.flowAmount}>{TRANSFER.amount}</p>
+        </div>
         <div className={a.plate} data-shot="transfer">
           <Shot m={img.transfer} sizes="(min-width: 1024px) 90vw, 100vw" />
         </div>

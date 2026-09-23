@@ -30,14 +30,14 @@
 }
 
 .seam {
-  height: clamp(7rem, 24svh, 15rem);
-  background: linear-gradient(in oklab 180deg, #16120d 0%, #16120d 8%, var(--paper) 88%);
+  height: clamp(4rem, 12svh, 8rem);
+  background: linear-gradient(in oklab 180deg, #16120d 0%, var(--paper) 100%);
 }
 
 /* paper hands over to the colophon's night */
 .outro {
-  height: clamp(6rem, 18svh, 11rem);
-  background: linear-gradient(in oklab 180deg, var(--paper) 0%, #171310 100%);
+  height: clamp(3rem, 8svh, 5rem);
+  background: linear-gradient(in oklab 180deg, var(--paper) 0%, #2a241d 55%, #171310 100%);
 }
 
 .inner {

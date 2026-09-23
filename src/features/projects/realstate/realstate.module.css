@@ -606,3 +606,94 @@
   .detail, .offers, .chatClient, .chatAgent { top: 53svh; height: 39svh; }
   .agent, .admin { top: 56svh; height: 28svh; }
 }
+
+/* ---------- QA: no broken text ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
+  (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  /* a transition may hide text but never leave it half-cut: lines cross-fade
+     instead of wiping or rising out of a clipping box */
+  .line.line {
+    overflow: visible;
+  }
+
+  .line.line > span {
+    clip-path: none;
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 380ms var(--ease), transform 520ms var(--ease);
+  }
+
+  .scene.scene[data-state='active'] .line > span {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(140ms + var(--i, 0) * 60ms);
+  }
+
+  .scene.scene[data-state='past'] .line > span {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+    transition-duration: 240ms, 320ms;
+    transition-delay: 0ms;
+  }
+
+  /* plates develop by fading, never by an empty frame waiting for a wipe */
+  :is(.search, .print, .offers, .chatClient, .chatAgent, .agent, .admin):is(.search, .print, .offers, .chatClient, .chatAgent, .agent, .admin),
+  .scene.scene[data-state] :is(.search, .print, .offers, .chatClient, .chatAgent, .agent, .admin) {
+    clip-path: none;
+  }
+
+  .scene.scene:not([data-state='active']) :is(.search, .print, .offers, .chatClient, .chatAgent, .agent, .admin) {
+    opacity: 0;
+  }
+
+  .scene.scene[data-state='active'] :is(.search, .print, .offers, .chatClient, .chatAgent, .agent, .admin) {
+    opacity: 1;
+  }
+
+  .detail.detail,
+  .detail.detail[data-state] {
+    clip-path: none;
+  }
+
+  .detail.detail[data-state='future'] {
+    opacity: 0;
+  }
+}
+
+/* desktop framing: the viewport does the cropping, not the capture */
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  /* the listing is cut to photo, price, rooms, offers and messages */
+  .detail.detail {
+    overflow: clip;
+    border-radius: 0.45rem;
+  }
+
+  .detailCam {
+    transform: scale(calc(1.85 - var(--s1, 0) * 0.53));
+  }
+
+  .detail.detail[data-state='past'] {
+    opacity: 0;
+  }
+
+  /* one conversation seen from both sides: the agent's reply overlaps the
+     client's thread instead of standing beside it */
+  .chatClient.chatClient {
+    top: 15svh;
+    left: 33vw;
+    width: 34vw;
+    z-index: 3;
+  }
+
+  .chatAgent.chatAgent {
+    top: 36svh;
+    left: 56vw;
+    width: 37vw;
+    z-index: 4;
+  }
+
+  .chatAgent.chatAgent img {
+    box-shadow: 0 2.2rem 4.5rem -1.6rem rgb(64 42 20 / 0.5);
+  }
+}

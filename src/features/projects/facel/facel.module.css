@@ -441,11 +441,11 @@
     display: flex;
     justify-content: space-between;
     font-family: var(--mono);
-    font-size: 7.6vw;
+    font-size: 6.2vw;
     font-weight: 500;
     line-height: 1;
     color: transparent;
-    -webkit-text-stroke: 1px rgb(18 19 22 / 0.18);
+    -webkit-text-stroke: 1px rgb(18 19 22 / 0.12);
     pointer-events: none;
   }
 
@@ -458,7 +458,7 @@
     inset: 0;
     color: var(--fg);
     -webkit-text-stroke: 0;
-    opacity: clamp(0, calc(var(--p, 0) * 16 - var(--i) - 1), 0.9);
+    opacity: clamp(0, calc(var(--p, 0) * 16 - var(--i) - 1), 0.5);
   }
 
   /* --- copy --- */
@@ -862,7 +862,7 @@
   .pipeline::after { background: var(--accent); transform: scaleX(var(--p, 0)); transform-origin: left; }
   .pipeline li { display: none; font-size: .72rem; color: var(--fg); }
   .pipeline li[data-state='active'] { display: flex; }
-  .spine { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 2svh; z-index: 6; display: flex; justify-content: space-between; color: rgb(18 19 22 / .2); font-family: var(--mono); font-size: clamp(1.35rem, 6.9vw, 4rem); line-height: 1; }
+  .spine { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 2svh; z-index: 6; display: flex; justify-content: space-between; color: rgb(18 19 22 / .14); font-family: var(--mono); font-size: clamp(1.2rem, 6vw, 3.4rem); line-height: 1; }
   .spine > span { position: relative; }
   .spine > span > span { position: absolute; inset: 0; color: var(--fg); opacity: clamp(0, calc(var(--p, 0) * 16 - var(--i) - 1), 1); }
   .masthead { position: absolute; top: calc(var(--head) + 8svh); left: var(--gutter); gap: .4rem; }
@@ -1016,4 +1016,57 @@
   .foot { gap: 0; }
   .foot p { font-size: .55rem; }
   .foot a { min-height: 1.9rem; }
+}
+
+/* ---------- QA: no broken text ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
+  (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  /* a transition may hide text but never leave it half-cut: lines cross-fade
+     instead of wiping or rising out of a clipping box */
+  .line.line {
+    overflow: visible;
+  }
+
+  .line.line > span {
+    clip-path: none;
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 380ms var(--ease), transform 520ms var(--ease);
+  }
+
+  .scene.scene[data-state='active'] .line > span {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(140ms + var(--i, 0) * 60ms);
+  }
+
+  .scene.scene[data-state='past'] .line > span {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+    transition-duration: 240ms, 320ms;
+    transition-delay: 0ms;
+  }
+
+  /* the XML and the document fade; no horizontal wipe through characters */
+  .xml.xml li {
+    clip-path: none;
+    opacity: 0;
+    transform: translate3d(-10px, 0, 0);
+    transition: opacity 360ms var(--ease), transform 480ms var(--ease);
+  }
+
+  .xml.xml[data-state='active'] li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .doc.doc,
+  .doc.doc[data-state='past'] {
+    clip-path: none;
+  }
+
+  .doc.doc[data-state='past'] {
+    opacity: 0;
+  }
 }

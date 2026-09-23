@@ -581,3 +581,185 @@
   .title { font-size: 1.65rem; }
   .body { font-size: .78rem; line-height: 1.28; }
 }
+
+/* ---------- QA: no broken text ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
+  (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  /* a transition may hide text but never leave it half-cut: lines cross-fade
+     instead of wiping or rising out of a clipping box */
+  .line.line {
+    overflow: visible;
+  }
+
+  .line.line > span {
+    clip-path: none;
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 380ms var(--ease), transform 520ms var(--ease);
+  }
+
+  .scene.scene[data-state='active'] .line > span {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(140ms + var(--i, 0) * 60ms);
+  }
+
+  .scene.scene[data-state='past'] .line > span {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+    transition-duration: 240ms, 320ms;
+    transition-delay: 0ms;
+  }
+
+  /* plates and the ledger fade in place: a wipe cut figures in half and left
+     thin slivers of the captures behind */
+  :is(.plate, .ledger):is(.plate, .ledger) {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 520ms var(--ease);
+  }
+
+  .scene.scene[data-state='active'] :is(.plate, .ledger) {
+    clip-path: none;
+    opacity: 1;
+    transition-delay: 160ms;
+  }
+
+  .scene.scene[data-state='past'] :is(.plate, .ledger) {
+    clip-path: none;
+    opacity: 0;
+    transition-duration: 280ms;
+    transition-delay: 0ms;
+  }
+}
+
+/* desktop cells sit side by side and fade with their scene; on phones they
+   keep their own scroll-driven cross-fade */
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .cell.cell,
+  .scene.scene[data-state] .cell {
+    clip-path: none;
+    transition: opacity 520ms var(--ease);
+  }
+
+  .scene.scene:not([data-state='active']) .cell {
+    opacity: 0;
+  }
+
+  .scene.scene[data-state='active'] .cell {
+    opacity: 1;
+    transition-delay: 160ms;
+  }
+}
+
+/* ---------- the transfer as a movement ---------- */
+
+.flow {
+  display: none;
+}
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .flow {
+    position: absolute;
+    top: 48svh;
+    /* clear of the scene rail */
+    right: calc(var(--gutter) + 2.8rem);
+    left: var(--gutter);
+    z-index: 1;
+    display: block;
+    height: 44svh;
+    pointer-events: none;
+  }
+
+  /* the line runs from the origin, behind the form, into the destination */
+  .flow::before,
+  .flow::after {
+    position: absolute;
+    top: 50%;
+    content: '';
+  }
+
+  .flow::before {
+    right: 0.35rem;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 35%, transparent), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 900ms var(--ease);
+  }
+
+  .flow::after {
+    right: 0;
+    width: 0.7rem;
+    height: 0.7rem;
+    border-top: 1px solid var(--accent);
+    border-right: 1px solid var(--accent);
+    opacity: 0;
+    transform: translate3d(0, -50%, 0) rotate(45deg);
+    transition: opacity 300ms var(--ease);
+  }
+
+  .flow p {
+    position: absolute;
+    display: grid;
+    gap: 0.35rem;
+    margin: 0;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: clamp(1rem, 1.5vw, 1.6rem);
+    letter-spacing: 0.02em;
+    opacity: 0;
+    transition: opacity 500ms var(--ease);
+  }
+
+  .flow p span {
+    color: var(--muted);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .flowFrom {
+    bottom: calc(50% + 0.9rem);
+    left: 0;
+  }
+
+  .flowTo {
+    right: 0;
+    bottom: calc(50% + 0.9rem);
+    text-align: right;
+  }
+
+  .flowAmount.flowAmount {
+    top: calc(50% + 0.9rem);
+    right: 0;
+    color: var(--accent);
+  }
+
+  .plate[data-shot='transfer'] {
+    z-index: 2;
+  }
+
+  .scene[data-state='active'] .flow::before {
+    transform: scaleX(1);
+    transition-delay: 250ms;
+  }
+
+  .scene[data-state='active'] .flow::after {
+    opacity: 1;
+    transition-delay: 1000ms;
+  }
+
+  .scene[data-state='active'] .flow p {
+    opacity: 1;
+    transition-delay: 450ms;
+  }
+
+  .scene[data-state='active'] .flow .flowTo {
+    transition-delay: 900ms;
+  }
+}
