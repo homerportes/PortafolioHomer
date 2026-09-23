@@ -1,5 +1,5 @@
 import { media, projectById } from '../content';
-import { Chapter, ChapterFoot, Crop, Lines } from '../stage/Stage';
+import { Chapter, ChapterFoot, Crop, Lines, ScenePoints } from '../stage/Stage';
 import { at } from '../stage/useStage';
 import l from './linkup.module.css';
 
@@ -18,27 +18,32 @@ const SCENES = [
   {
     kicker: 'Share',
     title: 'Post it.',
-    body: 'Members publish photo and video posts to a feed shared with their friends.',
+    body: 'Members verify their email, build a profile and post text, photos and YouTube videos to a feed built from their own activity and their friends’.',
+    points: ['Text, images and YouTube videos; likes and dislikes', 'A personalised feed from your posts and your friends’'],
   },
   {
     kicker: 'Discuss',
     title: 'Reply to\nthe reply.',
-    body: 'Comments branch into nested replies, so every answer stays under what it answers.',
+    body: 'Posts take likes, dislikes and comments that branch into nested replies, so every answer stays under what it answers.',
+    points: ['Threaded comments with replies', 'Email activation and editable profiles'],
   },
   {
     kicker: 'Connect',
     title: 'Find your\npeople.',
-    body: 'Profiles, friend requests (pending, accepted or rejected) and mutual friends shape the network.',
+    body: 'Friend requests move between sent, pending, accepted and rejected; accepted friends shape the feed and who you can play.',
+    points: ['Discovery, sent and pending requests, accept or reject', 'The same friendship graph drives the feed and the game'],
   },
   {
     kicker: 'Play',
     title: 'Then it\nturns into\nBattleship.',
-    body: 'Members challenge each other to Battleship: a fleet on a 12 × 12 board, shots taken turn by turn.',
+    body: 'Inside the same app, members challenge friends to Battleship: a fleet on a 12 × 12 board, turns enforced and every attack validated against the rules.',
+    points: ['Turns, with every attack validated against the rules and both boards', 'Hits and misses tracked live in the match state'],
   },
   {
     kicker: 'Keep score',
     title: 'Every shot,\nevery match.',
     body: 'Hits, misses and the state of each ship during play; finished games kept with their result and times.',
+    points: ['Match history and statistics per game', 'Onion Architecture, generic repositories, EF Core code-first and Identity'],
   },
 ];
 
@@ -54,6 +59,7 @@ function Copy({ i }: { i: number }) {
         <Lines text={scene.title} lineClassName={l.line} />
       </h3>
       <p className={l.body}>{scene.body}</p>
+      <ScenePoints items={scene.points} />
     </div>
   );
 }

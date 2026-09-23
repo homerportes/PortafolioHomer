@@ -6,6 +6,7 @@ import { Shot } from '@/features/projects/stage/Stage';
 import { skipProjects } from '@/features/projects/stage/stepper';
 import { at, useStage } from '@/features/projects/stage/useStage';
 import styles from './Hero.module.css';
+import { Arrow } from '@/components/Arrow';
 
 /**
  * arrival → the full stop opens into the room → "5 Projects. Five worlds."
@@ -218,10 +219,10 @@ export function Hero() {
               </p>
               <div className={styles.actions}>
                 <a className={styles.primary} href="#experience" onClick={skipProjects}>
-                  View experience <span aria-hidden="true">→</span>
+                  View experience <Arrow dir="right" />
                 </a>
                 <a className={styles.secondary} href={`mailto:${profile.email}`}>
-                  Get in touch <span aria-hidden="true">↗</span>
+                  Get in touch <Arrow dir="up-right" />
                 </a>
               </div>
 
@@ -229,14 +230,14 @@ export function Hero() {
                 <p className={styles.contactLabel}>Email</p>
                 <a className={styles.email} href={`mailto:${profile.email}`}>
                   {profile.email}
-                  <span aria-hidden="true">↗</span>
+                  <Arrow dir="up-right" />
                 </a>
                 <p className={styles.social}>
                   <a href={profile.social.github} target="_blank" rel="noreferrer">
-                    GitHub <span aria-hidden="true">↗</span>
+                    GitHub <Arrow dir="up-right" />
                   </a>
                   <a href={profile.social.linkedin} target="_blank" rel="noreferrer">
-                    LinkedIn <span aria-hidden="true">↗</span>
+                    LinkedIn <Arrow dir="up-right" />
                   </a>
                 </p>
               </div>
@@ -270,13 +271,13 @@ export function Hero() {
               <div className={styles.worlds} {...at(2, 3)}>
                 <div className={styles.worldsHead}>
                   <p className={styles.worldsHint}>
-                    <span className={styles.hintIcon} aria-hidden="true">↓</span>
+                    <span className={styles.hintIcon} aria-hidden="true"><Arrow dir="down" /></span>
                     <span>
                       Click the project you want to see, <em>or scroll to see them all.</em>
                     </span>
                   </p>
                   <a className={styles.skip} href="#experience" onClick={skipProjects}>
-                    Skip projects <span aria-hidden="true">↓</span>
+                    Skip projects <Arrow dir="down" />
                   </a>
                 </div>
                 <nav aria-label="Project chapters">
@@ -293,7 +294,7 @@ export function Hero() {
                           <span className={styles.cardBody}>
                             <span className={styles.cardTop}>
                               <span className={styles.worldNum}>{project.number}</span>
-                              <span className={styles.cardGo} aria-hidden="true">↗</span>
+                              <span className={styles.cardGo} aria-hidden="true"><Arrow dir="up-right" /></span>
                             </span>
                             <span className={styles.worldName}>{project.name}</span>
                             <span className={styles.worldField}>{project.field}</span>

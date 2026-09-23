@@ -319,10 +319,19 @@
     right: var(--gutter);
     left: var(--gutter);
     z-index: 5;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 27vw);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 25vw) minmax(0, 19vw);
     grid-template-rows: auto 1fr;
-    column-gap: 6vw;
+    column-gap: 4vw;
     max-width: none;
+  }
+
+  /* the points sit in a third column beside the body, so the statement row
+     keeps its height above the ledger rule */
+  .copy > [data-points] {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+    align-self: end;
+    margin: 0;
   }
 
   .kicker {
@@ -349,6 +358,11 @@
   .scene:first-of-type .body {
     grid-row: auto;
     grid-column: 1;
+  }
+
+  /* the opening statement already fills the space above the ledger rule */
+  .scene:first-of-type .copy > [data-points] {
+    display: none;
   }
 
   .line {

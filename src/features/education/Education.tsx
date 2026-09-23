@@ -1,6 +1,7 @@
 import { education } from '@/content/education';
 import { useReveal } from '@/components/motion/useReveal';
 import styles from './Education.module.css';
+import { Arrow } from '@/components/Arrow';
 
 /**
  * Education — the quiet page. Two stops on one line: what is finished carries
@@ -29,7 +30,7 @@ export function Education() {
           <h2 id="education-title" className={styles.kicker}>
             Education
           </h2>
-          <p className={styles.range}>{done.period?.split('–')[0]} → next</p>
+          <p className={styles.range}>{done.period?.split('–')[0]} <Arrow dir="right" /> next</p>
         </div>
 
         <ol className={styles.path} data-reveal="">

@@ -2,6 +2,7 @@ import { useEffect, useRef, type CSSProperties, type ImgHTMLAttributes, type Rea
 import type { Media, ProjectMeta } from '../content';
 import { tierWeights, useStage, type StageWeights } from './useStage';
 import s from './stage.module.css';
+import { Arrow } from '@/components/Arrow';
 
 const cx_ = (...names: (string | false | undefined)[]) => names.filter(Boolean).join(' ');
 
@@ -32,19 +33,38 @@ export function Chapter({
   const handheldLen = tiers.handheld.reduce((a, b) => a + b, 0) + 1;
 
   return (
-    <article
-      id={`project-${project.id}`}
-      className={cx_(s.chapter, className)}
-      data-world={project.id}
-      data-tone={project.tone}
-      data-surface={project.surface}
-      aria-labelledby={`project-title-${project.id}`}
-      style={{ '--len': desktopLen, '--len-handheld': handheldLen } as CSSProperties}
-    >
-      <div ref={ref} className={s.track} data-surfaces={surfaces?.join(',')}>
-        <div className={cx_(s.frame, frameClassName)}>{children}</div>
-      </div>
-    </article>
+    <>
+      <article
+        id={`project-${project.id}`}
+        className={cx_(s.chapter, className)}
+        data-world={project.id}
+        data-tone={project.tone}
+        data-surface={project.surface}
+        data-stage-box=""
+        aria-labelledby={`project-title-${project.id}`}
+        style={{ '--len': desktopLen, '--len-handheld': handheldLen } as CSSProperties}
+      >
+        <div ref={ref} className={s.track} data-surfaces={surfaces?.join(',')}>
+          <div className={cx_(s.frame, frameClassName)}>{children}</div>
+        </div>
+      </article>
+    </>
+  );
+}
+
+/**
+ * How a scene's step works, set beside its capture: two or three concrete
+ * facts (the rule, the mechanism, the technology) so each scroll explains the
+ * project instead of only describing the image.
+ */
+export function ScenePoints({ items }: { items?: readonly string[] }) {
+  if (!items?.length) return null;
+  return (
+    <ul className={s.points} data-points="">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
   );
 }
 
@@ -153,7 +173,7 @@ export function ChapterFoot({
               aria-label={`${project.name}: ${text} on GitHub (opens in a new tab)`}
             >
               <span>{text}</span>
-              <span aria-hidden="true" className={s.arrow}>↗</span>
+              <span aria-hidden="true" className={s.arrow}><Arrow dir="up-right" /></span>
             </a>
           );
         })}

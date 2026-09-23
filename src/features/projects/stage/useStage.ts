@@ -117,9 +117,10 @@ export function useStage(weights: StageWeights, label = '', skippable = false) {
     // scroll frame is pure arithmetic on scrollY: no layout read after the
     // style writes, no forced reflow.
     const metrics = { top: 0, span: 0 };
-    // a chapter's track fills its <article>, which content-visibility never
-    // skips: measuring the article keeps skipped chapters unlaid-out
-    const box = track.parentElement?.tagName === 'ARTICLE' ? track.parentElement : track;
+    // a project stage's track fills its host (marked data-stage-box), which
+    // content-visibility never skips: measuring the host keeps skipped
+    // chapters unlaid-out
+    const box = track.parentElement?.hasAttribute('data-stage-box') ? track.parentElement : track;
     const measure = () => {
       const rect = box.getBoundingClientRect();
       metrics.top = rect.top + window.scrollY;

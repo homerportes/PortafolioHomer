@@ -1,6 +1,7 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Projects } from './Projects';
+import { projects } from './content';
 
 describe('Projects experience', () => {
   it('renders five distinct project worlds, each titled', () => {
@@ -72,6 +73,19 @@ describe('Projects experience', () => {
     for (const el of document.querySelectorAll('[data-at]')) {
       const scenes = (el.getAttribute('data-at') ?? '').split(' ').map(Number);
       expect(el.getAttribute('data-state')).toBe(scenes.includes(0) ? 'active' : 'future');
+    }
+  });
+
+  it('explains every scene with concrete points beside its capture', () => {
+    render(<Projects />);
+
+    for (const project of projects) {
+      const chapter = document.querySelector(`article[data-world="${project.id}"]`) as HTMLElement;
+      const lists = chapter.querySelectorAll('ul[data-points]');
+      const points = Array.from(chapter.querySelectorAll('ul[data-points] > li'));
+      expect(lists.length, project.id).toBeGreaterThanOrEqual(4);
+      expect(points.length, project.id).toBeGreaterThanOrEqual(8);
+      for (const point of points) expect(point.textContent?.length, project.id).toBeGreaterThan(15);
     }
   });
 });

@@ -57,6 +57,8 @@ let lastWheel = 0;
 let wheelAccum = 0;
 
 const cinematic = () => window.matchMedia?.(CINEMATIC_QUERY).matches ?? false;
+// an open dialog (a project's case file) owns every gesture until it closes
+const stepping = () => cinematic() && !document.querySelector('dialog[open]');
 
 /** Reads only cached numbers: safe to call on every scroll frame. */
 function geometry(): Geometry[] {
@@ -155,7 +157,7 @@ function scrollsItself(target: EventTarget | null, dir: 1 | -1) {
 }
 
 function onWheel(event: WheelEvent) {
-  if (event.ctrlKey || !cinematic()) return;
+  if (event.ctrlKey || !stepping()) return;
   const dy = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
   if (Math.abs(event.deltaX) > Math.abs(dy) || dy === 0) return;
   const dir = dy > 0 ? 1 : -1;
@@ -198,7 +200,7 @@ function onTouchStart(event: TouchEvent) {
 }
 
 function onTouchMove(event: TouchEvent) {
-  if (!touch || !cinematic() || event.touches.length !== 1) return;
+  if (!touch || !stepping() || event.touches.length !== 1) return;
   const t = event.touches[0];
   const dy = touch.y - t.clientY;
   const dx = touch.x - t.clientX;
@@ -228,7 +230,7 @@ function onTouchEnd() {
 const KEYS: Record<string, 1 | -1> = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1, ' ': 1 };
 
 function onKey(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || !cinematic()) return;
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || !stepping()) return;
   let dir = KEYS[event.key];
   if (!dir) return;
   if (event.key === ' ' && event.shiftKey) dir = -1;
@@ -248,25 +250,40 @@ function onKey(event: KeyboardEvent) {
 
 let docHeight = 0;
 
+/**
+ * Consecutive stages with the same label read as one sequence on the rail:
+ * e.g. a project split across two stages still reads "Finevo 01/07".
+ */
+function groupAt(stages: Geometry[], index: number) {
+  const label = stages[index].entry.label;
+  let from = index;
+  let to = index;
+  while (from > 0 && stages[from - 1].entry.label === label) from--;
+  while (to < stages.length - 1 && stages[to + 1].entry.label === label) to++;
+  return stages.slice(from, to + 1);
+}
+
 function computeSnapshot(y: number): StageSnapshot | null {
   if (!cinematic()) return null;
   const stages = geometry();
   const index = stages.findIndex((g) => y >= g.top - 2 && y <= g.end - 2);
   if (index < 0) return null;
-  const g = stages[index];
+  const group = groupAt(stages, index);
+  const stops = group.flatMap((g) => g.stops);
   let scene = 0;
-  g.stops.forEach((stop, i) => {
+  stops.forEach((stop, i) => {
     // a scene counts as reached halfway to its resting point
-    const from = i === 0 ? g.top : (g.stops[i - 1] + stop) / 2;
+    const from = i === 0 ? group[0].top : (stops[i - 1] + stop) / 2;
     if (y >= from - 2) scene = i;
   });
   const pageLeft = docHeight - (y + window.innerHeight) > 4;
+  const g = stages[index];
   return {
     label: g.entry.label,
     scene,
-    count: g.stops.length,
-    hasNext: scene < g.stops.length - 1 || pageLeft,
-    first: index === 0 && scene === 0,
+    count: stops.length,
+    hasNext: scene < stops.length - 1 || pageLeft,
+    first: stages.indexOf(group[0]) === 0 && scene === 0,
     skippable: g.entry.skippable ?? false,
   };
 }
@@ -337,11 +354,13 @@ export function step(dir: 1 | -1) {
   else window.scrollBy({ top: dir * window.innerHeight * 0.8, behavior: 'smooth' });
 }
 
-/** Jump to a scene of the stage the reader is in. */
+/** Jump to a scene of the sequence (stage group) the reader is in. */
 export function goToScene(scene: number) {
   const y = window.scrollY;
-  const g = geometry().find((stage) => y >= stage.top - 2 && y <= stage.end - 2);
-  const stop = g?.stops[scene];
+  const stages = geometry();
+  const index = stages.findIndex((stage) => y >= stage.top - 2 && y <= stage.end - 2);
+  if (index < 0) return;
+  const stop = groupAt(stages, index).flatMap((g) => g.stops)[scene];
   if (stop !== undefined) glideTo(stop);
 }
 

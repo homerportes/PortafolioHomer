@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { media, projectById } from '../content';
-import { Chapter, ChapterFoot, Lines, Shot } from '../stage/Stage';
+import { Chapter, ChapterFoot, Lines, Shot, ScenePoints } from '../stage/Stage';
 import { at } from '../stage/useStage';
 import a from './artemis.module.css';
 
@@ -16,22 +16,26 @@ const SCENES = [
   {
     kicker: 'Account',
     title: 'Accounts, balances,\nloans.',
-    body: 'Customers see their primary and secondary accounts, available balances and each loan’s amount, outstanding balance, instalments and rate.',
+    body: 'Customers hold savings accounts, loans and credit cards. Each loan carries amount, balance, instalments and rate, following amortisation rules rather than static figures.',
+    points: ['Savings accounts, loans and credit cards per customer', 'Loans follow amortisation rules instead of stored figures'],
   },
   {
     kicker: 'Transaction',
     title: 'Every transfer has\na source and a destination.',
-    body: 'Transfers between own accounts, express transactions, credit-card and loan payments, and payments to saved beneficiaries.',
+    body: 'Transfers, beneficiary payments and card or loan payments, partial or full, each validated against balances, limits and outstanding debt before money moves.',
+    points: ['Transfers, beneficiary payments and cash advances', 'Validated before money moves: balance, card limit and outstanding debt'],
   },
   {
     kicker: 'Operation',
     title: 'Cash moves only\nafter it is confirmed.',
     body: 'Tellers run deposits, withdrawals and payments. Each confirmation states holder, account, amount and resulting balance before it commits.',
+    points: ['Teller desk for deposits, withdrawals and payments', 'Customer, teller and administrator each have their own permitted operations'],
   },
   {
     kicker: 'Management',
     title: 'The whole bank,\nfrom one panel.',
-    body: 'Administrators follow transactions, payments, clients and assigned products, and manage credit cards with their limits, debt and status.',
+    body: 'Administrators oversee users, accounts, loans, cards and transaction metrics, and manage each card’s limit, debt and status. Every role sees only what it may do.',
+    points: ['Credit cards with limits, debt, status and expiry', 'Financial rules live behind a Web API, independent of the MVC client', 'ASP.NET Core · EF Core · Azure Functions · SQL Server'],
   },
 ];
 
@@ -54,6 +58,7 @@ function Copy({ i }: { i: number }) {
         <Lines text={scene.title} lineClassName={a.line} />
       </h3>
       <p className={a.body}>{scene.body}</p>
+      <ScenePoints items={scene.points} />
     </div>
   );
 }

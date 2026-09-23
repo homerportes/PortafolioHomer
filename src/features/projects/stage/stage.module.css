@@ -385,3 +385,79 @@
   }
 }
 
+/* ---------- scene points: how each step works, beside its capture ---------- */
+
+.points {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  font-family: var(--sans);
+  list-style: none;
+}
+
+.points li {
+  position: relative;
+  padding-left: 1.15rem;
+  color: var(--fg);
+  font-size: clamp(0.78rem, 0.9vw, 0.9rem);
+  line-height: 1.4;
+}
+
+.points li::before {
+  position: absolute;
+  top: 0.66em;
+  left: 0;
+  width: 0.55rem;
+  height: 2px;
+  content: '';
+  background: var(--accent);
+}
+
+/* pinned stages: points belong to their scene and arrive with its copy */
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
+  (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .points {
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 0.8rem, 0);
+    transition: opacity 500ms var(--ease), transform 700ms var(--ease), visibility 0s linear 500ms;
+  }
+
+  [data-state='active'] .points {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 700ms var(--ease) 420ms, transform 900ms var(--ease) 420ms, visibility 0s;
+  }
+}
+
+/* short laptop screens keep the two essentials */
+@media (min-width: 1024px) and (max-height: 700px) {
+  .points {
+    gap: 0.25rem;
+    margin-top: 0.7rem;
+  }
+
+  .points li:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .points {
+    gap: 0.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .points li {
+    padding-left: 0.95rem;
+    font-size: 0.74rem;
+    line-height: 1.32;
+  }
+
+  .points li:nth-child(n + 3) {
+    display: none;
+  }
+}

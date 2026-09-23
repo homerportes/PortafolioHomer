@@ -106,6 +106,11 @@ count inside the cue on handhelds) plus a "Scroll / Swipe up" cue.
 | Experience | pinned, 3 scenes | pinned, 3 short scenes | Junior → transition → Semi-Senior |
 | Skills / Education | in flow | in flow | — |
 
+Projects are explained **inside their scenes**, never on a page of text: each
+scene carries its capture, a short body and two or three `points` (the rule,
+the mechanism, the technology) rendered by `ScenePoints` in `stage/Stage.tsx`.
+Short laptops and phones show the first two.
+
 Scene weights live at the top of each `*Experience.tsx` (and `Hero.tsx`). The
 hero uses the same stage contract: its five tiles are the project index, and the
 Finevo tile opens (a scroll-linked `clip-path`) until it is Finevo's ground, so
