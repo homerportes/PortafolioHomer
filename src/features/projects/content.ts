@@ -49,10 +49,10 @@ export const projects: ProjectMeta[] = [
     id: 'facel',
     number: '02',
     name: 'FacEl',
-    field: 'Electronic invoicing · Dominican Republic',
+    field: 'Electronic invoicing SaaS · Dominican Republic',
     tone: 'light',
     surface: '#e8e7e2',
-    stack: ['NestJS', 'Next.js', 'PostgreSQL', 'TypeScript', 'xml-crypto'],
+    stack: ['NestJS', 'Next.js', 'PostgreSQL', 'TypeScript', 'Redis', 'S3 / MinIO', '.NET 9', 'Docker'],
     repos: [{ label: 'Repository', href: 'https://github.com/homerportes/FacturacionElectronica' }],
   },
   {

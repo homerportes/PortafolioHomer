@@ -1,6 +1,5 @@
 import { useEffect, useRef, type CSSProperties, type ImgHTMLAttributes, type ReactNode } from 'react';
 import type { Media, ProjectMeta } from '../content';
-import { briefs } from '../briefs';
 import { tierWeights, useStage, type StageWeights } from './useStage';
 import s from './stage.module.css';
 import { Arrow } from '@/components/Arrow';
@@ -35,9 +34,8 @@ export function Chapter({
 
   return (
     <>
-      <ChapterOverview project={project} />
       <article
-        id={`project-${project.id}-scenes`}
+        id={`project-${project.id}`}
         className={cx_(s.chapter, className)}
         data-world={project.id}
         data-tone={project.tone}
@@ -54,74 +52,19 @@ export function Chapter({
   );
 }
 
-/** how long the overview holds before the chapter's first scene, in screens */
-const OVERVIEW_WEIGHTS = [0.6] as const;
-
 /**
- * The first scene of every project: what it is about before what it looks
- * like. Its own one-scene stage in the world's colours, so the stepper stops
- * here once and the chapter's scenes keep their timing untouched; the rail
- * counts it as scene 01 of the project.
+ * How a scene's step works, set beside its capture: two or three concrete
+ * facts (the rule, the mechanism, the technology) so each scroll explains the
+ * project instead of only describing the image.
  */
-function ChapterOverview({ project }: { project: ProjectMeta }) {
-  const ref = useStage(OVERVIEW_WEIGHTS, project.name, true);
-  const brief = briefs[project.id];
-  const decision = brief.engineering[0];
-  const len = OVERVIEW_WEIGHTS[0] + 1;
-
+export function ScenePoints({ items }: { items?: readonly string[] }) {
+  if (!items?.length) return null;
   return (
-    <section
-      id={`project-${project.id}`}
-      className={cx_(s.chapter, s.overview)}
-      data-world={project.id}
-      data-tone={project.tone}
-      data-surface={project.surface}
-      data-stage-box=""
-      aria-labelledby={`overview-${project.id}`}
-      style={{ '--len': len, '--len-handheld': len } as CSSProperties}
-    >
-      <div ref={ref} className={s.track}>
-        <div className={s.frame}>
-          <div className={s.ovInner}>
-            <p className={s.ovKicker} id={`overview-${project.id}`} data-reveal="">
-              <span>{project.number}</span> {project.name} · {project.field}
-            </p>
-            <p className={s.ovSummary} data-reveal="">
-              {brief.summary}
-            </p>
-
-            <div className={s.ovGrid}>
-              <div className={s.ovBlock} data-reveal="">
-                <h3>The problem</h3>
-                <p>{brief.problem}</p>
-              </div>
-              <div className={s.ovBlock} data-reveal="">
-                <h3>What I built</h3>
-                <ul>
-                  {brief.built.slice(0, 4).map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className={cx_(s.ovBlock, s.ovDecision)} data-reveal="">
-                <h3>Key decision</h3>
-                <h4>{decision.title}</h4>
-                <p>{decision.body}</p>
-              </div>
-            </div>
-
-            <p className={s.ovStack} data-reveal="">
-              <span className={s.ovStackLabel}>Stack</span>
-              {brief.architecture.map((item) => (
-                <span key={item} className={s.ovChip}>
-                  {item}
-                </span>
-              ))}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+    <ul className={s.points} data-points="">
+      {items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
   );
 }
 

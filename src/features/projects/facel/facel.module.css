@@ -528,10 +528,15 @@
     transform: translate3d(0, -4svh, 0);
   }
 
+  /* below the masthead, never over the giant name */
   .scene:first-of-type .copy {
-    top: auto;
-    bottom: 22svh;
-    width: min(36vw, 34rem);
+    top: calc(var(--head) + 7rem + 11.5vw);
+    bottom: auto;
+    width: min(42vw, 36rem);
+  }
+
+  .scene:first-of-type .copy > [data-points] li:nth-child(n + 3) {
+    display: none;
   }
 
   .scene:first-of-type .title {

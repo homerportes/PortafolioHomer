@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react';
 import { media, projectById } from '../content';
-import { Chapter, ChapterFoot, Lines, Shot } from '../stage/Stage';
+import { Chapter, ChapterFoot, Lines, Shot, ScenePoints } from '../stage/Stage';
 import { at } from '../stage/useStage';
 import f from './finevo.module.css';
 
@@ -18,31 +18,37 @@ const SCENES = [
     kicker: 'Personal finance',
     title: 'Everyday money,\nmade legible.',
     body: 'A personal-finance platform that brings scattered money activity into one place, so people can understand it, organise it and decide what to do next.',
+    points: ['The problem: money data arrives scattered across Gmail, spreadsheets and cash', 'ASP.NET Core API · EF Core · React + TypeScript'],
   },
   {
     kicker: 'Input',
     title: 'Three formats.\nOne language.',
     body: 'Gmail notices, Excel/CSV rows and manual entries arrive in different shapes. Finevo normalizes each into one record (date, amount, currency, category, type, source) that the whole product relies on.',
+    points: ['Gmail notices, Excel / CSV rows and manual entries', 'One record: date, description, amount, currency, category, type, source'],
   },
   {
     kicker: 'Understand',
     title: 'The month,\nat a glance.',
     body: 'The overview summarises a period: total spending, where it went by category, what is still uncategorised, which budgets need attention and a recommended next step.',
+    points: ['Total spending, spending by category and uncategorised items', 'Budgets that need attention and a recommended next action'],
   },
   {
     kicker: 'Control',
     title: 'Every movement\naccounted for.',
     body: 'Transactions are a workspace, not a list: filter by source, category and date, and review what is still uncategorised in place.',
+    points: ['Filters by source, category and date; categorise in place', 'The server resolves the user from auth claims, never from a UserId sent by the client'],
   },
   {
     kicker: 'Plan',
     title: 'A limit for\nevery category.',
     body: 'Monthly budgets set a limit per category and measure real spending against it, so overspending shows before the month ends.',
+    points: ['Monthly budgets per category', 'Measured against real spending, not estimates'],
   },
   {
     kicker: 'Guidance',
     title: 'Advice, in the\nsame place.',
     body: 'Clients discover advisors by specialty, compare profiles and consultation prices, and talk to them in private messages inside the platform.',
+    points: ['Advisor marketplace by specialty, with profiles and pricing', 'Private client–advisor messaging', 'JWT and Google OIDC hardened with PKCE, state and nonce'],
   },
 ];
 
@@ -58,6 +64,7 @@ function Copy({ i }: { i: number }) {
         <Lines text={scene.title} lineClassName={f.line} />
       </h3>
       <p className={f.body}>{scene.body}</p>
+      <ScenePoints items={scene.points} />
     </div>
   );
 }

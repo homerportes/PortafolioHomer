@@ -252,7 +252,7 @@ let docHeight = 0;
 
 /**
  * Consecutive stages with the same label read as one sequence on the rail:
- * a project's overview and its chapter show as "Finevo 01/07".
+ * e.g. a project split across two stages still reads "Finevo 01/07".
  */
 function groupAt(stages: Geometry[], index: number) {
   const label = stages[index].entry.label;

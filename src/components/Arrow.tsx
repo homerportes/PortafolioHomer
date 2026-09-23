@@ -2,6 +2,7 @@ const PATHS = {
   right: 'M3 8h10M9 4l4 4-4 4',
   down: 'M8 3v10M4 9l4 4 4-4',
   'up-right': 'M4.5 11.5l7-7M5.5 4.5h6v6',
+  check: 'M3.5 8.5l3 3 6-7',
 } as const;
 
 /**

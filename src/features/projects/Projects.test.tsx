@@ -2,7 +2,6 @@ import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Projects } from './Projects';
 import { projects } from './content';
-import { briefs } from './briefs';
 
 describe('Projects experience', () => {
   it('renders five distinct project worlds, each titled', () => {
@@ -77,14 +76,16 @@ describe('Projects experience', () => {
     }
   });
 
-  it('gives every project a complete case file', () => {
+  it('explains every scene with concrete points beside its capture', () => {
+    render(<Projects />);
+
     for (const project of projects) {
-      const brief = briefs[project.id];
-      expect(brief.summary.length, project.id).toBeGreaterThan(40);
-      expect(brief.problem.length, project.id).toBeGreaterThan(40);
-      expect(brief.built.length, project.id).toBeGreaterThanOrEqual(3);
-      expect(brief.engineering.length, project.id).toBeGreaterThanOrEqual(2);
-      expect(brief.architecture.length, project.id).toBeGreaterThanOrEqual(3);
+      const chapter = document.querySelector(`article[data-world="${project.id}"]`) as HTMLElement;
+      const lists = chapter.querySelectorAll('ul[data-points]');
+      const points = Array.from(chapter.querySelectorAll('ul[data-points] > li'));
+      expect(lists.length, project.id).toBeGreaterThanOrEqual(4);
+      expect(points.length, project.id).toBeGreaterThanOrEqual(8);
+      for (const point of points) expect(point.textContent?.length, project.id).toBeGreaterThan(15);
     }
   });
 });

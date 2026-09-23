@@ -1,8 +1,9 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { media, projectById } from '../content';
-import { Chapter, ChapterFoot, Lines, Shot } from '../stage/Stage';
+import { Chapter, ChapterFoot, Lines, Shot, ScenePoints } from '../stage/Stage';
 import { at } from '../stage/useStage';
 import x from './facel.module.css';
+import { Arrow } from '@/components/Arrow';
 
 const project = projectById.facel;
 const img = media.facel;
@@ -71,26 +72,31 @@ const SCENES = [
     kicker: 'Input',
     title: 'A business document\nbecomes a fiscal one.',
     body: 'A multi-company SaaS that issues, validates, signs and keeps Dominican e-CF under DGII rules. The hard part is not the screens: it is fiscal documents that are exact, reproducible and auditable.',
+    points: ['Multi-tenant SaaS: Better Auth, RBAC and strict tenant isolation', 'Security-first and fail-closed: uncertain input is refused', 'Redis for distributed rate limiting; every action audited'],
   },
   {
     kicker: 'Stage 01 · Serialize',
     title: 'Structure\nfirst.',
     body: 'Each invoice becomes deterministic e-CF XML for types E31 to E46: the same input always yields the same bytes, with money computed exactly in a pure TypeScript fiscal core.',
+    points: ['Nine e-CF types: E31–E34, E41 and E43–E46', 'e-NCF sequences handled inside the fiscal transaction', 'Idempotent issuing: a retry never creates a second fiscal result'],
   },
   {
     kicker: 'Stage 02 · Pre-sign validate',
     title: 'Validate\nbefore signing.',
     body: 'An independent .NET 9 validator checks the XML against DGII’s official XSD before any signature, so a malformed document never reaches the signer.',
+    points: ['Independent, self-contained .NET 9 XSD validator', 'E47 (payments abroad) stays disabled: DGII’s own documentation contradicts itself'],
   },
   {
     kicker: 'Stage 03 · Sign',
     title: 'Sign without\ntouching a byte.',
     body: 'XMLDSig with RSA-SHA256 and an X.509 certificate held in secure custody. The pipeline fails if signing alters the unsigned content; the first six characters of the SignatureValue become the security code.',
+    points: ['XMLDSig · RSA-SHA256 · X.509', 'Certificate custody with key rotation', 'Signatures verified independently in tests'],
   },
   {
     kicker: 'Stages 04–05 · Validate · Evidence',
     title: 'Validate again.\nKeep the evidence.',
     body: 'The signed XML is validated again and kept immutable in S3-compatible storage, so any receipt can be recovered exactly. The PDF, with its DGII QR, is derived from that record.',
+    points: ['Immutable artifacts in S3 / MinIO; PostgreSQL holds transactional authority', 'Exact historical recovery; the PDF is derived from the record', 'Docker, health and readiness checks, CI/CD, backup and disaster recovery'],
   },
 ];
 
@@ -103,6 +109,7 @@ function Copy({ i }: { i: number }) {
         <Lines text={scene.title} lineClassName={x.line} />
       </h3>
       <p className={x.body}>{scene.body}</p>
+      <ScenePoints items={scene.points} />
     </div>
   );
 }
@@ -174,7 +181,7 @@ export function FacelExperience() {
           {XML.map(([depth, node], i) => (
             <li key={i} style={{ '--d': depth, '--i': i } as CSSProperties}>
               <code>{node}</code>
-              <span className={x.tick} aria-hidden="true">✓</span>
+              <span className={x.tick} aria-hidden="true"><Arrow dir="check" /></span>
             </li>
           ))}
         </ol>

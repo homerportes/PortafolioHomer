@@ -1,5 +1,5 @@
 import { media, projectById } from '../content';
-import { Chapter, ChapterFoot, Crop, Lines, Shot } from '../stage/Stage';
+import { Chapter, ChapterFoot, Crop, Lines, Shot, ScenePoints } from '../stage/Stage';
 import { at } from '../stage/useStage';
 import r from './realstate.module.css';
 
@@ -16,26 +16,31 @@ const SCENES = [
     kicker: 'Discover',
     title: 'Find the\nhouse first.',
     body: 'Clients search the inventory by code, type, price, bedrooms, bathrooms and location, and save favourites to come back to.',
+    points: ['Search by code, type, price, bedrooms, bathrooms and location', 'Favourites saved per client'],
   },
   {
     kicker: 'Explore',
     title: 'Then everything\nabout it.',
     body: 'A listing brings photos, price, rooms, size, description and upgrades together with the agent’s contact.',
+    points: ['Gallery, facts, upgrades, price, sale type and agent', 'Onion Architecture with CQRS: MediatR commands and queries'],
   },
   {
     kicker: 'Negotiate',
     title: 'Make an offer\non the page.',
     body: 'Offers are made from the listing and move through a lifecycle (pending, accepted or rejected) that client and agent both follow. Here, RD$25,000.00 is still pending.',
+    points: ['Offer lifecycle: pending, accepted or rejected', 'Rules live in the domain, independent of web and database'],
   },
   {
     kicker: 'Communicate',
     title: 'A conversation\ntied to the house.',
     body: 'Client and agent talk in a thread tied to listing YLK590, typing indicator included, so the negotiation never leaves the platform.',
+    points: ['Client–agent chat tied to each property', 'Identity and JWT: each role sees only what it may'],
   },
   {
     kicker: 'Manage',
     title: 'Agents and admins\nrun the catalogue.',
     body: 'Agents publish, edit and change the status of their own properties; administrators run metrics, users, developers and the catalogues of types, sale types and upgrades.',
+    points: ['Agents publish, edit and change the status of their properties', 'Admin: metrics, users and the catalogues of types, sale types and upgrades', 'Unit and integration tests; Swagger documents the API'],
   },
 ];
 
@@ -51,6 +56,7 @@ function Copy({ i }: { i: number }) {
         <Lines text={scene.title} lineClassName={r.line} />
       </h3>
       <p className={r.body}>{scene.body}</p>
+      <ScenePoints items={scene.points} />
     </div>
   );
 }
