@@ -70,27 +70,27 @@ const SCENES = [
   {
     kicker: 'Input',
     title: 'A business document\nbecomes a fiscal one.',
-    body: 'A multi-tenant e-CF platform for the Dominican Republic: a NestJS fiscal core, a Next.js workspace, and every step recorded in PostgreSQL.',
+    body: 'A multi-company SaaS that issues, validates, signs and keeps Dominican e-CF under DGII rules. The hard part is not the screens: it is fiscal documents that are exact, reproducible and auditable.',
   },
   {
     kicker: 'Stage 01 · Serialize',
     title: 'Structure\nfirst.',
-    body: 'Each invoice is serialized into e-CF XML, the structure DGII defines per document type, from E31 to E46.',
+    body: 'Each invoice becomes deterministic e-CF XML for types E31 to E46: the same input always yields the same bytes, with money computed exactly in a pure TypeScript fiscal core.',
   },
   {
     kicker: 'Stage 02 · Pre-sign validate',
     title: 'Validate\nbefore signing.',
-    body: 'The XML is checked against the official schema before any signature, so a malformed document never reaches the signer.',
+    body: 'An independent .NET 9 validator checks the XML against DGII’s official XSD before any signature, so a malformed document never reaches the signer.',
   },
   {
     kicker: 'Stage 03 · Sign',
     title: 'Sign without\ntouching a byte.',
-    body: 'An XMLDSig signature is applied, and the pipeline fails if the signer alters the unsigned content. The first six characters of the SignatureValue become the security code.',
+    body: 'XMLDSig with RSA-SHA256 and an X.509 certificate held in secure custody. The pipeline fails if signing alters the unsigned content; the first six characters of the SignatureValue become the security code.',
   },
   {
     kicker: 'Stages 04–05 · Validate · Evidence',
     title: 'Validate again.\nKeep the evidence.',
-    body: 'The signed XML is validated a second time and the evidence recorded. The PDF carries the DGII QR payload; status follows DGII’s codes.',
+    body: 'The signed XML is validated again and kept immutable in S3-compatible storage, so any receipt can be recovered exactly. The PDF, with its DGII QR, is derived from that record.',
   },
 ];
 

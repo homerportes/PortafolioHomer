@@ -1,6 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Projects } from './Projects';
+import { projects } from './content';
+import { briefs } from './briefs';
 
 describe('Projects experience', () => {
   it('renders five distinct project worlds, each titled', () => {
@@ -72,6 +74,17 @@ describe('Projects experience', () => {
     for (const el of document.querySelectorAll('[data-at]')) {
       const scenes = (el.getAttribute('data-at') ?? '').split(' ').map(Number);
       expect(el.getAttribute('data-state')).toBe(scenes.includes(0) ? 'active' : 'future');
+    }
+  });
+
+  it('gives every project a complete case file', () => {
+    for (const project of projects) {
+      const brief = briefs[project.id];
+      expect(brief.summary.length, project.id).toBeGreaterThan(40);
+      expect(brief.problem.length, project.id).toBeGreaterThan(40);
+      expect(brief.built.length, project.id).toBeGreaterThanOrEqual(3);
+      expect(brief.engineering.length, project.id).toBeGreaterThanOrEqual(2);
+      expect(brief.architecture.length, project.id).toBeGreaterThanOrEqual(3);
     }
   });
 });

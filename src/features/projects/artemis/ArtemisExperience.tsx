@@ -16,12 +16,12 @@ const SCENES = [
   {
     kicker: 'Account',
     title: 'Accounts, balances,\nloans.',
-    body: 'Customers see their primary and secondary accounts, available balances and each loan’s amount, outstanding balance, instalments and rate.',
+    body: 'Customers hold savings accounts, loans and credit cards. Each loan carries amount, balance, instalments and rate, following amortisation rules rather than static figures.',
   },
   {
     kicker: 'Transaction',
     title: 'Every transfer has\na source and a destination.',
-    body: 'Transfers between own accounts, express transactions, credit-card and loan payments, and payments to saved beneficiaries.',
+    body: 'Transfers, beneficiary payments and card or loan payments, partial or full, each validated against balances, limits and outstanding debt before money moves.',
   },
   {
     kicker: 'Operation',
@@ -31,7 +31,7 @@ const SCENES = [
   {
     kicker: 'Management',
     title: 'The whole bank,\nfrom one panel.',
-    body: 'Administrators follow transactions, payments, clients and assigned products, and manage credit cards with their limits, debt and status.',
+    body: 'Administrators oversee users, accounts, loans, cards and transaction metrics, and manage each card’s limit, debt and status. Every role sees only what it may do.',
   },
 ];
 

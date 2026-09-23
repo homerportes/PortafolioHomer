@@ -57,6 +57,8 @@ let lastWheel = 0;
 let wheelAccum = 0;
 
 const cinematic = () => window.matchMedia?.(CINEMATIC_QUERY).matches ?? false;
+// an open dialog (a project's case file) owns every gesture until it closes
+const stepping = () => cinematic() && !document.querySelector('dialog[open]');
 
 /** Reads only cached numbers: safe to call on every scroll frame. */
 function geometry(): Geometry[] {
@@ -155,7 +157,7 @@ function scrollsItself(target: EventTarget | null, dir: 1 | -1) {
 }
 
 function onWheel(event: WheelEvent) {
-  if (event.ctrlKey || !cinematic()) return;
+  if (event.ctrlKey || !stepping()) return;
   const dy = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
   if (Math.abs(event.deltaX) > Math.abs(dy) || dy === 0) return;
   const dir = dy > 0 ? 1 : -1;
@@ -198,7 +200,7 @@ function onTouchStart(event: TouchEvent) {
 }
 
 function onTouchMove(event: TouchEvent) {
-  if (!touch || !cinematic() || event.touches.length !== 1) return;
+  if (!touch || !stepping() || event.touches.length !== 1) return;
   const t = event.touches[0];
   const dy = touch.y - t.clientY;
   const dx = touch.x - t.clientX;
@@ -228,7 +230,7 @@ function onTouchEnd() {
 const KEYS: Record<string, 1 | -1> = { ArrowDown: 1, PageDown: 1, ArrowUp: -1, PageUp: -1, ' ': 1 };
 
 function onKey(event: KeyboardEvent) {
-  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || !cinematic()) return;
+  if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || !stepping()) return;
   let dir = KEYS[event.key];
   if (!dir) return;
   if (event.key === ' ' && event.shiftKey) dir = -1;

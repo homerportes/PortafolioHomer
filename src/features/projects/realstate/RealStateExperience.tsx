@@ -15,7 +15,7 @@ const SCENES = [
   {
     kicker: 'Discover',
     title: 'Find the\nhouse first.',
-    body: 'Clients search listings by code, type, price range, rooms and bathrooms, and keep the ones they like as favourites.',
+    body: 'Clients search the inventory by code, type, price, bedrooms, bathrooms and location, and save favourites to come back to.',
   },
   {
     kicker: 'Explore',
@@ -25,17 +25,17 @@ const SCENES = [
   {
     kicker: 'Negotiate',
     title: 'Make an offer\non the page.',
-    body: 'Clients send offers from the listing and follow each one’s status. Here, RD$25,000.00 is still pending.',
+    body: 'Offers are made from the listing and move through a lifecycle (pending, accepted or rejected) that client and agent both follow. Here, RD$25,000.00 is still pending.',
   },
   {
     kicker: 'Communicate',
     title: 'A conversation\ntied to the house.',
-    body: 'Client and agent talk in a thread linked to listing YLK590, typing indicator included.',
+    body: 'Client and agent talk in a thread tied to listing YLK590, typing indicator included, so the negotiation never leaves the platform.',
   },
   {
     kicker: 'Manage',
     title: 'Agents and admins\nrun the catalogue.',
-    body: 'Agents manage their own properties and their status; administrators oversee agents, developers, clients and property types.',
+    body: 'Agents publish, edit and change the status of their own properties; administrators run metrics, users, developers and the catalogues of types, sale types and upgrades.',
   },
 ];
 
