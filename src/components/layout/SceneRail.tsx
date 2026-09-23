@@ -7,8 +7,6 @@ import {
   subscribeStage,
   type StageSnapshot,
 } from '@/features/projects/stage/stepper';
-import { projects, type ProjectMeta } from '@/features/projects/content';
-import { ProjectBrief } from '@/features/projects/ProjectBrief';
 import styles from './SceneRail.module.css';
 import { Arrow } from '@/components/Arrow';
 
@@ -22,7 +20,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
 export function SceneRail() {
   const [stage, setStage] = useState<StageSnapshot | null>(getStageSnapshot);
   const [touch, setTouch] = useState(false);
-  const [briefFor, setBriefFor] = useState<ProjectMeta | null>(null);
 
   useEffect(() => subscribeStage(setStage), []);
 
@@ -38,7 +35,6 @@ export function SceneRail() {
   const visible = stage !== null;
   const scenes = stage ? Array.from({ length: stage.count }, (_, i) => i) : [];
   const verb = touch ? 'Swipe up' : 'Scroll';
-  const project = stage?.skippable ? projects.find((p) => p.name === stage.label) : undefined;
 
   return (
     <>
@@ -95,18 +91,6 @@ export function SceneRail() {
         data-visible={stage?.skippable || undefined}
         aria-hidden={!stage?.skippable}
       >
-        {project && (
-          <button
-            type="button"
-            className={styles.about}
-            tabIndex={stage?.skippable ? 0 : -1}
-            aria-haspopup="dialog"
-            aria-label={`About ${project.name}`}
-            onClick={() => setBriefFor(project)}
-          >
-            About<span className={styles.long}> {project.name}</span>
-          </button>
-        )}
         <a
           className={styles.skip}
           href="#experience"
@@ -117,8 +101,6 @@ export function SceneRail() {
           Skip<span className={styles.long}> projects</span> <Arrow dir="down" />
         </a>
       </div>
-
-      <ProjectBrief project={briefFor} onClose={() => setBriefFor(null)} />
     </>
   );
 }

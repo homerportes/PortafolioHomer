@@ -250,25 +250,40 @@ function onKey(event: KeyboardEvent) {
 
 let docHeight = 0;
 
+/**
+ * Consecutive stages with the same label read as one sequence on the rail:
+ * a project's overview and its chapter show as "Finevo 01/07".
+ */
+function groupAt(stages: Geometry[], index: number) {
+  const label = stages[index].entry.label;
+  let from = index;
+  let to = index;
+  while (from > 0 && stages[from - 1].entry.label === label) from--;
+  while (to < stages.length - 1 && stages[to + 1].entry.label === label) to++;
+  return stages.slice(from, to + 1);
+}
+
 function computeSnapshot(y: number): StageSnapshot | null {
   if (!cinematic()) return null;
   const stages = geometry();
   const index = stages.findIndex((g) => y >= g.top - 2 && y <= g.end - 2);
   if (index < 0) return null;
-  const g = stages[index];
+  const group = groupAt(stages, index);
+  const stops = group.flatMap((g) => g.stops);
   let scene = 0;
-  g.stops.forEach((stop, i) => {
+  stops.forEach((stop, i) => {
     // a scene counts as reached halfway to its resting point
-    const from = i === 0 ? g.top : (g.stops[i - 1] + stop) / 2;
+    const from = i === 0 ? group[0].top : (stops[i - 1] + stop) / 2;
     if (y >= from - 2) scene = i;
   });
   const pageLeft = docHeight - (y + window.innerHeight) > 4;
+  const g = stages[index];
   return {
     label: g.entry.label,
     scene,
-    count: g.stops.length,
-    hasNext: scene < g.stops.length - 1 || pageLeft,
-    first: index === 0 && scene === 0,
+    count: stops.length,
+    hasNext: scene < stops.length - 1 || pageLeft,
+    first: stages.indexOf(group[0]) === 0 && scene === 0,
     skippable: g.entry.skippable ?? false,
   };
 }
@@ -339,11 +354,13 @@ export function step(dir: 1 | -1) {
   else window.scrollBy({ top: dir * window.innerHeight * 0.8, behavior: 'smooth' });
 }
 
-/** Jump to a scene of the stage the reader is in. */
+/** Jump to a scene of the sequence (stage group) the reader is in. */
 export function goToScene(scene: number) {
   const y = window.scrollY;
-  const g = geometry().find((stage) => y >= stage.top - 2 && y <= stage.end - 2);
-  const stop = g?.stops[scene];
+  const stages = geometry();
+  const index = stages.findIndex((stage) => y >= stage.top - 2 && y <= stage.end - 2);
+  if (index < 0) return;
+  const stop = groupAt(stages, index).flatMap((g) => g.stops)[scene];
   if (stop !== undefined) glideTo(stop);
 }
 

@@ -106,6 +106,13 @@ count inside the cue on handhelds) plus a "Scroll / Swipe up" cue.
 | Experience | pinned, 3 scenes | pinned, 3 short scenes | Junior → transition → Semi-Senior |
 | Skills / Education | in flow | in flow | — |
 
+Every project opens with an **overview scene** (`ChapterOverview` in
+`stage/Stage.tsx`, content in `projects/briefs.ts`): the problem, what was
+built, one key engineering decision and the stack, in the world's colours. It is
+its own one-scene stage placed before the chapter, so the chapter's scene
+timing is untouched; the rail groups both as one sequence ("Finevo 01/07").
+Phones show the essentials only (no decision card, fewer items).
+
 Scene weights live at the top of each `*Experience.tsx` (and `Hero.tsx`). The
 hero uses the same stage contract: its five tiles are the project index, and the
 Finevo tile opens (a scroll-linked `clip-path`) until it is Finevo's ground, so

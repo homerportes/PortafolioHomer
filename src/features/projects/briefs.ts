@@ -1,9 +1,9 @@
 import type { ProjectMeta } from './content';
 
 /**
- * The case file behind each project world: what it solves, what was built and
- * the engineering that the screenshots cannot show. Opened from the scene rail
- * ("About …") so the chapters stay short and the depth is one click away.
+ * What each project is about, beyond its screenshots: the problem, what was
+ * built, the engineering decisions and the stack. It opens every chapter as
+ * its first scene (ChapterOverview in stage/Stage.tsx).
  */
 export type ProjectBrief = {
   /** one sentence, the project in plain words */
@@ -47,7 +47,7 @@ export const briefs: Record<ProjectMeta['id'], ProjectBrief> = {
 
   facel: {
     summary:
-      'A multi-company electronic invoicing platform built around the Dominican Republic’s e-CF rules, with deterministic documents, official validation, digital signatures and a security-first architecture.',
+      'Electronic invoicing for Dominican companies under DGII’s e-CF rules: deterministic documents, official validation and digital signatures, security first.',
     problem:
       'Issuing e-CF for the DGII is not a form: every document must follow the official schema, be signed with the company’s certificate, use the right e-NCF sequence and stay exactly recoverable for audits, for many companies that must never see each other’s data.',
     built: [
