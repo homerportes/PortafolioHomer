@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" fill="#EFE8DA"/>
+  <rect x="8" y="12" width="48" height="3" fill="#1C1610"/>
+  <rect x="8" y="18" width="48" height="1.5" fill="#1C1610"/>
+  <text x="32" y="49" font-family="Georgia, 'Times New Roman', serif" font-size="30" font-weight="600" fill="#6E2231" text-anchor="middle">HP</text>
+</svg>

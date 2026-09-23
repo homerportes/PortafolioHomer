@@ -11,6 +11,11 @@ node_modules
 dist
 dist-ssr
 *.local
+coverage
+.edge-headless
+.claude-flow
+.claude
+media-source
 
 # Editor directories and files
 .vscode/*

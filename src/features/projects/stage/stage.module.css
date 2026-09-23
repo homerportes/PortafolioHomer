@@ -1,0 +1,373 @@
+/*
+ * Shared craft for every project world: tokens, the pinned stage, grain,
+ * the repository foot and the hand-off seams. Composition lives elsewhere.
+ *
+ * Cinematic (pinned) mode is gated by the same query as useStage:
+ * (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)
+ */
+
+/* ---------- world tokens ---------- */
+
+.chapter,
+.handoff {
+  --display: 'Fraunces', Georgia, serif;
+  --sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', Consolas, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+  --beat: 1100ms;
+  --gutter: clamp(1rem, 4.2vw, 4.5rem);
+  --head: 6.3rem;
+}
+
+.chapter[data-world='finevo'],
+.handoff [data-surface='#0b1511'] {
+  --bg: #0b1511;
+  --bg-2: #122a20;
+  --fg: #efe9dc;
+  --muted: rgb(239 233 220 / 0.64);
+  --accent: #8fe3b8;
+  --line: rgb(239 233 220 / 0.13);
+}
+
+.chapter[data-world='facel'],
+.handoff [data-surface='#e8e7e2'] {
+  --bg: #e8e7e2;
+  --bg-2: #f4f3ef;
+  --fg: #121316;
+  --muted: #55575d;
+  --accent: #cf3b22;
+  --line: rgb(18 19 22 / 0.11);
+}
+
+.chapter[data-world='realstate'],
+.handoff [data-surface='#ece4d8'] {
+  --bg: #ece4d8;
+  --bg-2: #f6f1e9;
+  --fg: #1f1a14;
+  --muted: #6b5f51;
+  --accent: #9e4d27;
+  --line: rgb(31 26 20 / 0.13);
+}
+
+.chapter[data-world='artemis'],
+.handoff [data-surface='#090e18'] {
+  --bg: #090e18;
+  --bg-2: #111b2e;
+  --fg: #e8edf4;
+  --muted: rgb(232 237 244 / 0.6);
+  --accent: #86a8ff;
+  --line: rgb(232 237 244 / 0.1);
+}
+
+.chapter[data-world='linkup'],
+.handoff [data-surface='#1d2fd6'] {
+  --bg: #1d2fd6;
+  --bg-2: #3346f2;
+  --fg: #f6f7ff;
+  --muted: rgb(246 247 255 / 0.74);
+  --accent: #ffe07a;
+  --line: rgb(246 247 255 / 0.18);
+}
+
+/* ---------- the stage ---------- */
+
+.chapter {
+  position: relative;
+  isolation: isolate;
+  color: var(--fg);
+  background: var(--bg);
+  scroll-margin-top: 0;
+}
+
+.track {
+  position: relative;
+}
+
+.frame {
+  position: relative;
+  overflow: clip;
+  padding: calc(var(--head) * 0.7) var(--gutter) clamp(3rem, 8vw, 6rem);
+}
+
+/* grain: static, cheap, and just enough to keep flat colour from looking digital */
+.frame::after {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  content: '';
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .track {
+    height: calc(var(--len) * 100svh);
+  }
+
+  .frame {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 0;
+  }
+}
+
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .chapter {
+    --gutter: clamp(1.1rem, 5vw, 2.4rem);
+    --head: 4.5rem;
+    --beat: 650ms;
+  }
+
+  .track {
+    height: calc(var(--len-handheld) * 100svh);
+  }
+
+  .frame {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    padding: 0;
+  }
+}
+
+/* ---------- crop window ---------- */
+
+.crop {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: var(--ar);
+}
+
+.crop img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(100% / var(--cw));
+  max-width: none;
+  height: auto;
+  transform: translate(calc(var(--cx) * -100%), calc(var(--cy) * -100%));
+}
+
+/* ---------- repository foot ---------- */
+
+.stack span {
+  white-space: nowrap;
+}
+
+.stack span + span::before {
+  padding: 0 0.6em;
+  content: '·';
+  opacity: 0.6;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.9rem 2.2rem;
+  font-family: var(--sans);
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
+.repos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.repos a {
+  position: relative;
+  white-space: nowrap;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-height: 2.75rem;
+  padding: 0 1.15rem;
+  overflow: hidden;
+  color: var(--fg);
+  border: 1px solid color-mix(in srgb, var(--fg) 28%, transparent);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 620;
+  letter-spacing: -0.005em;
+  transition: color 320ms var(--ease), border-color 320ms var(--ease);
+}
+
+.repos a::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  background: var(--fg);
+  border-radius: inherit;
+  transform: translateY(101%);
+  transition: transform 420ms var(--ease);
+}
+
+.repos a:hover,
+.repos a:focus-visible {
+  color: var(--bg);
+  border-color: var(--fg);
+}
+
+.repos a:hover::before,
+.repos a:focus-visible::before {
+  transform: translateY(0);
+}
+
+.repos a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 420ms var(--ease);
+}
+
+.repos a:hover .arrow {
+  transform: translate(2px, -2px);
+}
+
+/* ---------- hand-off seam ---------- */
+
+.handoff {
+  position: relative;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: clamp(14rem, 44svh, 28rem);
+  background: linear-gradient(in oklab 180deg, var(--from) 0%, var(--from) 8%, var(--to) 64%, var(--to) 100%);
+}
+
+.handoffIn {
+  display: flex;
+  align-items: flex-end;
+  padding: 0 var(--gutter) clamp(2rem, 6svh, 4rem);
+  color: var(--fg);
+}
+
+.handoffLink {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  column-gap: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  color: inherit;
+  border-top: 1px solid var(--line);
+  padding-top: 1.1rem;
+}
+
+.handoffNum {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.handoffName {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.handoffName::before {
+  margin-right: 0.6em;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  vertical-align: middle;
+  content: 'Next';
+}
+
+.handoffField {
+  grid-column: 3;
+  justify-self: end;
+  align-self: center;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.handoffLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .handoffLink > * {
+    opacity: 0;
+    transform: translateY(40%);
+    transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
+  }
+
+  .handoffLink > :nth-child(2) { transition-delay: 60ms; }
+  .handoffLink > :nth-child(3) { transition-delay: 140ms; }
+
+  .handoffIn[data-seen] .handoffLink > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .handoffLink {
+    border-top-color: transparent;
+    transition: border-color 900ms var(--ease) 200ms;
+  }
+
+  .handoffIn[data-seen] .handoffLink {
+    border-top-color: var(--line);
+  }
+}
+
+@media (max-width: 700px) {
+  .handoff {
+    height: clamp(11rem, 32svh, 16rem);
+  }
+
+  .handoffLink {
+    grid-template-columns: auto 1fr;
+  }
+
+  .handoffField {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+  }
+}
+
+/* ---------- document-mode reveals (tablet, phone) ---------- */
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) and (orientation: landscape),
+  (prefers-reduced-motion: no-preference) and (max-height: 559px),
+  (prefers-reduced-motion: no-preference) and (min-width: 1024px) and (max-height: 599px) {
+  .frame [data-reveal] {
+    opacity: 0;
+    transform: translateY(2.5rem);
+    transition: opacity 900ms var(--ease), transform 1100ms var(--ease);
+  }
+
+  .frame [data-reveal][data-seen] {
+    opacity: 1;
+    transform: none;
+  }
+}

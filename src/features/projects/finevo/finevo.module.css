@@ -1,0 +1,662 @@
+/*
+ * FINEVO — financial clarity.
+ * Deep forest, cream type, a single mint light that drifts across the chapter.
+ * The product's own dark screens dissolve into the world; its light workspace
+ * arrives as a lit plane from below. Motion: soft rises, long settles.
+ */
+
+.world {
+  background: var(--bg);
+}
+
+.frame {
+  background:
+    radial-gradient(120% 80% at 0% 100%, #102219 0%, transparent 60%),
+    var(--bg);
+}
+
+/* ---------- document mode (default) ---------- */
+
+.glow,
+.horizon,
+.mark,
+.rail,
+.overviewPhone {
+  display: none;
+}
+
+.scene {
+  position: relative;
+  display: grid;
+  gap: 1.75rem;
+  margin-bottom: clamp(4.5rem, 12vw, 7rem);
+}
+
+.giant {
+  font-family: var(--display);
+  font-size: clamp(5.5rem, 27vw, 13rem);
+  font-weight: 380;
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  margin-left: -0.04em;
+}
+
+.copy {
+  display: grid;
+  gap: 1rem;
+  max-width: 34rem;
+}
+
+.kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 640;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.kicker span {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.title {
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 8.5vw, 4.6rem);
+  font-weight: 380;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+}
+
+.line {
+  display: block;
+}
+
+.line > span {
+  display: inline-block;
+}
+
+.line:nth-child(2) > span {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.body {
+  max-width: 27rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.marketing,
+.normal,
+.overview,
+.budgets,
+.advisors {
+  position: relative;
+  overflow: hidden;
+  margin-inline: calc(var(--gutter) * -1);
+}
+
+.marketing img,
+.overview img,
+.advisors img,
+.budgets img {
+  width: 100%;
+  height: auto;
+}
+
+.marketing {
+  mask-image: linear-gradient(to bottom, #000 72%, transparent);
+}
+
+/* phone: frame the three columns large enough to read */
+.normal {
+  aspect-ratio: 1.05;
+}
+
+.normal img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250%;
+  max-width: none;
+  transform: translate(-15%, -24%);
+}
+
+.overview {
+  margin-top: -3rem;
+  margin-bottom: clamp(4.5rem, 12vw, 7rem);
+}
+
+.budgets {
+  aspect-ratio: 1.15;
+}
+
+.budgets img {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 190%;
+  max-width: none;
+  transform: translate(-6%, -2%);
+}
+
+.phone {
+  width: min(72%, 21rem);
+  justify-self: center;
+  margin-top: -1rem;
+}
+
+.phone img {
+  width: 100%;
+  height: auto;
+  border-radius: 1.6rem;
+  box-shadow: 0 2.5rem 5rem -2rem rgb(0 0 0 / 0.7);
+}
+
+.foot {
+  margin-top: 1.5rem;
+}
+
+.advisorsHandheld { display: none; }
+
+@media (min-width: 700px) {
+  .marketing,
+  .normal,
+  .overview,
+  .budgets,
+  .advisors {
+    margin-inline: 0;
+    border-radius: 0.6rem;
+  }
+
+  .normal { aspect-ratio: 1.6; }
+  .normal img { width: 160%; transform: translate(-14%, -22%); }
+  .budgets { aspect-ratio: 1.7; }
+  .budgets img { width: 130%; }
+  .overview { margin-top: -2rem; }
+}
+
+@media (max-width: 699px) {
+  .overview { display: none; }
+
+  .overviewPhone {
+    display: block;
+    justify-self: center;
+    width: min(78%, 22rem);
+    max-height: 120vw;
+    overflow: hidden;
+    border-radius: 1.6rem;
+  }
+
+  .overviewPhone img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* ---------- cinematic mode ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .glow,
+  .horizon,
+  .mark,
+  .rail {
+    display: block;
+  }
+
+  .glow {
+    position: absolute;
+    top: -45vmax;
+    right: -35vmax;
+    width: 100vmax;
+    height: 100vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(143 227 184 / 0.14), rgb(143 227 184 / 0.04) 38%, transparent 64%);
+    transform: translate3d(calc(var(--p, 0) * -48vw), calc(var(--p, 0) * 34svh), 0);
+    will-change: transform;
+  }
+
+  .horizon {
+    position: absolute;
+    inset: auto 0 0;
+    height: 34svh;
+    background: linear-gradient(to top, rgb(18 42 32 / 0.55), transparent);
+  }
+
+  /* every scene is a full-frame layer */
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .scene[data-state='active'] {
+    pointer-events: auto;
+  }
+
+  /* --- copy --- */
+
+  .copy {
+    position: absolute;
+    top: 30svh;
+    left: var(--gutter);
+    z-index: 5;
+    width: min(30vw, 30rem);
+    gap: 1.25rem;
+  }
+
+  .title {
+    font-size: clamp(2.8rem, 4.5vw, 5rem);
+  }
+
+  .line {
+    overflow: clip;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  .line > span {
+    transform: translate3d(0, 130%, 0);
+    transition: transform 1000ms var(--ease);
+  }
+
+  .kicker,
+  .body,
+  .foot {
+    opacity: 0;
+    transform: translate3d(0, 1.2rem, 0);
+    transition: opacity 700ms var(--ease), transform 900ms var(--ease);
+  }
+
+  .scene[data-state='active'] .line > span {
+    transform: none;
+    transition-delay: calc(180ms + var(--i) * 80ms);
+  }
+
+  .scene[data-state='active'] :is(.kicker, .body, .foot) {
+    opacity: 1;
+    transform: none;
+    transition-delay: 320ms;
+  }
+
+  .scene[data-state='past'] .line > span {
+    transform: translate3d(0, -130%, 0);
+    transition-duration: 700ms;
+  }
+
+  .scene[data-state='past'] :is(.kicker, .body, .foot) {
+    transform: translate3d(0, -1rem, 0);
+  }
+
+  .scene[data-state='past'] .copy {
+    opacity: 0;
+    transition: opacity 600ms var(--ease) 250ms;
+  }
+
+  /* --- running mark and rail --- */
+
+  .mark {
+    position: absolute;
+    top: calc(var(--head) + 1.4rem);
+    left: var(--gutter);
+    z-index: 6;
+    display: flex;
+    gap: 0.8rem;
+    font-family: var(--display);
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    transform: translate3d(0, 0.6rem, 0);
+    transition: opacity 700ms var(--ease), transform 900ms var(--ease);
+  }
+
+  .mark span {
+    align-self: center;
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+  }
+
+  .mark[data-state='active'] {
+    opacity: 1;
+    transform: none;
+  }
+
+  .rail {
+    position: absolute;
+    right: var(--gutter);
+    bottom: 4.2svh;
+    z-index: 6;
+    display: flex;
+    gap: 1.6rem;
+    padding-top: 0.9rem;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .rail::before,
+  .rail::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    content: '';
+    background: var(--line);
+  }
+
+  .rail::after {
+    background: var(--accent);
+    transform: scaleX(var(--p, 0));
+    transform-origin: left;
+  }
+
+  .rail span {
+    color: var(--muted);
+    opacity: 0.45;
+    transition: opacity 500ms var(--ease), color 500ms var(--ease);
+  }
+
+  .rail span[data-state='active'] {
+    color: var(--fg);
+    opacity: 1;
+  }
+
+  /* --- 01 introduction --- */
+
+  .scene:first-of-type .copy {
+    top: calc(var(--head) + 7svh);
+  }
+
+  .giant {
+    position: absolute;
+    left: var(--gutter);
+    bottom: -1.9vw;
+    z-index: 4;
+    font-size: 19vw;
+    pointer-events: none;
+    transition: opacity 900ms var(--ease), transform 1200ms var(--ease);
+  }
+
+  .giant span {
+    display: block;
+    transform: translate3d(0, calc(var(--s0, 0) * -5svh), 0);
+  }
+
+  .scene[data-state='past'] .giant {
+    opacity: 0;
+    transform: translate3d(0, -14svh, 0);
+  }
+
+  .marketing {
+    position: absolute;
+    top: 15svh;
+    left: 33vw;
+    width: 78vw;
+    margin: 0;
+    border-radius: 0;
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 16%),
+      linear-gradient(to bottom, transparent 0%, #000 12%, #000 62%, transparent 96%);
+    mask-composite: intersect;
+    transition: opacity 900ms var(--ease), transform 1300ms var(--ease);
+  }
+
+  .marketing img {
+    transform: translate3d(0, calc(var(--s0, 0) * -7svh), 0) scale(calc(1 + var(--s0, 0) * 0.05));
+    transform-origin: 30% 40%;
+  }
+
+  .scene[data-state='past'] .marketing {
+    opacity: 0;
+    transform: translate3d(-4vw, -6svh, 0) scale(0.97);
+  }
+
+  /* --- 02 input: a slow pan along the real normalization flow --- */
+
+  .normal {
+    position: absolute;
+    top: 18svh;
+    left: 36vw;
+    width: 60vw;
+    height: 72svh;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 0;
+    mask-image:
+      linear-gradient(to right, transparent, #000 10%, #000 88%, transparent),
+      linear-gradient(to bottom, transparent, #000 8%, #000 90%, transparent);
+    mask-composite: intersect;
+    opacity: 0;
+    transform: translate3d(8vw, 0, 0);
+    transition: opacity 1000ms var(--ease), transform 1400ms var(--ease);
+  }
+
+  .normal img {
+    width: 138vw;
+    transform: translate3d(calc((0.13 + var(--s1, 0) * 0.23) * -100%), -21%, 0);
+    will-change: transform;
+  }
+
+  .scene[data-state='active'] .normal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scene[data-state='past'] .normal {
+    opacity: 0;
+    transform: translate3d(-6vw, 0, 0);
+  }
+
+  /* --- 03/04 the lit overview plane --- */
+
+  .overview {
+    position: absolute;
+    top: 16svh;
+    left: 36vw;
+    z-index: 3;
+    width: 70vw;
+    margin: 0;
+    border-radius: 0.7rem 0 0 0.7rem;
+    box-shadow:
+      0 3.5rem 8rem -2.5rem rgb(0 0 0 / 0.7),
+      0 0 0 1px rgb(239 233 220 / 0.08);
+    opacity: 0;
+    transform: perspective(1600px) translate3d(0, 34svh, 0) rotateX(12deg);
+    transform-origin: 50% 0%;
+    transition: opacity 900ms var(--ease), transform 1500ms var(--ease);
+  }
+
+  .overview[data-state='active'] {
+    opacity: 1;
+    transform: perspective(1600px) translate3d(0, 0, 0) rotateX(0deg);
+  }
+
+  [data-scene='3'] .overview[data-state='active'] {
+    transform: perspective(1600px) translate3d(-7vw, 1svh, 0) rotateX(0deg);
+  }
+
+  .overview[data-state='past'] {
+    opacity: 0;
+    transform: perspective(1600px) translate3d(-7vw, -12svh, 0);
+  }
+
+  .overviewCam {
+    transform-origin: 100% 100%;
+    transition: transform 1600ms var(--ease-io);
+  }
+
+  [data-scene='3'] .overviewCam {
+    transform: scale(1.75);
+  }
+
+  .overviewCam img {
+    transform: translate3d(0, calc(var(--s2, 0) * -1.5%), 0);
+  }
+
+  [data-scene='3'] .copy[data-slot='3'] {
+    width: min(24vw, 24rem);
+  }
+
+  /* --- 05 plan: the budgets plane bleeds left, the reader moves across it --- */
+
+  .scene:has([data-slot='4']) .copy {
+    left: 66vw;
+    width: min(28vw, 28rem);
+  }
+
+  .budgets {
+    position: absolute;
+    top: 18svh;
+    left: -3vw;
+    width: 63vw;
+    height: 62svh;
+    margin: 0;
+    aspect-ratio: auto;
+    border-radius: 0 0.7rem 0.7rem 0;
+    box-shadow: 0 3.5rem 8rem -2.5rem rgb(0 0 0 / 0.7);
+    opacity: 0;
+    transform: translate3d(-8vw, 0, 0);
+    transition: opacity 900ms var(--ease), transform 1400ms var(--ease);
+  }
+
+  .budgets img {
+    width: 128%;
+    transform: translate3d(calc(var(--s4, 0) * -17%), 0, 0);
+  }
+
+  .scene[data-state='active'] .budgets {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scene[data-state='past'] .budgets {
+    opacity: 0;
+    transform: translate3d(0, -10svh, 0);
+  }
+
+  /* --- 06 guidance: directory behind, private conversation in front --- */
+
+  .advisors {
+    position: absolute;
+    top: 15svh;
+    left: 35vw;
+    width: 52vw;
+    margin: 0;
+    border-radius: 0.7rem;
+    box-shadow: 0 3rem 7rem -2rem rgb(0 0 0 / 0.7);
+    opacity: 0;
+    transform: translate3d(0, 12svh, 0);
+    transition: opacity 900ms var(--ease), transform 1400ms var(--ease);
+  }
+
+  .advisors img {
+    transform: translate3d(0, calc(var(--s5, 0) * -2svh), 0);
+  }
+
+  .phone {
+    position: absolute;
+    top: 30svh;
+    left: 77vw;
+    z-index: 4;
+    width: auto;
+    height: 60svh;
+    margin: 0;
+    opacity: 0;
+    transform: translate3d(0, 24svh, 0);
+    transition: opacity 900ms var(--ease) 160ms, transform 1500ms var(--ease) 160ms;
+  }
+
+  .phone img {
+    width: auto;
+    height: 100%;
+    border-radius: 1.5rem;
+    outline: 1px solid rgb(239 233 220 / 0.14);
+    box-shadow: 0 3rem 6rem -1.5rem rgb(0 0 0 / 0.85);
+    transform: translate3d(0, calc(var(--s5, 0) * -7svh), 0);
+  }
+
+  .scene[data-state='active'] :is(.advisors, .phone) {
+    opacity: 1;
+    transform: none;
+  }
+
+  .foot {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 10svh;
+    z-index: 6;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    max-width: 30vw;
+    margin: 0;
+  }
+}
+
+/* narrower cinematic screens: the rail keeps its line and only the current chapter name */
+@media (min-width: 1024px) and (max-width: 1439px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .rail {
+    width: 22vw;
+    justify-content: flex-end;
+  }
+
+  .rail span:not([data-state='active']) {
+    display: none;
+  }
+}
+
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .glow, .mark, .rail, .overviewPhone { display: block; }
+  .horizon { display: block; position: absolute; inset: auto 0 0; height: 42svh; background: linear-gradient(transparent, rgb(18 42 32 / .55)); }
+  .glow { position: absolute; width: 120vw; height: 120vw; right: -55vw; bottom: 4svh; border-radius: 50%; background: radial-gradient(circle, rgb(143 227 184 / .12), transparent 65%); transform: translate3d(calc(var(--p, 0) * -15vw), 0, 0); }
+  .scene { position: absolute; inset: 0; display: block; margin: 0; pointer-events: none; opacity: 0; transition: opacity 550ms var(--ease); }
+  .scene[data-state='active'] { opacity: 1; pointer-events: auto; }
+  .scene[data-state='past'] { opacity: 0; }
+  .copy { position: absolute; z-index: 5; top: calc(var(--head) + 4svh); left: var(--gutter); right: var(--gutter); max-width: min(100%, 34rem); gap: .55rem; }
+  .title { font-size: clamp(2.15rem, 8.5vw, 4rem); }
+  .body { font-size: clamp(.82rem, 3.4vw, 1rem); line-height: 1.42; max-width: 30rem; }
+  .kicker { font-size: .7rem; }
+  .line { overflow: clip; }
+  .line > span { transform: translate3d(0, 115%, 0); transition: transform 650ms var(--ease); }
+  .scene[data-state='active'] .line > span { transform: none; transition-delay: calc(var(--i) * 80ms); }
+  .scene[data-state='past'] .line > span { transform: translate3d(0, -115%, 0); }
+  .mark { position: absolute; top: calc(var(--head) + .7rem); left: var(--gutter); z-index: 8; font-family: var(--display); font-size: 1rem; opacity: 0; transition: opacity 400ms; }
+  .mark span { color: var(--accent); font-family: var(--mono); font-size: .7rem; }
+  .mark[data-state='active'] { opacity: 1; }
+  .rail { position: absolute; z-index: 8; bottom: 3svh; left: var(--gutter); right: var(--gutter); padding-top: .65rem; font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .rail::before, .rail::after { position: absolute; top: 0; left: 0; width: 100%; height: 1px; content: ''; background: var(--line); }
+  .rail::after { background: var(--accent); transform: scaleX(var(--p, 0)); transform-origin: left; }
+  .rail span { display: none; }
+  .rail span[data-state='active'] { display: block; }
+  /* The scene copy already names the product; the large wordmark would sit on the capture. */
+  .giant { display: none; }
+  .marketing, .normal, .overview, .budgets, .advisors { position: absolute; margin: 0; border-radius: .5rem; opacity: 1; }
+  .marketing, .normal, .budgets { top: 48svh; left: 5vw; width: 90vw; height: auto; aspect-ratio: auto; overflow: visible; }
+  .marketing { mask-image: none; }
+  .marketing img, .normal img, .budgets img { position: static; display: block; width: 100%; height: auto; max-width: 100%; transform: none; border-radius: .5rem; }
+  .overview { display: none; }
+  /* Show a readable section of the long capture, then move to its transactions. */
+  .overviewPhone { position: absolute; top: 43svh; left: 50%; width: min(58vw, 19rem); height: 43svh; max-height: none; margin: 0; overflow: hidden; border-radius: .8rem; box-shadow: 0 1.5rem 4rem rgb(0 0 0 / .55); opacity: 0; transform: translate3d(-50%, 10svh, 0); transition: opacity 550ms, transform 700ms var(--ease); }
+  .overviewPhone[data-state='active'] { opacity: 1; transform: translateX(-50%); }
+  .overviewPhone img { display: block; width: 100%; height: auto; max-width: none; transform: none; transition: transform 700ms var(--ease); }
+  [data-scene='3'] .overviewPhone img { transform: translateY(-37%); }
+  .advisors { top: 42svh; left: 8vw; width: 40vw; height: 38svh; overflow: hidden; }
+  .advisorsDesktop { display: none; }
+  .advisors .advisorsHandheld { display: block; width: auto; max-width: 100%; height: 100%; margin-inline: auto; object-fit: contain; border-radius: .7rem; }
+  .phone { position: absolute; z-index: 4; top: 42svh; left: 52vw; width: 40vw; height: 38svh; margin: 0; transform: none; }
+  .phone img { display: block; width: auto; max-width: 100%; height: 100%; margin-inline: auto; object-fit: contain; border-radius: .7rem; }
+  .foot { position: absolute; bottom: 8svh; left: var(--gutter); z-index: 5; max-width: 80vw; margin: 0; }
+}

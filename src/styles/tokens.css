@@ -1,0 +1,99 @@
+:root {
+  /* ------------------------------------------------------------------
+     Palette — "systems in print"
+     Warm stone paper, warm ink, burgundy editorial accent.
+     Scene atmospheres: pine (Finevo), night ink (FacEl), clay (dossiers).
+     ------------------------------------------------------------------ */
+  --paper: #f8f4eb;
+  --paper-deep: #e9e0d2;
+  --ink: #1c1610;
+  --ink-soft: #4c4237;
+  --ink-faint: #64594b;
+  --burgundy: #6e2231;
+  --burgundy-deep: #541a26;
+  --hero-accent: #ff4d2b;
+  --pine: #1e4a3d;
+  --pine-deep: #143229;
+  /* amber reads on paper at --amber-ink; dark scenes need the lighter step */
+  --amber-ink: #8a4c0d;
+  --amber-on-dark: #e0a75f;
+  --clay: #9c5b36;
+
+  /* night scene (FacEl, footer) */
+  --night: #171310;
+  --night-soft: #241e18;
+  --paper-on-night: #ece3d2;
+  --faint-on-night: #a89a86;
+
+  /* rules & lines */
+  --line: rgba(28, 22, 16, 0.22);
+  --line-strong: var(--ink);
+  --line-on-night: rgba(236, 227, 210, 0.22);
+
+  /* semantic */
+  --color-bg: var(--paper);
+  --color-text: var(--ink);
+  --color-text-secondary: var(--ink-soft);
+  --color-accent: var(--burgundy);
+
+  /* ------------------------------------------------------------------
+     Typography
+     ------------------------------------------------------------------ */
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+  /* margin annotations only — a hand in the margin of a printed page */
+  --font-hand: 'Caveat', 'Segoe Script', cursive;
+
+  /* fluid display scale */
+  --display-xl: clamp(2.9rem, 8vw, 6rem);
+  --display-lg: clamp(2.2rem, 5.5vw, 4.25rem);
+  --display-md: clamp(1.6rem, 3.2vw, 2.5rem);
+  --display-sm: clamp(1.25rem, 2.2vw, 1.75rem);
+
+  --text-lg: 1.1875rem;
+  --text-base: 1.0625rem;
+  --text-sm: 0.9375rem;
+  --text-xs: 0.8125rem;
+  --text-2xs: 0.6875rem;
+
+  /* expanded caps label (masthead grammar) */
+  --label-tracking: 0.14em;
+
+  /* ------------------------------------------------------------------
+     Spacing
+     ------------------------------------------------------------------ */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-10: 2.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* ------------------------------------------------------------------
+     Layout
+     ------------------------------------------------------------------ */
+  --container-max: 1200px;
+  --container-wide: 1440px;
+  --container-padding: clamp(1.25rem, 4vw, 3rem);
+
+  /* ------------------------------------------------------------------
+     Motion
+     ------------------------------------------------------------------ */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --dur-fast: 150ms;
+  --dur-base: 220ms;
+  --dur-slow: 420ms;
+
+  /* z-index */
+  --z-nav: 30;
+  --z-skip: 40;
+}

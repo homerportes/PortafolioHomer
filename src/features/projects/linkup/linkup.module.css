@@ -1,0 +1,547 @@
+/*
+ * LINKUP — the most social world, and then a surprise.
+ * Saturated cobalt, heavy grotesque type, posts and people arriving as a
+ * loose cluster. At PLAY the room turns to night, the board's own 12 × 12
+ * geometry enters the environment, and the live game takes over the frame.
+ */
+
+.frame {
+  background:
+    radial-gradient(90% 70% at 85% 10%, var(--bg-2) 0%, transparent 65%),
+    var(--bg);
+}
+
+/* ---------- document mode (default) ---------- */
+
+.light,
+.night,
+.sea {
+  display: none;
+}
+
+.scene {
+  position: relative;
+  display: grid;
+  gap: 1.75rem;
+  margin-bottom: clamp(4rem, 12vw, 6.5rem);
+}
+
+/* the game scenes keep their night even as a document */
+.scene:nth-of-type(4),
+.scene:nth-of-type(5) {
+  margin-inline: calc(var(--gutter) * -1);
+  margin-bottom: 0;
+  padding: clamp(3rem, 10vw, 5rem) var(--gutter);
+  background:
+    linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12),
+    linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12),
+    #070b26;
+}
+
+.masthead {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.eyebrow,
+.kicker {
+  color: var(--accent);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.kicker {
+  display: flex;
+  gap: 0.9rem;
+}
+
+.kicker span,
+.alias {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.alias {
+  font-size: 0.7rem;
+}
+
+.name {
+  font-family: var(--sans);
+  font-size: clamp(5rem, 27vw, 14rem);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.8;
+  margin-left: -0.05em;
+}
+
+.copy {
+  display: grid;
+  gap: 1rem;
+  max-width: 32rem;
+}
+
+.title {
+  font-family: var(--sans);
+  font-size: clamp(2.4rem, 10vw, 4.6rem);
+  font-weight: 820;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.line {
+  display: block;
+}
+
+.line > span {
+  display: inline-block;
+}
+
+.line:last-child:not(:first-child) > span {
+  color: var(--accent);
+}
+
+.body {
+  max-width: 27rem;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* the crop windows, dressed for this world */
+.win {
+  border-radius: 0.8rem;
+  background: #fff;
+  box-shadow: 0 2.5rem 5rem -2rem rgb(5 10 60 / 0.6);
+}
+
+.feed,
+.comments {
+  width: min(88%, 26rem);
+  justify-self: center;
+}
+
+.profile {
+  width: 82%;
+  justify-self: end;
+  margin-top: -2.5rem;
+}
+
+.history {
+  width: 88%;
+  justify-self: end;
+  margin-top: -1.5rem;
+}
+
+.foot {
+  margin-top: 1rem;
+}
+
+/* The complete interface is more useful than a narrow crop on small screens. */
+@media (max-width: 1023px) {
+  .win {
+    aspect-ratio: auto;
+  }
+
+  .win img {
+    position: static;
+    display: block;
+    width: 100%;
+    height: auto;
+    transform: none;
+  }
+}
+
+/* ---------- cinematic mode ---------- */
+
+@media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference) {
+  .light,
+  .night,
+  .sea {
+    display: block;
+  }
+
+  .light {
+    position: absolute;
+    top: -50vmax;
+    right: -40vmax;
+    width: 110vmax;
+    height: 110vmax;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(120 140 255 / 0.5), transparent 60%);
+    transform: translate3d(calc(var(--p, 0) * -30vw), calc(var(--p, 0) * 20svh), 0);
+  }
+
+  /* night falls when the game appears */
+  .night {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(70% 60% at 68% 50%, #0f1a55 0%, transparent 70%),
+      #070b26;
+    opacity: 0;
+    transition: opacity 1400ms var(--ease-io);
+  }
+
+  [data-scene='3'] .night,
+  [data-scene='4'] .night {
+    opacity: 1;
+  }
+
+  /* the board's geometry, at room scale */
+  .sea {
+    position: absolute;
+    top: 12svh;
+    left: calc(45vw - 6svh);
+    width: 84svh;
+    height: 84svh;
+    opacity: 0;
+    transform: scale(1.45);
+    transition: opacity 1400ms var(--ease-io), transform 1800ms var(--ease);
+  }
+
+  .seaGrid {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgb(255 255 255 / 0.09) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12),
+      linear-gradient(90deg, rgb(255 255 255 / 0.09) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12);
+    border-right: 1px solid rgb(255 255 255 / 0.09);
+    border-bottom: 1px solid rgb(255 255 255 / 0.09);
+    mask-image: radial-gradient(circle at 50% 50%, #000 45%, transparent 75%);
+  }
+
+  .cols,
+  .rows {
+    position: absolute;
+    display: grid;
+    padding: 0;
+    list-style: none;
+    color: rgb(255 255 255 / 0.35);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+  }
+
+  .cols {
+    bottom: 100%;
+    left: 0;
+    width: 100%;
+    grid-template-columns: repeat(12, 1fr);
+    padding-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  .rows {
+    top: 0;
+    right: 100%;
+    height: 100%;
+    grid-template-rows: repeat(12, 1fr);
+    align-items: center;
+    padding-right: 0.7rem;
+  }
+
+  [data-scene='3'] .sea {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  [data-scene='4'] .sea {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+
+  .scene,
+  .scene:nth-of-type(4),
+  .scene:nth-of-type(5) {
+    position: absolute;
+    inset: 0;
+    display: block;
+    margin: 0;
+    padding: 0;
+    background: none;
+    pointer-events: none;
+  }
+
+  .scene[data-state='active'] {
+    pointer-events: auto;
+  }
+
+  /* --- copy --- */
+
+  .copy {
+    position: absolute;
+    top: 30svh;
+    left: var(--gutter);
+    z-index: 5;
+    width: min(30vw, 30rem);
+    gap: 1.2rem;
+  }
+
+  .title {
+    font-size: clamp(3rem, 5vw, 5.6rem);
+  }
+
+  .line {
+    overflow: clip;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  .line > span {
+    transform: translate3d(0, 115%, 0);
+    transition: transform 850ms cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+
+  .kicker,
+  .body,
+  .foot {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+    transition: opacity 600ms var(--ease), transform 800ms var(--ease);
+  }
+
+  .scene[data-state='active'] .line > span {
+    transform: none;
+    transition-delay: calc(140ms + var(--i) * 75ms);
+  }
+
+  .scene[data-state='active'] :is(.kicker, .body, .foot) {
+    opacity: 1;
+    transform: none;
+    transition-delay: 320ms;
+  }
+
+  .scene[data-state='past'] .line > span {
+    transform: translate3d(0, -115%, 0);
+    transition-duration: 600ms;
+  }
+
+  .scene[data-state='past'] .copy {
+    opacity: 0;
+    transition: opacity 450ms var(--ease) 180ms;
+  }
+
+  /* --- tiles arrive as a loose, social cluster --- */
+
+  .win {
+    position: absolute;
+    opacity: 0;
+    transform: translate3d(var(--fx, 0), 14svh, 0) rotate(var(--r, 0deg)) scale(0.94);
+    transition: opacity 700ms var(--ease), transform 1100ms cubic-bezier(0.2, 0.9, 0.25, 1);
+  }
+
+  .scene[data-state='active'] .win {
+    opacity: 1;
+    transform: none;
+  }
+
+  .scene[data-state='past'] .win {
+    opacity: 0;
+    transform: translate3d(0, -10svh, 0) scale(0.97);
+    transition-duration: 500ms, 800ms;
+  }
+
+  /* 01 share */
+
+  .masthead {
+    position: absolute;
+    inset: 0;
+    display: block;
+    pointer-events: none;
+  }
+
+  .eyebrow,
+  .alias {
+    position: absolute;
+    left: var(--gutter);
+    transition: opacity 500ms var(--ease);
+  }
+
+  .eyebrow {
+    top: calc(var(--head) + 1.4rem);
+  }
+
+  .alias {
+    top: calc(var(--head) + 3rem);
+  }
+
+  .name {
+    position: absolute;
+    bottom: -3.4vw;
+    left: var(--gutter);
+    z-index: 1;
+    font-size: 18.5vw;
+    transition: opacity 800ms var(--ease), transform 1100ms var(--ease);
+  }
+
+  .scene:first-of-type .copy {
+    top: 26svh;
+  }
+
+  .scene[data-state='past'] .name {
+    opacity: 0;
+    transform: translate3d(0, 10svh, 0);
+  }
+
+  .scene[data-state='past'] :is(.eyebrow, .alias) {
+    opacity: 0;
+  }
+
+  .feed {
+    top: 14svh;
+    left: 62vw;
+    z-index: 3;
+    width: auto;
+    height: 72svh;
+    --r: -3deg;
+  }
+
+  .feed img {
+    transform: translate(calc(var(--cx) * -100%), calc((var(--cy) + var(--s0, 0) * 0.04) * -100%));
+  }
+
+  /* 02 discuss */
+
+  .comments {
+    top: 13svh;
+    left: 52vw;
+    width: auto;
+    height: 76svh;
+    --r: 2deg;
+  }
+
+  /* 03 connect */
+
+  .requests {
+    top: 18svh;
+    left: 37vw;
+    width: 41vw;
+    --r: -2deg;
+    --fx: -4vw;
+  }
+
+  .profile {
+    top: 56svh;
+    left: 61vw;
+    z-index: 2;
+    width: 33vw;
+    margin: 0;
+    translate: 0 calc(var(--s2, 0) * -6svh);
+    --r: 3deg;
+    --fx: 6vw;
+    transition-delay: 160ms;
+  }
+
+  /* 04 play: the board takes the room */
+
+  .board {
+    top: 18svh;
+    left: calc(45vw - 6svh + 42svh);
+    height: 70svh;
+    width: auto;
+    border-radius: 0.5rem;
+    translate: -50% 0;
+    box-shadow:
+      0 0 0 1px rgb(255 255 255 / 0.14),
+      0 3rem 9rem -1rem rgb(0 0 0 / 0.75);
+    transform: scale(0.55);
+    transition: opacity 900ms var(--ease) 350ms, transform 1700ms var(--ease) 350ms;
+  }
+
+  .scene[data-state='active'] .board {
+    transform: scale(calc(1 + var(--s3, 0) * 0.06));
+  }
+
+  .scene:nth-of-type(4) .copy {
+    top: 24svh;
+  }
+
+  .scene:nth-of-type(4) .title {
+    font-size: clamp(3rem, 5.4vw, 6.2rem);
+  }
+
+  /* 05 keep score */
+
+  .opponent {
+    top: 17svh;
+    left: 37vw;
+    width: 45vw;
+    --fx: 4vw;
+  }
+
+  .history {
+    top: 61svh;
+    left: 60vw;
+    z-index: 2;
+    width: 35vw;
+    margin: 0;
+    translate: 0 calc(var(--s4, 0) * -6svh);
+    transition-delay: 180ms;
+  }
+
+  .foot {
+    position: absolute;
+    bottom: 11svh;
+    left: var(--gutter);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    width: min(30vw, 30rem);
+    margin: 0;
+  }
+}
+
+/* The social cards read one at a time in portrait; the board takes the room. */
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .frame { overflow: clip; }
+  .light, .night, .sea { display: block; }
+  .light { position: absolute; top: -15svh; right: -30vw; width: 90vw; height: 70svh; border-radius: 50%; background: radial-gradient(circle, rgb(120 140 255 / 0.35), transparent 70%); transform: translate3d(calc(var(--p, 0) * -18vw), calc(var(--p, 0) * 8svh), 0); }
+  .night { position: absolute; inset: 0; background: radial-gradient(90% 70% at 55% 60%, #0f1a55, #070b26 75%); opacity: 0; transition: opacity 750ms var(--ease-io); }
+  [data-scene='3'] .night, [data-scene='4'] .night { opacity: 1; }
+  .sea { position: absolute; top: 43svh; left: 9vw; width: 82vw; height: 82vw; opacity: 0; transform: scale(1.25); transition: opacity 700ms var(--ease), transform 900ms var(--ease); }
+  .seaGrid { position: absolute; inset: 0; background: linear-gradient(rgb(255 255 255 / 0.13) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12), linear-gradient(90deg, rgb(255 255 255 / 0.13) 1px, transparent 1px) 0 0 / calc(100% / 12) calc(100% / 12); }
+  .cols, .rows { position: absolute; display: grid; padding: 0; list-style: none; color: rgb(255 255 255 / 0.65); font-family: var(--mono); font-size: 0.68rem; }
+  .cols { bottom: 100%; left: 0; width: 100%; grid-template-columns: repeat(12, 1fr); text-align: center; }
+  .rows { top: 0; right: 100%; height: 100%; grid-template-rows: repeat(12, 1fr); align-items: center; padding-right: 0.25rem; }
+  [data-scene='3'] .sea { opacity: 1; transform: none; }
+  [data-scene='4'] .sea { opacity: 0.4; transform: scale(0.95); }
+  .scene, .scene:nth-of-type(4), .scene:nth-of-type(5) { position: absolute; inset: 0; display: block; margin: 0; padding: 0; background: none; pointer-events: none; }
+  .scene[data-state='active'] { pointer-events: auto; }
+  .copy { position: absolute; z-index: 5; top: 16svh; left: var(--gutter); right: var(--gutter); max-width: none; gap: 0.55rem; opacity: 0; transform: translateY(1rem); transition: opacity 500ms var(--ease), transform 650ms var(--ease); }
+  .scene:first-of-type .copy { top: 25svh; }
+  .scene[data-state='active'] .copy { opacity: 1; transform: none; }
+  .scene[data-state='past'] .copy { transform: translateY(-1rem); }
+  .kicker { font-size: 0.7rem; }
+  .title { font-size: clamp(2.7rem, 10vw, 5.8rem); }
+  .line { display: block; }
+  .body { max-width: 34rem; font-size: clamp(0.88rem, 2.2vw, 1.05rem); line-height: 1.4; }
+  .masthead { position: absolute; inset: 0; pointer-events: none; }
+  .eyebrow, .alias { position: absolute; top: calc(var(--head) + 0.65rem); left: var(--gutter); }
+  .eyebrow { right: var(--gutter); line-height: 1.4; }
+  .alias { top: calc(var(--head) + 3.9rem); }
+  .name { position: absolute; bottom: 2svh; left: var(--gutter); font-size: clamp(4.8rem, 23vw, 11rem); opacity: 1; transition: opacity 400ms var(--ease); }
+  .scene[data-state='past'] .masthead { opacity: 0; }
+  .win { position: absolute; z-index: 2; margin: 0; opacity: 0; transform: translateY(8svh) scale(0.94); transition: opacity 500ms var(--ease), transform 800ms var(--ease); }
+  .scene[data-state='active'] .win { opacity: 1; transform: none; }
+  .scene[data-state='past'] .win { opacity: 0; transform: translateY(-6svh); }
+  .feed, .comments, .requests, .profile, .board, .opponent, .history { left: var(--gutter); right: var(--gutter); width: calc(100% - 2 * var(--gutter)); max-width: 44rem; }
+  .feed { top: 50svh; width: min(78vw, 31rem); left: auto; right: var(--gutter); }
+  .comments { top: 46svh; width: min(82vw, 33rem); left: auto; right: var(--gutter); }
+  .requests { top: 47svh; width: 74%; }
+  .profile { top: 69svh; left: auto; right: var(--gutter); width: 58%; }
+  .board { top: 57svh; left: 7vw; right: 7vw; width: 86vw; box-shadow: 0 2rem 5rem rgb(0 0 0 / 0.5); }
+  .opponent { top: 49svh; width: 71%; }
+  .history { top: 67svh; left: auto; right: var(--gutter); width: 57%; }
+  .foot { position: absolute; bottom: 2svh; left: var(--gutter); right: var(--gutter); z-index: 4; margin: 0; opacity: 0; transition: opacity 500ms var(--ease); }
+  .scene[data-state='active'] .foot { opacity: 1; }
+}
+
+@media (max-width: 360px) and (orientation: portrait) {
+  .masthead { gap: 1.1rem; }
+  .name { font-size: clamp(3.5rem, 19vw, 4.5rem); line-height: 1; margin-left: 0; }
+}

@@ -1,36 +1,27 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Navigation from "./components/Navigation";
-import Footer from "./components/Footer";
-import StarryBackground from "./components/StarryBackground";
-import SinglePageApp from "./pages/SinglePageApp";
-import NotFound from "./pages/NotFound";
+import './styles/global.css';
+import { Header } from './components/layout/Header';
+import { Footer } from './components/layout/Footer';
+import { Hero } from './features/hero/Hero';
+import { Projects } from './features/projects/Projects';
+import { Experience } from './features/experience/Experience';
+import { Skills } from './features/skills/Skills';
+import { Education } from './features/education/Education';
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="relative min-h-screen flex flex-col overflow-x-hidden">
-          <StarryBackground />
-          <div className="relative z-10 flex flex-col min-h-screen bg-transparent">
-            <Navigation />
-            <Routes>
-              <Route path="/" element={<SinglePageApp />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
-          </div>
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default function App() {
+  return (
+    <>
+      <a href="#main" className="skip-to-content">
+        Skip to main content
+      </a>
+      <Header />
+      <main id="main">
+        <Hero />
+        <Projects />
+        <Experience />
+        <Skills />
+        <Education />
+      </main>
+      <Footer />
+    </>
+  );
+}

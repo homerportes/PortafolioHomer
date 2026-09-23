@@ -1,0 +1,118 @@
+.figure {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.rings {
+  position: relative;
+  aspect-ratio: 1;
+  width: min(100%, 33rem);
+  margin-inline: auto;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--ink);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  padding-top: 0.45rem;
+}
+
+.r4 {
+  inset: 0;
+  border-style: dashed;
+  border-color: var(--line);
+}
+
+.r3 {
+  inset: 12%;
+}
+
+.r2 {
+  inset: 25%;
+  border-color: var(--burgundy);
+}
+
+.r1 {
+  inset: 38%;
+  background: var(--burgundy);
+  border-color: var(--burgundy);
+  align-items: center;
+  padding-top: 0;
+}
+
+.ringLabel {
+  background: var(--paper);
+  padding: 0 0.4rem;
+  color: var(--ink-soft);
+  font-size: 0.6875rem;
+  white-space: nowrap;
+  transform: translateY(-0.75em);
+}
+
+.r2 .ringLabel {
+  color: var(--burgundy);
+}
+
+.core {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 560;
+  color: var(--paper);
+  letter-spacing: -0.01em;
+}
+
+/* the dependency arrow — the whole point of the drawing */
+.arrow {
+  position: absolute;
+  left: 50%;
+  top: 2%;
+  height: 34%;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--ink));
+}
+
+.arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+  transform: translate(-50%, 2px) rotate(45deg);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-3);
+}
+
+.caption .label {
+  color: var(--burgundy);
+}
+
+.captionText {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  line-height: 1.5;
+  max-width: 40ch;
+}
+
+@media (max-width: 900px) {
+  .rings {
+    width: min(100%, 20rem);
+  }
+
+  .ringLabel {
+    font-size: 0.5625rem;
+  }
+}

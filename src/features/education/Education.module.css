@@ -1,0 +1,289 @@
+/*
+ * EDUCATION — the quiet page, back on paper. Two stops on one line: a filled
+ * full stop for what is finished, an open ring and an outlined name for what
+ * comes next. The line between them draws itself once.
+ */
+
+.section {
+  --paper: #f3eee4;
+  --ink: #16120d;
+  --muted: #6a6258;
+  --line: rgb(22 18 13 / 0.14);
+  --orange: #ff4d2b;
+  --display: 'Fraunces', Georgia, serif;
+  --sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', Consolas, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: clamp(1rem, 4.2vw, 4.5rem);
+  position: relative;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.seam,
+.outro {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.seam {
+  height: clamp(7rem, 24svh, 15rem);
+  background: linear-gradient(in oklab 180deg, #16120d 0%, #16120d 8%, var(--paper) 88%);
+}
+
+/* paper hands over to the colophon's night */
+.outro {
+  height: clamp(6rem, 18svh, 11rem);
+  background: linear-gradient(in oklab 180deg, var(--paper) 0%, #171310 100%);
+}
+
+.inner {
+  padding: 0 var(--gutter) clamp(4rem, 12svh, 8rem);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1.5rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.kicker {
+  color: var(--orange);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1.55;
+  text-transform: uppercase;
+}
+
+.range {
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+
+/* ---------- the path ---------- */
+
+.path {
+  display: grid;
+  gap: 2.5rem;
+  margin-top: clamp(3rem, 9svh, 6rem);
+  padding: 0;
+  list-style: none;
+}
+
+.stop {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.76rem;
+}
+
+.marker {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+.stop[data-status='upcoming'] .marker {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--orange);
+}
+
+.name {
+  overflow: clip;
+  padding-bottom: 0.06em;
+  font-family: var(--sans);
+  font-size: clamp(4rem, 26vw, 15rem);
+  font-weight: 900;
+  letter-spacing: -0.07em;
+  line-height: 0.8;
+  margin-left: -0.04em;
+}
+
+.name > span {
+  display: inline-block;
+}
+
+/* what is still ahead is drawn, not filled */
+.stop[data-status='upcoming'] .name {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+
+.full {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.program {
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 5vw, 2.4rem);
+  font-weight: 360;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.program em {
+  color: var(--orange);
+}
+
+.link {
+  position: relative;
+  display: grid;
+  justify-items: start;
+  gap: 0.5rem;
+  height: 4rem;
+}
+
+.line {
+  position: relative;
+  width: 1px;
+  height: 100%;
+  margin-left: 0.37rem;
+  background: var(--ink);
+  transform-origin: top;
+}
+
+.next {
+  position: absolute;
+  top: 50%;
+  left: 1.4rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  transform: translateY(-50%);
+}
+
+@media (min-width: 900px) {
+  .path {
+    grid-template-columns: auto minmax(6rem, 1fr) auto;
+    align-items: start;
+    column-gap: 3vw;
+  }
+
+  .name {
+    font-size: min(15vw, 30svh);
+  }
+
+  .program {
+    font-size: clamp(1.6rem, 2.1vw, 2.6rem);
+  }
+
+  .link {
+    align-self: center;
+    height: auto;
+    padding-top: 2.2rem;
+  }
+
+  .line {
+    width: 100%;
+    height: 1px;
+    margin: 0;
+    transform-origin: left;
+  }
+
+  /* an arrowhead at the end of the line */
+  .line::after {
+    position: absolute;
+    top: -0.32rem;
+    right: 0;
+    width: 0.65rem;
+    height: 0.65rem;
+    content: '';
+    border-top: 1px solid var(--ink);
+    border-right: 1px solid var(--ink);
+    transform: rotate(45deg);
+  }
+
+  .next {
+    top: 0.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- reveal ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .name > span {
+    transform: translate3d(0, 105%, 0);
+    transition: transform 1200ms var(--ease);
+  }
+
+  .stop:last-child .name > span {
+    transition-delay: 700ms;
+  }
+
+  .status,
+  .full,
+  .program,
+  .next {
+    opacity: 0;
+    transition: opacity 800ms var(--ease);
+  }
+
+  .stop:first-child :is(.status, .full, .program) {
+    transition-delay: 300ms;
+  }
+
+  .stop:last-child :is(.status, .program) {
+    transition-delay: 1000ms;
+  }
+
+  .next {
+    transition-delay: 900ms;
+  }
+
+  .line {
+    transform: scaleY(0);
+    transition: transform 900ms var(--ease) 450ms;
+  }
+
+  .path[data-seen] .name > span {
+    transform: none;
+  }
+
+  .path[data-seen] :is(.status, .full, .program, .next) {
+    opacity: 1;
+  }
+
+  .path[data-seen] .line {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 900px) {
+  .line {
+    transform: scaleX(0);
+  }
+}
+
+@media (max-width: 1023px) and (orientation: portrait) {
+  .inner { padding-bottom: clamp(4rem, 9svh, 6rem); }
+  .path { row-gap: clamp(2rem, 5svh, 3rem); margin-top: clamp(2.5rem, 7svh, 5rem); }
+  .stop { gap: 1rem; }
+  .status { min-height: 44px; }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) and (orientation: portrait) {
+  .stop:last-child .name > span,
+  .stop:first-child :is(.status, .full, .program),
+  .stop:last-child :is(.status, .program),
+  .next { transition-delay: 0ms; }
+
+  .line { transition-delay: 100ms; }
+}

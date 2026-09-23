@@ -1,0 +1,117 @@
+@import './tokens.css';
+@import './reset.css';
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-padding);
+}
+
+.container--wide {
+  max-width: var(--container-wide);
+}
+
+/* Expanded caps label — the masthead grammar of the site */
+.label {
+  font-family: var(--font-body);
+  font-variation-settings: 'wdth' 120;
+  font-weight: 640;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+}
+
+/* Mono metadata — reserved for real data: dates, amounts, code, versions */
+.meta {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+}
+
+/* A hand in the margin. Used sparingly — only to point at something real. */
+.hand {
+  font-family: var(--font-hand);
+  font-size: 1.35rem;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  color: var(--burgundy);
+}
+
+.on-night .hand,
+.on-pine .hand {
+  color: var(--amber-on-dark);
+}
+
+/* Real product screenshots are framed like plates, never floated as cards. */
+.plate-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+}
+
+.on-night .plate-img,
+.on-pine .plate-img {
+  border-color: rgba(236, 227, 210, 0.35);
+  box-shadow: 12px 16px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Hairline rules */
+.rule {
+  border: 0;
+  border-top: 1px solid var(--line);
+}
+
+.rule--strong {
+  border-top: 2px solid var(--line-strong);
+}
+
+/* Skip link */
+.skip-to-content {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: var(--z-skip);
+  background: var(--ink);
+  color: var(--paper);
+  padding: 0.5rem 0.875rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  transform: translateY(-300%);
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.skip-to-content:focus-visible {
+  transform: translateY(0);
+}
+
+/* Inline text link — underline drawn like a rule */
+.link {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: var(--line);
+  transition: text-decoration-color var(--dur-fast) ease, color var(--dur-fast) ease;
+}
+
+.link:hover {
+  text-decoration-color: currentColor;
+  color: var(--burgundy);
+}
+
+.on-night .link:hover {
+  color: var(--paper-on-night);
+}
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,394 @@
+/*
+ * SKILLS — a specimen set in the dark room from the hero's doorway.
+ * Paper type on ink, one orange. Each skill carries a small mark per place
+ * it shipped, in that project's own colour; the key lights them by place.
+ */
+
+.section {
+  --paper: #f3eee4;
+  --ink: #16120d;
+  --soft: rgb(243 238 228 / 0.62);
+  --faint: rgb(243 238 228 / 0.14);
+  --orange: #ff4d2b;
+  --display: 'Fraunces', Georgia, serif;
+  --sans: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'IBM Plex Mono', Consolas, monospace;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --gutter: clamp(1rem, 4.2vw, 4.5rem);
+  --head: 6.3rem;
+  position: relative;
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.seam {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  height: clamp(7rem, 24svh, 15rem);
+  background: linear-gradient(in oklab 180deg, #f3eee4 0%, #f3eee4 8%, var(--ink) 88%);
+}
+
+.inner {
+  position: relative;
+  padding: 0 var(--gutter) clamp(5rem, 12svh, 9rem);
+}
+
+.inner::after {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: '';
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.4rem 1.5rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid var(--faint);
+}
+
+.kicker {
+  color: var(--orange);
+  font-family: var(--sans);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.note {
+  color: var(--soft);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+}
+
+/* ---------- head: the title and the key ---------- */
+
+.head {
+  display: grid;
+  gap: 2rem;
+  align-items: end;
+  margin: clamp(2.5rem, 7svh, 5rem) 0;
+}
+
+.title {
+  overflow: clip;
+  padding-bottom: 0.06em;
+  font-family: var(--sans);
+  font-size: clamp(3.8rem, 20vw, 16rem);
+  font-weight: 900;
+  letter-spacing: -0.075em;
+  line-height: 0.8;
+  margin-left: -0.04em;
+}
+
+.title > span {
+  display: inline-block;
+}
+
+.dot {
+  display: inline-block;
+  width: 0.15em;
+  height: 0.15em;
+  margin-left: 0.04em;
+  border-radius: 50%;
+  background: var(--orange);
+}
+
+.key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.4rem;
+  padding: 0;
+  list-style: none;
+  color: var(--soft);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+}
+
+.keyButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.25rem 0.4rem;
+  color: inherit;
+  border: 0;
+  border-radius: 0.25rem;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+  transition: color 300ms var(--ease);
+}
+
+.keyButton:hover,
+.keyButton:focus-visible,
+.keyButton[aria-pressed='true'] {
+  color: var(--paper);
+}
+
+.keyButton:focus-visible {
+  outline: 2px solid var(--orange);
+  outline-offset: 4px;
+}
+
+/* ---------- the marks ---------- */
+
+.mark {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--c);
+  transition: transform 350ms var(--ease);
+}
+
+.mark[data-place='finevo'] { --c: #8fe3b8; }
+.mark[data-place='facel'] { --c: #e45a3c; }
+.mark[data-place='realstate'] { --c: #d69a62; }
+.mark[data-place='artemis'] { --c: #86a8ff; }
+.mark[data-place='linkup'] { --c: #7f8cff; }
+
+/* work, not a project: an open ring */
+.mark[data-place='intelca'] {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--paper);
+}
+
+/* ---------- rows ---------- */
+
+.rows {
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--faint);
+}
+
+.row {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.4rem, 3.5svh, 2.4rem) 0;
+  border-bottom: 1px solid var(--faint);
+}
+
+.rowHead {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.index {
+  min-width: 1.8rem;
+  color: var(--soft);
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.label {
+  color: var(--orange);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.skill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  transition: opacity 350ms var(--ease), color 350ms var(--ease);
+}
+
+.skillName {
+  font-family: var(--sans);
+  font-size: clamp(1.25rem, 4.6vw, 2.3rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+
+/* the official mark, on a small paper tile so every brand colour reads on ink */
+.logo {
+  display: inline-grid;
+  align-self: center;
+  place-items: center;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 0.15em;
+  flex: none;
+  border-radius: 0.28em;
+  background: var(--paper);
+  font-size: clamp(1.25rem, 4.6vw, 2.3rem);
+  transition: transform 400ms var(--ease);
+}
+
+.logo img {
+  width: 68%;
+  height: 68%;
+  object-fit: contain;
+}
+
+.skill:hover .logo {
+  transform: translateY(-0.08em);
+}
+
+.marks {
+  display: inline-flex;
+  align-self: flex-start;
+  gap: 0.25rem;
+  margin-top: 0.45em;
+}
+
+.row[data-learning] .skillName {
+  color: var(--soft);
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 340;
+  text-decoration: underline dashed rgb(243 238 228 / 0.35);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* pointing at a skill lifts its marks; pointing at a place lights everything it used */
+.skill:hover .mark {
+  transform: scale(1.5);
+}
+
+.section:has(.key [data-key]:is(:hover, :focus-visible)) .skill {
+  opacity: 0.22;
+}
+
+.section[data-selected-place] .skill {
+  opacity: 0.22;
+}
+
+.section:has([data-key='finevo']:is(:hover, :focus-visible)) .skill[data-uses~='finevo'],
+.section:has([data-key='facel']:is(:hover, :focus-visible)) .skill[data-uses~='facel'],
+.section:has([data-key='realstate']:is(:hover, :focus-visible)) .skill[data-uses~='realstate'],
+.section:has([data-key='artemis']:is(:hover, :focus-visible)) .skill[data-uses~='artemis'],
+.section:has([data-key='linkup']:is(:hover, :focus-visible)) .skill[data-uses~='linkup'],
+.section:has([data-key='intelca']:is(:hover, :focus-visible)) .skill[data-uses~='intelca'] {
+  opacity: 1;
+}
+
+.section[data-selected-place='finevo'] .skill[data-uses~='finevo'],
+.section[data-selected-place='facel'] .skill[data-uses~='facel'],
+.section[data-selected-place='realstate'] .skill[data-uses~='realstate'],
+.section[data-selected-place='artemis'] .skill[data-uses~='artemis'],
+.section[data-selected-place='linkup'] .skill[data-uses~='linkup'],
+.section[data-selected-place='intelca'] .skill[data-uses~='intelca'] {
+  opacity: 1;
+}
+
+@media (max-width: 1023px) and (orientation: portrait) {
+  .inner { padding-bottom: clamp(4rem, 9svh, 7rem); }
+  .head { gap: 1.4rem; margin-block: clamp(2rem, 5svh, 4rem); }
+  .key { gap: 0.15rem 0.5rem; }
+  .row { padding-block: clamp(1.5rem, 4svh, 2.2rem); }
+  .skills { gap: 0.75rem 1.2rem; }
+}
+
+/* ---------- wide screens: label column + specimen ---------- */
+
+@media (min-width: 900px) {
+  .head {
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 4vw;
+  }
+
+  .key {
+    justify-content: flex-end;
+    padding-bottom: 1.4rem;
+  }
+
+  .row {
+    grid-template-columns: minmax(14rem, 22vw) minmax(0, 1fr);
+    align-items: baseline;
+    column-gap: 3vw;
+  }
+
+  .skillName,
+  .logo {
+    font-size: clamp(1.5rem, 2.25vw, 2.7rem);
+  }
+}
+
+/* ---------- reveals ---------- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .title > span {
+    transform: translate3d(0, 105%, 0);
+    transition: transform 1200ms var(--ease);
+  }
+
+  .head[data-seen] .title > span {
+    transform: none;
+  }
+
+  .key li {
+    opacity: 0;
+    transform: translate3d(0, 0.8rem, 0);
+    transition: opacity 600ms var(--ease), transform 800ms var(--ease), color 300ms var(--ease);
+  }
+
+  .head[data-seen] .key li {
+    opacity: 1;
+    transform: none;
+  }
+
+  .head[data-seen] .key li:nth-child(2) { transition-delay: 60ms; }
+  .head[data-seen] .key li:nth-child(3) { transition-delay: 120ms; }
+  .head[data-seen] .key li:nth-child(4) { transition-delay: 180ms; }
+  .head[data-seen] .key li:nth-child(5) { transition-delay: 240ms; }
+  .head[data-seen] .key li:nth-child(6) { transition-delay: 300ms; }
+
+  @media (max-width: 1023px) and (orientation: portrait) {
+    .head[data-seen] .key li { transition-delay: 0ms; }
+    .row[data-seen] .skill { transition-delay: 0ms; }
+  }
+
+  .row .skill {
+    opacity: 0;
+    transform: translate3d(0, 1.2rem, 0);
+    transition: opacity 700ms var(--ease), transform 900ms var(--ease), color 350ms var(--ease);
+  }
+
+  .row[data-seen] .skill {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(var(--j) * 45ms), calc(var(--j) * 45ms), 0ms;
+  }
+
+  /* once revealed, dimming by place must answer immediately */
+  .section:has(.key [data-key]:is(:hover, :focus-visible)) .row[data-seen] .skill {
+    transition-delay: 0ms;
+  }
+
+  .section[data-selected-place] .row[data-seen] .skill {
+    transition-delay: 0ms;
+  }
+}
