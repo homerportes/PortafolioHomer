@@ -20,12 +20,14 @@ describe('Projects experience', () => {
     ]);
   });
 
-  it('links every project to its real repository', () => {
+  it('keeps Finevo source links private while linking the other projects', () => {
     render(<Projects />);
 
+    const finevo = document.querySelector('article[data-world="finevo"]');
+    expect(finevo).not.toBeNull();
+    expect(within(finevo as HTMLElement).queryAllByRole('link', { name: /repository/i })).toHaveLength(0);
+
     const expected: [RegExp, string][] = [
-      [/finevo: frontend repository/i, 'https://github.com/homerportes/FinevoFrontend'],
-      [/finevo: backend repository/i, 'https://github.com/homerportes/FinevoApp'],
       [/facel: view repository/i, 'https://github.com/homerportes/FacturacionElectronica'],
       [/realstateapp: view repository/i, 'https://github.com/homerportes/RealStateApps'],
       [/artemis banking: view repository/i, 'https://github.com/homerportes/BankingApp'],

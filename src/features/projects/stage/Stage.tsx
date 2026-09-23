@@ -141,7 +141,7 @@ export function ChapterFoot({
           <span key={item}>{item}</span>
         ))}
       </p>
-      <nav className={s.repos} aria-label={`${project.name} source code`}>
+      {project.repos.length > 0 && <nav className={s.repos} aria-label={`${project.name} source code`}>
         {project.repos.map((repo) => {
           const text = repo.label === 'Repository' ? 'View repository' : `${repo.label} repository`;
           return (
@@ -157,7 +157,7 @@ export function ChapterFoot({
             </a>
           );
         })}
-      </nav>
+      </nav>}
     </div>
   );
 }

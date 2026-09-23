@@ -43,10 +43,7 @@ export const projects: ProjectMeta[] = [
     tone: 'dark',
     surface: '#0b1511',
     stack: ['ASP.NET Core', 'EF Core', 'React', 'TypeScript', 'Tailwind CSS'],
-    repos: [
-      { label: 'Frontend', href: 'https://github.com/homerportes/FinevoFrontend' },
-      { label: 'Backend', href: 'https://github.com/homerportes/FinevoApp' },
-    ],
+    repos: [],
   },
   {
     id: 'facel',
