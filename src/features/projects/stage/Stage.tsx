@@ -2,6 +2,7 @@ import { useEffect, useRef, type CSSProperties, type ImgHTMLAttributes, type Rea
 import type { Media, ProjectMeta } from '../content';
 import { tierWeights, useStage, type StageWeights } from './useStage';
 import s from './stage.module.css';
+import { Arrow } from '@/components/Arrow';
 
 const cx_ = (...names: (string | false | undefined)[]) => names.filter(Boolean).join(' ');
 
@@ -153,7 +154,7 @@ export function ChapterFoot({
               aria-label={`${project.name}: ${text} on GitHub (opens in a new tab)`}
             >
               <span>{text}</span>
-              <span aria-hidden="true" className={s.arrow}>↗</span>
+              <span aria-hidden="true" className={s.arrow}><Arrow dir="up-right" /></span>
             </a>
           );
         })}

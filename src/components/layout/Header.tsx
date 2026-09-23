@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react';
 import { profile } from '@/content/profile';
 import { useSceneTone } from '@/hooks/useSceneTone';
 import styles from './Header.module.css';
+import { Arrow } from '@/components/Arrow';
 
 const NAV_ITEMS = [
   { href: '#top', label: 'Home' },
@@ -41,7 +42,7 @@ export function Header() {
           ))}
         </ul>
         <a href={`mailto:${profile.email}`} className={styles.contactLink}>
-          {CONTACT_ITEM.label}<span aria-hidden="true">↗</span>
+          {CONTACT_ITEM.label}<Arrow dir="up-right" />
         </a>
         <button
           type="button"
@@ -58,12 +59,12 @@ export function Header() {
         {NAV_ITEMS.map((item) => (
           <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
             {item.label}
-            <span aria-hidden="true">↗</span>
+            <Arrow dir="up-right" />
           </a>
         ))}
         <a href={`mailto:${profile.email}`} onClick={() => setMenuOpen(false)}>
           {CONTACT_ITEM.label}
-          <span aria-hidden="true">↗</span>
+          <Arrow dir="up-right" />
         </a>
       </div>
     </header>

@@ -8,6 +8,7 @@ import {
   type StageSnapshot,
 } from '@/features/projects/stage/stepper';
 import styles from './SceneRail.module.css';
+import { Arrow } from '@/components/Arrow';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -93,7 +94,7 @@ export function SceneRail() {
         aria-hidden={!stage?.skippable}
         onClick={skipProjects}
       >
-        Skip projects <span aria-hidden="true">↓</span>
+        Skip projects <Arrow dir="down" />
       </a>
     </>
   );
