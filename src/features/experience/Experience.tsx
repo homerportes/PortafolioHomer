@@ -86,7 +86,7 @@ export function Experience() {
 
           {/* 02–03 — the role, then the promotion */}
           {ROLES.map(({ role, prefix, scene }) => (
-            <article key={role.id} className={styles.role} {...at(scene)} data-role={prefix}>
+            <article key={role.id} className={styles.role} {...at(scene)} data-role={prefix} data-slot={scene}>
               <p className={styles.period}>
                 <span>{role.period}</span>
                 {role.current && <span className={styles.current}>Current</span>}

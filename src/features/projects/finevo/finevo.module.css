@@ -659,6 +659,27 @@
   .phone { position: absolute; z-index: 4; top: 42svh; left: 52vw; width: 40vw; height: 38svh; margin: 0; transform: none; }
   .phone img { display: block; width: auto; max-width: 100%; height: 100%; margin-inline: auto; object-fit: contain; border-radius: .7rem; }
   .foot { position: absolute; bottom: 8svh; left: var(--gutter); z-index: 5; max-width: 80vw; margin: 0; }
+
+  /* Every capture starts below its own copy and ends above the rail (or the
+     foot), shrinking on short phones instead of sliding under the text. */
+  /* the running mark sits above the kicker, never on it */
+  .copy { top: calc(var(--head) + max(4svh, 2rem)); }
+  .marketing { --top: max(48svh, calc(var(--c0, 0px) + var(--gap))); }
+  .normal { --top: max(48svh, calc(var(--c1, 0px) + var(--gap))); }
+  .budgets { --top: max(48svh, calc(var(--c4, 0px) + var(--gap))); }
+  .marketing, .normal, .budgets { top: var(--top); }
+  .marketing img, .normal img, .budgets img { width: min(100%, calc((var(--floor) - var(--top)) * var(--img-ar))); margin-inline: auto; }
+  .overviewPhone {
+    --top: max(43svh, calc(max(var(--c2, 0px), var(--c3, 0px)) + var(--gap)));
+    top: var(--top);
+    height: calc(min(86svh, var(--floor)) - var(--top));
+  }
+  .foot { bottom: max(8svh, calc(100svh - var(--floor))); }
+  .advisors, .phone {
+    --top: max(42svh, calc(var(--c5, 0px) + var(--gap)));
+    top: var(--top);
+    height: calc(min(80svh, var(--foot, 80svh) - var(--gap)) - var(--top));
+  }
 }
 
 /* ---------- QA: no broken text ---------- */

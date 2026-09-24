@@ -547,6 +547,31 @@
   .name { font-size: clamp(3.5rem, 19vw, 4.5rem); line-height: 1; margin-left: 0; }
 }
 
+/* Fit every phone height: each window opens below its scene's measured copy
+   (useStage writes --cN) and is cut, like a window, above whatever sits
+   beneath it — the wordmark, the foot or the rail. */
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .name { bottom: calc(100svh - var(--floor)); line-height: .9; }
+  .win { top: var(--top); max-height: max(4rem, calc(var(--end, var(--floor)) - var(--top))); }
+  .feed { --top: max(50svh, calc(var(--c0, 0px) + var(--gap))); --end: calc(var(--floor) - .9 * clamp(4.8rem, 23vw, 11rem) - var(--gap)); }
+  .comments { --top: max(46svh, calc(var(--c1, 0px) + var(--gap))); }
+  .requests { --top: max(47svh, calc(var(--c2, 0px) + var(--gap))); }
+  .profile { --top: max(69svh, calc(var(--c2, 0px) + var(--gap) + 20svh)); }
+  .board { --top: max(57svh, calc(var(--c3, 0px) + var(--gap))); }
+  .opponent, .history { --end: calc(var(--foot, var(--floor)) - var(--gap)); }
+  .opponent { --top: min(max(49svh, calc(var(--c4, 0px) + var(--gap))), calc(var(--end) - 5rem)); }
+  .history { --top: min(max(67svh, calc(var(--c4, 0px) + var(--gap) + 16svh)), calc(var(--end) - 4rem)); }
+  /* the board's grid stays inside the room above the rail */
+  .sea { --side: min(82vw, calc(var(--floor) - 43svh)); left: calc(50% - var(--side) / 2); width: var(--side); height: var(--side); }
+  /* the board capture covers the grid's coordinates; half-hidden numbers read as noise */
+  .cols, .rows { display: none; }
+  .foot { bottom: calc(100svh - var(--floor)); }
+}
+
+@media (max-width: 360px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .feed { --end: calc(var(--floor) - clamp(3.5rem, 19vw, 4.5rem) - var(--gap)); }
+}
+
 /* ---------- QA: no broken text ---------- */
 
 @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),
