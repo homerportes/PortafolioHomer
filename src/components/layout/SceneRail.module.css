@@ -265,6 +265,14 @@
     font-size: 0.66rem;
   }
 
+  /* the first cue stays a little larger, but inside the band the hero keeps
+     clear for it (Hero.module.css, .intro padding-bottom) */
+  .cue[data-first] {
+    min-height: 2.6rem;
+    padding-inline: 1.15rem 1rem;
+    font-size: 0.72rem;
+  }
+
   /* the bottom row under the thumb: swipe cue in the middle, Skip on the right */
   .actions {
     bottom: max(0.75rem, env(safe-area-inset-bottom));

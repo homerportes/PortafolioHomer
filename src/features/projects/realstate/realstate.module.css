@@ -607,6 +607,29 @@
   .agent, .admin { top: 56svh; height: 28svh; }
 }
 
+/* Fit every phone height: each capture starts below its scene's measured
+   copy (useStage writes --cN) and ends above the rail or the foot. */
+@media (max-width: 1023px) and (orientation: portrait) and (min-height: 560px) and (prefers-reduced-motion: no-preference) {
+  .print, .search { --top: max(67svh, calc(var(--c0, 0px) + var(--gap))); top: var(--top); height: calc(min(92svh, var(--floor)) - var(--top)); }
+  .detail { --top: max(41svh, calc(max(var(--c1, 0px), var(--c2, 0px)) + var(--gap))); }
+  .offers { --top: max(41svh, calc(var(--c2, 0px) + var(--gap))); }
+  .chatClient, .chatAgent { --top: max(42svh, calc(var(--c3, 0px) + var(--gap))); }
+  .detail, .offers, .chatClient, .chatAgent { top: var(--top); height: calc(min(92svh, var(--floor)) - var(--top)); }
+  .agent, .admin {
+    --top: max(49svh, calc(var(--c4, 0px) + var(--gap)));
+    top: var(--top);
+    height: calc(min(84svh, var(--foot, 84svh) - var(--gap)) - var(--top));
+  }
+  .foot { bottom: calc(100svh - var(--floor)); }
+  /* the listing leaves once the conversation begins: dimmed, it would sit
+     behind the next scenes' copy and captures */
+  .detail[data-state='past'] { opacity: 0; }
+  /* one thread at a time: the client's gives way to the agent's as the scene
+     scrolls (the shared fade-in rule below would show both, stacked) */
+  .scene.scene[data-state='active'] .chatClient.chatClient { opacity: clamp(0, calc(2 - var(--s3, 0) * 4), 1); }
+  .scene.scene[data-state='active'] .chatAgent.chatAgent { opacity: clamp(0, calc(var(--s3, 0) * 4 - 1), 1); }
+}
+
 /* ---------- QA: no broken text ---------- */
 
 @media (min-width: 1024px) and (min-height: 600px) and (prefers-reduced-motion: no-preference),

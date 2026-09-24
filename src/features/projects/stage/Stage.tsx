@@ -91,6 +91,7 @@ export function Shot({
   eager,
   className,
   alt,
+  style,
   ...rest
 }: {
   m: Media;
@@ -104,6 +105,9 @@ export function Shot({
   return (
     <img
       className={className}
+      // the capture's ratio, so a composition can size it to fit a height
+      // with a definite width (a lazy image sized `width: auto` stays 0×0)
+      style={{ '--img-ar': m.w / m.h, ...style } as CSSProperties}
       src={`${base}.webp`}
       srcSet={m.small ? `${base}-1100.webp 1100w, ${base}.webp ${m.w}w` : undefined}
       sizes={m.small ? sizes : undefined}
@@ -155,7 +159,7 @@ export function ChapterFoot({
   ...rest
 }: { project: ProjectMeta; className?: string } & Record<`data-${string}`, string>) {
   return (
-    <div className={cx_(s.foot, className)} {...rest}>
+    <div className={cx_(s.foot, className)} data-foot="" {...rest}>
       <p className={s.stack}>
         {project.stack.map((item) => (
           <span key={item}>{item}</span>

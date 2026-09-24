@@ -128,6 +128,30 @@ export function useStage(weights: StageWeights, label = '', skippable = false) {
     };
     measure();
 
+    // Where each scene's copy ends (`--cN`), how tall it is (`--hN`) and where
+    // the chapter foot begins (`--foot`), in px from the top of the frame. Handheld compositions place their captures below
+    // `--cN` and above `--foot`, so an image never lands on text however tall
+    // the copy wraps on a given phone. Offsets ignore transforms, so the
+    // entrance motion of the copy never moves the measurement.
+    const frame = track.firstElementChild as HTMLElement | null;
+    const slots = Array.from(track.querySelectorAll<HTMLElement>('[data-slot]'));
+    const foot = track.querySelector<HTMLElement>('[data-foot]');
+    const offsetIn = (el: HTMLElement) => {
+      let y = 0;
+      for (let e: HTMLElement | null = el; e && e !== frame; e = e.offsetParent as HTMLElement | null) {
+        y += e.offsetTop;
+      }
+      return y;
+    };
+    const measureCopy = () => {
+      for (const el of slots) {
+        track.style.setProperty(`--c${el.dataset.slot}`, `${Math.ceil(offsetIn(el) + el.offsetHeight)}px`);
+        track.style.setProperty(`--h${el.dataset.slot}`, `${Math.ceil(el.offsetHeight)}px`);
+      }
+      if (foot) track.style.setProperty('--foot', `${Math.floor(offsetIn(foot))}px`);
+    };
+    measureCopy();
+
     const setScene = (scene: number) => {
       if (scene === current) return;
       current = scene;
@@ -174,6 +198,9 @@ export function useStage(weights: StageWeights, label = '', skippable = false) {
     const proximity = new IntersectionObserver(
       ([entry]) => {
         near = entry.isIntersecting;
+        // copy laid out while the chapter was skipped (content-visibility)
+        // may have wrapped with other fonts; read it again on approach
+        if (near) measureCopy();
         schedule();
       },
       { rootMargin: '50% 0px 50% 0px' },
@@ -186,10 +213,14 @@ export function useStage(weights: StageWeights, label = '', skippable = false) {
     // first time) can move it, so the whole document is watched
     const layout = new ResizeObserver(() => {
       measure();
+      measureCopy();
       schedule();
     });
     layout.observe(track);
     layout.observe(document.documentElement);
+    // copy re-wraps when fonts arrive or the width changes
+    slots.forEach((el) => layout.observe(el));
+    if (foot) layout.observe(foot);
 
     const reveal = new IntersectionObserver(
       (entries) => {
@@ -218,11 +249,13 @@ export function useStage(weights: StageWeights, label = '', skippable = false) {
 
     const onResize = () => {
       measure();
+      measureCopy();
       schedule();
     };
 
     const onModeChange = () => {
       measure();
+      measureCopy();
       lastP = '';
       last.fill(-1);
       current = -1;
